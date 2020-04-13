@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet"
+          href={% static 'materialize/css/materialize.min.css' %} media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href={% static 'recipe/base.css' %}/>
+
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+
+<div class="container">
+    <!-- Page Content goes here -->
+    <div class="site-header">
+
+        <img class="site-logo" id="misoboop-cat" src={% static 'tama.png' %}/>
+
+        <div class="site-banner">
+            <h2>
+                MisoBoop
+            </h2>
+            <h5>
+                American cooking with Chinese roots
+            </h5>
+        </div>
+    </div>
+    <nav class="nav-center" role="navigation">
+        <div class="nav-wrapper">
+            {#            <a href="#!" class="brand-logo">Logo</a>#}
+            <a href="#" data-target="mobile-sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="hide-on-med-and-down">
+                <li><a href="/">Home</a></li>
+                <li><a href="/">Recipes</a></li>
+                <li><a href="/">About</a></li>
+                <li><a href="/">Subscribe</a></li>
+                <li>
+                    <div id="navbar-search" class="input-field">
+                        <input type="search" required>
+                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                        <i class="material-icons">close</i>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <ul class="sidenav" id="mobile-sidenav">
+        <li>
+            <div class="search-wrapper">
+                <input id="search" placeholder="Search"><i class="material-icons">search</i>
+                {#                <div class="search-results"></div>#}
+            </div>
+        </li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/">Recipes</a></li>
+        <li><a href="/">About</a></li>
+        <li><a href="/">Subscribe</a></li>
+
+
+    </ul>
+</div>
+
+<!--JavaScript at end of body for optimized loading-->
+<script type="text/javascript" src={% static 'materialize/js/materialize.min.js' %}></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems, {edge: 'right'});
+    });
+
+</script>
+</body>
+</html>
