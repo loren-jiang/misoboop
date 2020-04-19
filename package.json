@@ -1,0 +1,23 @@
+{
+  "name": "misoboop",
+  "version": "1.0.0",
+  "description": "Cooking blog named MisoBoop",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Loren Jiang",
+  "license": "ISC",
+  "dependencies": {
+    "query-string": "^6.12.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.7.6",
+    "browser-sync": "^2.26.7",
+    "browsersync": "0.0.1-security",
+    "gulp": "^4.0.2",
+    "gulp-cache": "^1.1.3",
+    "gulp-cli": "^2.2.0",
+    "postcss-cli": "^7.1.0"
+  }
+}

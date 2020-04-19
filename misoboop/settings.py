@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -25,14 +24,16 @@ SECRET_KEY = '2=m))b8d9rc96n!oxp25pw1)-g42b5j1a^efpn%n+a6bvua0q6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+]
 
 INTERNAL_IPS = [
     # ...
     '127.0.0.1',
     # ...
 ]
-
 
 # Application definition
 
@@ -43,15 +44,29 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django_extensions',
+    'tinymce',
+    'sorl.thumbnail',
+    'newsletter',
+    'threadedcomments',
+    'django_comments',
+    'django_filters',
+    'star_ratings',
     'debug_toolbar',
+    'rest_framework',
+    'django_json_ld',
     'adminsortable',
+    'compressor',
     'django_bootstrap_breadcrumbs',
     'taggit',
+    'taggit_serializer',
     'recipe'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,7 +97,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'misoboop.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -124,7 +138,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -138,18 +151,59 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'recipe/static'),
-)
+]
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',  # for sass
+]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+
+COMPRESS_CSS_FILTERS = [
+    'django_compressor_autoprefixer.AutoprefixerFilter',
+    'compressor.filters.cssmin.CSSMinFilter',
+]
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
+
+COMPRESS_ENABLED = True
+
 # case-insensitive when looking up tags
 TAGGIT_CASE_INSENSITIVE = True
+
+BREADCRUMBS_TEMPLATE = "recipe/breadcrumbs.html"
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    # ]
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+
+DEBUG_TOOLBAR_CONFIG = {
+    # 'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
+    # '...
+}
+
+SITE_ID = 1
+
+STAR_RATINGS_STAR_SPRITE = "/dumpling_sprite_sm.png"
+STAR_RATINGS_ANONYMOUS = True
+
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

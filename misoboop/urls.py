@@ -14,22 +14,38 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
-from recipe import views
+from recipe import views as recipe_views
+from recipe import views_api as recipe_views_api
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+# 'recipe-api' is base name to avoid namespace conflicts with 'recipe.urls'
+router.register(r'recipes', recipe_views_api.RecipeViewSet, 'recipe-api')
+router.register(r'ingredients', recipe_views_api.IngredientViewSet, 'ingredient-api')
+router.register(r'tags', recipe_views_api.TagViewset, 'tag-api')
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', recipe_views.home, name='home'),
     path('admin/', admin.site.urls),
+    path('ratings/', include('star_ratings.urls', namespace='ratings')),
+    path('tinymce/', include('tinymce.urls')),
+    path('newsletter/', include('newsletter.urls')),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/', include(router.urls)),
+    path('recipes/', include('recipe.urls')),
+    path(r'ingredients_list', recipe_views_api.IngredientList.as_view()),
+    path(r'recipes_list', recipe_views_api.RecipeList.as_view())
 ]
-
 
 if settings.DEBUG:
     import debug_toolbar
+
     urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
+                      path('__debug__/', include(debug_toolbar.urls)),
 
-        # For django versions before 2.0:
-        # url(r'^__debug__/', include(debug_toolbar.urls)),
+                      # For django versions before 2.0:
+                      # url(r'^__debug__/', include(debug_toolbar.urls)),
 
-    ] + urlpatterns
+                  ] + urlpatterns

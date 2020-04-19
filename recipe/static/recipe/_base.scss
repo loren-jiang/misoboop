@@ -1,0 +1,170 @@
+@import "_base_variables";
+
+/* materialize override styles */
+body {
+  font-family: $main-font-family;
+}
+
+input {
+  font-family: $main-font-family;
+}
+
+
+h1, h2, h3, h4 h5 {
+  font-family: $header-font-family;
+
+}
+
+/* icon styles */
+
+i.fa {
+  font-size: 2rem;
+}
+
+/* navbar styles */
+
+
+
+.nav-search {
+  visibility: hidden;
+  transition: 0.3s ease-in;
+  transition-property: visibility;
+}
+
+.nav-search-prefix {
+  position: absolute;
+  padding-left: 1rem;
+}
+//nav.nav-center ul {
+//  text-align: center;
+//  ul li {
+//    display: inline;
+//    float: none;
+//    a {
+//      display: inline-block;
+//    }
+//  }
+//}
+
+@mixin center-aligned-nav-grid($num-cols) {
+  display: grid;
+  grid-template-columns: 1fr repeat($num-cols, auto) 1fr;
+  justify-items: center;
+}
+
+nav div.nav-wrapper {
+  @include center-aligned-nav-grid(1);
+
+  .nav-search {
+    grid-column-start: 1;
+    margin-right: auto;
+    //width: 80%;
+    line-height: 100%;
+  }
+
+  @media #{$medium-and-down} {
+    // styles for medium screens and down
+    .nav-search {
+      grid-column: 1 / 4;
+    }
+  }
+
+  .nav-navs {
+    grid-column-start: 2;
+  }
+
+  .nav-sidenav-trigger {
+    grid-column-start: -1;
+  }
+}
+
+.nav-navs li a {
+  font-size: 1.25rem;
+}
+
+.sidenav li:first-of-type {
+  padding-top: 2rem;
+}
+
+a.sidenav-trigger i.material-icons {
+  font-size: 3rem;
+}
+
+.sidenav li div.search-wrapper {
+  color: #777;
+  margin-top: -1px;
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
+  -webkit-transition: margin .25s ease;
+  transition: margin .25s ease;
+}
+
+.sidenav li div.search-wrapper input#search {
+  color: #777;
+  display: block;
+  font-size: 16px;
+  font-weight: 300;
+  width: 100%;
+  height: 62px;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 45px 0 30px;
+  border: 0;
+}
+
+.sidenav li div.search-wrapper i.material-icons {
+  position: absolute;
+  top: 21px;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* site banner styles */
+
+.site-banner {
+  display: flex;
+  justify-content: center;
+  font-family: $header-font-family;
+
+  .slogan-name {
+    margin: 2rem 0 -1.5rem 0;
+  }
+
+  .logo {
+    width: 150px;
+  }
+}
+
+
+/* card carousel styles */
+
+.recipe-carousel {
+  margin-left: -.75rem;
+  margin-right: -.75rem;
+  margin-bottom: 20px;
+}
+
+
+.recipe-slide {
+  float: left;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 .75rem;
+  min-height: 1px;
+}
+
+.slick-next:before, .slick-prev:before {
+  color: black !important;
+}
+
+/* breadcrumbs styles */
+
+.recipe-breadcrumbs li {
+    display: inline;
+}
+
+/* image styles */
+img.responsive {
+  width: 100%;
+  height: auto;
+}

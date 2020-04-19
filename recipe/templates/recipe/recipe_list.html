@@ -1,0 +1,43 @@
+{% extends 'recipe/base.html' %}
+{% load django_bootstrap_breadcrumbs %}
+{%  load static %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Recipes" "recipe-list" %}
+{% endblock %}
+
+{% block content %}
+    {% render_breadcrumbs %}
+    <form method="get" id="recipe_filter_form" action="">
+        <div class="row">
+            <div class="input-field col s6">
+                <input name="name_icontains" placeholder="name" id="first_name" type="text" class="validate">
+                <label for="first_name">Name contains</label>
+            </div>
+            <div class="input-field col s6">
+                <div id="ingredient_chips" class="chips chips-autocomplete">
+                    <input id="ingredients_input">
+                </div>
+            </div>
+        </div>
+
+        <button class="waves-effect waves-light btn" type="submit"> Search</button>
+    </form>
+    <div class="row">
+        <div class="col s12">
+
+            <h2>Recipes</h2>
+            <ul>
+                {% for recipe in object_list %}
+                    <li><a href={{ recipe.get_absolute_url }}> {{ recipe.name }} </a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src={% static 'recipe/recipe_filter.js' %}></script>
+{% endblock scripts %}

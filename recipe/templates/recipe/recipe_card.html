@@ -1,0 +1,27 @@
+
+<div class="card recipe-card">
+    <div class="card-image">
+        <img src={{ recipe.sm_image_url }}>
+        <span class="card-title"> <a href={{ recipe.get_absolute_url }}> {{ recipe.name }}</a></span>
+        <button class="btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">
+            <i class="material-icons">share</i>
+        </button>
+        <a style="right: 70px; position: absolute; bottom: -20px" class="hide btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">
+            <i class="fas fa-facebook-messenger" aria-hidden="true"></i>
+        </a>
+        <a style="right: 116px; position: absolute; bottom: -20px" class="hide btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">
+            <i class="fas fa-facebook-messenger" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="card-content">
+        <span> <b> Time:</b> {{ recipe.total_time }} min</span>
+        |
+        <span> <b> Servings:</b> {{ recipe.servings }}</span>
+        <p>
+            {%  for tag in recipe.tags.all  %}
+                {{ tag.name }}
+            {%  endfor %}
+        </p>
+    </div>
+</div>
+

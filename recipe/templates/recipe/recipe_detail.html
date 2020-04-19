@@ -1,0 +1,161 @@
+{% extends 'recipe/base.html' %}
+{% load django_bootstrap_breadcrumbs %}
+{% load render_json_ld from json_ld %}
+{% load ratings %}
+
+{% block jsonld %}
+    {% render_json_ld sd %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Recipes" "recipe-list" %}
+    {% breadcrumb recipe.name "recipe-detail" recipe.slug %}
+{% endblock %}
+
+{% block content %}
+    {% render_breadcrumbs %}
+
+    <div class="row">
+        <div class="col s12 m6">
+            <h3>
+                {{ recipe.name }}
+            </h3>
+
+            {% ratings object %}
+
+            <div>
+                <a href="#"><i class="material-icons" aria-hidden="true">print</i></a>
+                <a href="#"><i class="fa fa-facebook-f" aria-hidden="true"></i></a>
+                <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                <a id="like_plus_one" href="#">
+                    <i class="material-icons"> thumb_up </i>
+                    <span id="like_count">{{ recipe.likes }}</span>
+                </a>
+
+            </div>
+            <p>
+                {{ recipe.total_time }} min
+            </p>
+            <div class="input-field inline">
+                <input class="validate" id="num_servings" type="number" min="1" max="100"
+                       value="{{ recipe.servings }}" size="10"/>
+                <label for="num_servings"># of servings </label>
+                <span class="helper-text" data-error="Enter number between 1 and 100" data-success=""></span>
+            </div>
+
+
+            <div>
+                <b>Ingredients: </b>
+                <ul class="ingredient-list">
+
+                    {% for ingredient_amount in recipe.ingredient_amounts.all|dictsortreversed:'amount' %}
+                        <li>
+
+
+                            {#                                <span class="ingredient-amount-val">{{ ingredient_amount.amount }}  </span>#}
+                            {% if ingredient_amount.unit %}
+                                <input size="3" type="number" value="{{ ingredient_amount.amount }}" disabled
+                                       class="ingredient-amount browser-default"/>
+                                {{ ingredient_amount.unit }}
+                                of
+                            {% endif %}
+                            {{ ingredient_amount.ingredient }}
+
+
+                        </li>
+
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="col s12 m6">
+            <img class="responsive" src={{ recipe.med_image_url }}/>
+        </div>
+        <div class="col s12 recipe-description">
+            {{ recipe.description|safe }}
+        </div>
+        <div class="col s12">
+            <hr>
+
+        </div>
+
+        <div class="row">
+            <div class="col m10 sm12">
+                {% for direction in recipe.directions.all %}
+
+                    <div>
+                        <h3 id="direction-{{ direction.id }}" class="scrollspy">
+                            {{ direction.name }}
+                        </h3>
+
+                        <div class="direction-markdown">
+                            {{ direction.text|safe }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col m2 sticky-toc hide-on-small-only">
+                <ul class="section table-of-contents">
+                    {% for direction in recipe.directions.all %}
+                        <li><a href="#direction-{{ direction.id }}">{{ direction.name }}</a></li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            const $servings = $('#num_servings');
+            const origServings = {{ recipe.servings }};
+            {#$servings.val(origServings);#}
+            const $ingredientAmt = $('.ingredient-list li .ingredient-amount');
+            const ingredientDefaultValues = ($ingredientAmt.toArray().map(el => el.defaultValue));
+            const $ingredientAmtSpan = $('.ingredient-amount-val');
+            $servings.on('change', function () {
+                if (parseFloat($servings.val()) < parseFloat($servings.prop("min"))) {
+                    $servings.val($servings.prop("min"));
+                }
+                if (parseFloat($servings.val()) > parseFloat($servings.prop("max"))) {
+                    $servings.val($servings.prop("max"));
+                }
+                $ingredientAmt.each(
+                    (idx, el) => {
+                        $(el).val(ingredientDefaultValues[idx] * $servings.val() / origServings)
+                        {#$($ingredientAmtSpan[idx]).html(ingredientDefaultValues[idx] * $servings.val() / origServings)#}
+                    }
+                )
+            })
+        });
+        $(document).ready(function () {
+            $('#like_plus_one').on('click', function () {
+                $(this).addClass("liked")
+                $.ajax({
+                    url: 'like',
+                    data: {
+                        'id': {{ recipe.id }}
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data) {
+                            $('#like_count').html(data.numLikes)
+                            {#alert("A user with this username already exists.");#}
+                        }
+                    }
+                });
+            });
+        })
+
+    </script>
+{% endblock %}
+
+

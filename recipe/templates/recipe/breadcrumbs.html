@@ -1,0 +1,19 @@
+<div class="row recipe-breadcrumbs">
+    <div class="col">
+        {% for url, label in breadcrumbs %}
+            <li>
+                {% ifnotequal forloop.counter breadcrumbs_total %}
+                    <a href="{{ url }}">{{ label|safe }}</a>
+                {% else %}
+                    {{ label|safe }}
+                {% endifnotequal %}
+                {% if not forloop.last %}
+                    <span class="">/</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </div>
+
+
+</div>
+

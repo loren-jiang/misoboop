@@ -6,6 +6,8 @@ from django.urls import resolve
 from adminsortable.admin import NonSortableParentAdmin, SortableTabularInline, SortableStackedInline
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
+from .forms import DirectionForm
+from tinymce.widgets import TinyMCE
 
 # Register your models here.
 
@@ -59,6 +61,9 @@ class DirectionInline(SortableTabularInline):
             kwargs["queryset"] = IngredientAmount.objects.filter(recipe=self.get_parent_object_from_request(request))
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('recipe').prefetch_related('ingredient_amounts')
+
 class IngredientAmountInline(admin.TabularInline):
     model = IngredientAmount
 
@@ -68,7 +73,7 @@ class IngredientAmountInline(admin.TabularInline):
     extra = 3
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related('ingredient','recipe', 'unit')
+        return super().get_queryset(request).select_related('ingredient', 'recipe', 'unit')
 
 class IngredientAdmin(admin.ModelAdmin):
     model = Ingredient
@@ -92,19 +97,6 @@ class InputFilter(admin.SimpleListFilter):
         yield all_choice
 
 
-# class UIDFilter(InputFilter):
-#     parameter_name = 'uid'
-#     title = _('UID')
-#
-#     def queryset(self, request, queryset):
-#         if self.value() is not None:
-#             uid = self.value()
-#             return queryset.filter(
-#                 Q(uid=uid) |
-#                 Q(payment__uid=uid) |
-#                 Q(user__uid=uid)
-#             )
-
 class RecipeNameFilter(InputFilter):
     parameter_name = 'name'
     title = _('Name')
@@ -112,16 +104,6 @@ class RecipeNameFilter(InputFilter):
     def queryset(self, request, queryset):
         if self.value():
             input_text = self.value()
-
-            # any_name = Q()
-            # for bit in input_text.split(' '):
-            #
-            #     any_name = any_name | (
-            #             Q(name__icontains=bit) |
-            #             Q(name__icontains=bit)
-            #     )
-            # return queryset.filter(any_name)
-
             return queryset.filter(Q(name__icontains=input_text))
 
 class RecipeTagsFilter(InputFilter):
@@ -139,20 +121,28 @@ class RecipeAdmin(NonSortableParentAdmin):
         DirectionInline,
     )
     list_filter = (RecipeNameFilter, RecipeTagsFilter)
-    list_display = ('name','recipe_tags',)
-
-    def get_queryset(self, request):
-        ## TODO: is this actually optimizing anything?
-        return super().get_queryset(request).prefetch_related('tags')
+    list_display = ('name', 'recipe_tags',)
+    #
+    # def get_queryset(self, request):
+    #     ## TODO: is this actually optimizing anything?
+    #     return super().get_queryset(request).prefetch_related('tags',
+    #                                                           'ingredients__ingredient_amounts',
+    #                                                           'ingredient_amounts__unit',
+    #                                                           'directions__ingredient_amounts'
+    #                                                           )
 
     def recipe_tags(self, obj):
         return ", ".join([tag.name for tag in obj.tags.order_by()])
 
     # search_fields = ['name', 'author__username']
 
+class DirectionAdmin(admin.ModelAdmin):
+    model = Direction
+    form = DirectionForm
+
 
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
-admin.site.register(Direction)
+admin.site.register(Direction, DirectionAdmin)
 admin.site.register(Unit)
 

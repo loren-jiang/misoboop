@@ -1,2 +1,42 @@
 {% extends 'recipe/base.html' %}
 
+
+{% block content %}
+    <div class="row">
+        <div class="col offset-s1 s10 l9 latest-recipes">
+            <h3> Latest recipes </h3>
+
+            <div class="recipe-carousel">
+                {% for recipe in latest_3_recipes %}
+                    <div class="recipe-slide">
+                        {% include "recipe/recipe_card.html" with recipe=recipe %}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+        </div>
+
+        <div class="welcome col offset-s1 s10 l3">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-title">
+                        <h3> Welcome </h3>
+                    </div>
+                    <p>I am a very simple card. I am good at containing small bits of information.
+                        I am convenient because I require little markup to use effectively.</p>
+                </div>
+                <div class="card-action">
+                    <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m6">
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from model_utils import Choices
 from django.utils.translation import ugettext_lazy as _
@@ -8,20 +9,38 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 from django.contrib.auth.models import User, Group
 from taggit.managers import TaggableManager
+from django.utils.text import slugify
+from django.urls import reverse
+from tinymce import HTMLField
 
 # Create your models here.
+
+# todo: add hitCount? https://django-hitcount.readthedocs.io/en/latest/installation.html
 class Recipe(CreatedModified):
     """
-
+    Model representing a recipe, which roughly follows https://jsonld.com/recipe/
     """
-    author = models.ForeignKey(User, on_delete=models.SET_NULL,blank=True, null=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=500, blank=True, null=True, unique=True)
+    description = HTMLField(default='', verbose_name=_('Text'))
     prep_time = models.PositiveSmallIntegerField(blank=True, null=True)
     cook_time = models.PositiveSmallIntegerField(blank=True, null=True)
-    image_url = models.URLField(max_length=300, blank=True, null=True)
+    large_image_url = models.URLField(max_length=300, default="https://via.placeholder.com/1000")
+    med_image_url = models.URLField(max_length=300, default="https://via.placeholder.com/400")
+    sm_image_url = models.URLField(max_length=300, default="https://via.placeholder.com/150")
     ingredients = models.ManyToManyField('Ingredient', through='IngredientAmount', blank=True)
     servings = models.PositiveSmallIntegerField(default=1)
     tags = TaggableManager()
+    is_published = models.BooleanField(default=False)
+    slug = models.SlugField(max_length=100)
+    likes = models.PositiveSmallIntegerField(default=1)
+
+    def get_absolute_url(self):
+        return reverse('recipe-detail', args=[self.slug])
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['name']
@@ -31,13 +50,19 @@ class Recipe(CreatedModified):
     def __str__(self):
         return self.name
 
+    def total_time(self):
+        return self.cook_time + self.prep_time
+
+    def get_tags(self):
+        return self.tags.select_related()  # todo: need to add when the time comes
+
     def get_ingredient_amounts_as_list(self):
         """
         Get ingredient amounts as list for given recipe with optimized select_related
         :return: list of ingredient amounts
         """
         ingredients = self.ingredient_amounts.select_related('ingredient', 'unit')
-        return list(ingredients)
+        return [f'{str(ing.amount)} {str(ing.unit)} {str(ing.ingredient)}' for ing in ingredients]
 
     def get_directions_as_text(self):
         """
@@ -49,28 +74,71 @@ class Recipe(CreatedModified):
             directions_text += f"{str(i + 1)}) {direction.text} \n"
         return directions_text
 
+    def get_directions_as_list(self):
+        directions_list = [''] * self.directions.count()
+        for i, direction in enumerate(self.directions.all()):
+            directions_list[i] = (f"{str(i + 1)}) {direction.text}")
+        return directions_list
+
+    def get_pdf_printout(self):
+        pass
+
+    @property
+    def sd(self):
+        return {
+            "@context": "https://schema.org",
+            "@type": "Recipe",
+            "author": str(self.author),
+            "cookTime": self.cook_time,
+            "datePublished": self.created_at.date(),
+            "description": self.description,
+            "image": "http://www.example.com/images.jpg",
+            "recipeIngredient": self.get_ingredient_amounts_as_list(),
+            "interactionStatistic": {
+                "@type": "InteractionCounter",
+                "interactionType": "http://schema.org/Comment",
+                "userInteractionCount": self.likes
+            },
+            "name": self.name,
+            "nutrition": {
+                # todo: need to implement Nutrition model
+                "@type": "NutritionInformation",
+                "calories": "1200 calories",
+                "carbohydrateContent": "12 carbs",
+                "proteinContent": "9 grams of protein",
+                "fatContent": "9 grams fat"
+            },
+            "prepTime": self.prep_time,
+            "recipeInstructions": self.get_directions_as_list(),
+            "recipeYield": self.servings
+        }
+
 
 class Direction(SortableMixin):
     name = models.CharField(max_length=100, default='')
-    text = models.TextField(blank=True, verbose_name=_('Text'))
+    text = HTMLField(default='', verbose_name=_('Text'))
+    # rich_text = HTMLField(default='')
     recipe = SortableForeignKey('Recipe', related_name='directions', on_delete=models.CASCADE)
     order_with_respect_to = 'recipe'
     ingredient_amounts = models.ManyToManyField('IngredientAmount', blank=True)
     direction_order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
     class Meta:
         verbose_name = _('Direction')
         verbose_name_plural = _('Directions')
-        ordering=['direction_order']
+        ordering = ['direction_order']
+        constraints = [
+            models.UniqueConstraint(fields=['recipe', 'text'], name='no duplicate direction per recipe')
+        ]
 
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=300, blank=True, null=True, unique=True)
     use_count = models.PositiveIntegerField(default=0)
-    tags = TaggableManager()
+    # tags = TaggableManager()
 
     class Meta:
         verbose_name = _('Ingredient')
@@ -79,20 +147,24 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
 
+
 class IngredientAmount(models.Model):
-    amount = models.DecimalField(decimal_places=2, max_digits=12,  validators=[MinValueValidator(Decimal('0.01'))],
+    amount = models.DecimalField(decimal_places=2, max_digits=12, validators=[MinValueValidator(Decimal('0.00'))],
                                  verbose_name=_('Amount'), default=Decimal('1'))
-    unit = models.ForeignKey('Unit', related_name='ingredient_amounts', on_delete=models.SET_NULL, null=True, blank=True)
+    unit = models.ForeignKey('Unit', related_name='ingredient_amounts', on_delete=models.SET_NULL, null=True,
+                             blank=True)
     # quantity = models.PositiveSmallIntegerField(null=True, blank=True, verbose_name=_('quantity'))
-    recipe = models.ForeignKey('Recipe', related_name='ingredient_amounts', on_delete=models.CASCADE, null=True, blank=True)
-    ingredient = models.ForeignKey('Ingredient', related_name='ingredient_amounts', on_delete=models.SET_NULL, null=True, blank=True)
+    recipe = models.ForeignKey('Recipe', related_name='ingredient_amounts', on_delete=models.CASCADE, null=True,
+                               blank=True)
+    ingredient = models.ForeignKey('Ingredient', related_name='ingredient_amounts', on_delete=models.SET_NULL,
+                                   null=True, blank=True)
 
     def __str__(self):
-        return ' | '.join(list(map(lambda s: str(s), [self.ingredient, self.amount, self.unit] )))
+        return ' | '.join(list(map(lambda s: str(s), [self.ingredient, self.amount, self.unit])))
 
     class Meta:
         constraints = [
-            models.CheckConstraint(check=models.Q(amount__gt=Decimal('0')), name='amount_gt_0'),
+            models.CheckConstraint(check=models.Q(amount__gte=Decimal('0')), name='amount_gte_0'),
             models.UniqueConstraint(fields=('recipe', 'ingredient'), name='no_duplicate_ingredients_in_recipe')
         ]
 

@@ -1,0 +1,25 @@
+input.ingredient-amount {
+  border: none;
+  display: inline;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  width: auto;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  background: none;
+  color: inherit;
+  text-align: center;
+}
+
+.direction-markdown ul {
+  list-style-type: decimal;
+  li {
+    list-style: square;
+    margin-left: 30px;
+  }
+}
+
+#like_plus_one.liked {
+  color: green;
+}
