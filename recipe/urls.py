@@ -1,6 +1,5 @@
 from django.urls import path, re_path
-
-from .views import RecipeDetailView, RecipeListView, like_recipe
+from .views import RecipeDetailView, RecipeListView, like_recipe, ajax_recipes
 
 urlpatterns = [
     path('<slug:slug>/', RecipeDetailView.as_view(), name='recipe-detail'),

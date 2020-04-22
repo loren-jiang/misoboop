@@ -61,7 +61,9 @@ INSTALLED_APPS = [
     'django_bootstrap_breadcrumbs',
     'taggit',
     'taggit_serializer',
-    'recipe'
+    'recipe',
+    'core',
+    'blog'
 ]
 
 MIDDLEWARE = [
@@ -179,7 +181,7 @@ COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
 )
 
-COMPRESS_ENABLED = True
+# COMPRESS_ENABLED = True
 
 # case-insensitive when looking up tags
 TAGGIT_CASE_INSENSITIVE = True
@@ -207,3 +209,5 @@ STAR_RATINGS_ANONYMOUS = True
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

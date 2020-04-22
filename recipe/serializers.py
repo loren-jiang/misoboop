@@ -14,6 +14,8 @@ class RecipeSerializer(TaggitSerializer, serializers.ModelSerializer):
     slugged_url = serializers.URLField(source='get_absolute_url')
     tags = TagListSerializerField()
     ingredients = serializers.StringRelatedField(many=True, read_only=True)
+    total_time = serializers.IntegerField(read_only=True)
+    avg_ratings = serializers.FloatField(read_only=True)
 
     class Meta:
         model = Recipe

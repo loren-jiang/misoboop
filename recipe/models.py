@@ -8,12 +8,16 @@ from adminsortable.fields import SortableForeignKey
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 from django.contrib.auth.models import User, Group
-from taggit.managers import TaggableManager
 from django.utils.text import slugify
 from django.urls import reverse
 from tinymce import HTMLField
+from taggit.managers import TaggableManager
+from django.contrib.contenttypes.fields import GenericRelation
+from star_ratings.models import Rating
+from core.models import BasicTag, TaggedWhatever
 
 # Create your models here.
+
 
 # todo: add hitCount? https://django-hitcount.readthedocs.io/en/latest/installation.html
 class Recipe(CreatedModified):
@@ -30,10 +34,11 @@ class Recipe(CreatedModified):
     sm_image_url = models.URLField(max_length=300, default="https://via.placeholder.com/150")
     ingredients = models.ManyToManyField('Ingredient', through='IngredientAmount', blank=True)
     servings = models.PositiveSmallIntegerField(default=1)
-    tags = TaggableManager()
+    tags = TaggableManager(through=TaggedWhatever)
     is_published = models.BooleanField(default=False)
     slug = models.SlugField(max_length=100)
     likes = models.PositiveSmallIntegerField(default=1)
+    ratings = GenericRelation(Rating, related_query_name='recipes')
 
     def get_absolute_url(self):
         return reverse('recipe-detail', args=[self.slug])
@@ -185,3 +190,5 @@ class Unit(models.Model):
         verbose_name = _('Unit')
         verbose_name_plural = _('Units')
         ordering = ["name"]
+
+

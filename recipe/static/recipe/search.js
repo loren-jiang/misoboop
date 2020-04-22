@@ -43,37 +43,41 @@ document.addEventListener('DOMContentLoaded', function () {
     //     });
 
     //Autocomplete with ajax xhr
-    $(function () {
-        $.ajax({
-            type: 'GET',
-            url: '/api/recipes/',
-            success: function (response) {
-                const ns1 = $('#ns1');
-                ns1.prop('disabled', false);
-                $('.nav-search').css("visibility", 'visible');
-                let obj = {}
-                let hrefs = {}
+    $.ajax({
+        type: 'GET',
+        url: '/api/recipes/',
+        success: function (response) {
+            const ns1 = $('#ns1');
+            ns1.prop('disabled', false);
+            $('.nav-search').css("visibility", 'visible');
+            let obj = {}
+            let hrefs = {}
 
-                for (let i = 0; i < response.length; i++) {
-                    obj[response[i].name] = null;
-                    hrefs[response[i].name] = response[i].slugged_url
-                }
-
-                const goToRecipeLink = (value) => {
-                    if (value in hrefs) {
-                        window.location = hrefs[value];
-                    }
-
-                }
-
-                ns1.autocomplete({
-                    limit: 5,
-                    minLength: 1,
-                    sortFunction: false,
-                    data: obj,
-                    onAutocomplete: goToRecipeLink
-                });
+            for (let i = 0; i < response.length; i++) {
+                obj[response[i].name] = null;
+                hrefs[response[i].name] = response[i].slugged_url
             }
-        });
+
+            const goToRecipeLink = (value) => {
+                if (value in hrefs) {
+                    window.location = hrefs[value];
+                }
+
+            }
+
+            ns1.autocomplete({
+                limit: 5,
+                minLength: 1,
+                sortFunction: false,
+                data: obj,
+                onAutocomplete: goToRecipeLink
+            });
+        }
     });
+
+    // redirect form search to /search/recipes/?
+    $('#nav_recipe_search').on('submit', function(e) {
+        // e.preventDefault();
+
+    })
 });

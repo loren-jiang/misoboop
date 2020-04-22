@@ -21,7 +21,7 @@
                         <div class="collapsible-body">
                             <div class="row">
                                 <div class="input-field col s4">
-                                    <input name="name__icontains" placeholder="name" id="first_name" type="text"
+                                    <input name="name__icontains" placeholder="name" id="recipe_name_input" type="text"
                                            class="validate">
                                     <label>Name contains</label>
                                 </div>
@@ -29,7 +29,6 @@
                                 {% if filter_tags|length %}
                                     <div class="input-field col s4">
                                         <select multiple id="tags_input" name="tags">
-                                            {#                        <option value="" disabled selected>Choose</option>#}
                                             {% for tag in filter_tags %}
                                                 <option value={{ tag.name }}> {{ tag.name }}</option>
                                             {% endfor %}
@@ -57,57 +56,60 @@
                 </ul>
             </div>
             <div class="input-field col s2">
-                <select name="ordering" id="ordering">
-                    <option value="-ratings__average" selected> avg review</option>
+                <select id="ordering">
+                    <option value="-avg_ratings" selected> rating </option>
                     <option value="-total_time"> total time</option>
-                    <option value="-modified_at">newest</option>
+                    <option value="-created_at">newest</option>
                 </select>
                 <label>Sort by:</label>
             </div>
         </div>
+{#        <input id="recipe_filter_page" name="page" type="hidden" value="1">#}
     </form>
 
     <div class="row">
         <div class="col s12">
-            {#            <ul>#}
-            {#                {% for recipe in object_list %}#}
-            {#                    <li><a href={{ recipe.get_absolute_url }}> {{ recipe.name }} </a></li>#}
-            {#                {% endfor %}#}
-            {#            </ul>#}
             <div class="row">
-                {% if page_obj|length %}
-                    {% for recipe in page_obj %}
-                        <div class="col l3 m4 s10">
-                            {% include "recipe/recipe_card.html" with recipe=recipe %}
+                <div class="col s10">
+                    <div class="preloader-wrapper big active hide" id="recipes_loader">
+                        <div class="spinner-layer spinner-blue-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
                         </div>
-                    {% endfor %}
-                {% else %}
-                    <p> no matching recipes found... </p>
-                {% endif %}
+                    </div>
+                    <ul id="filtered_recipes"></ul>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?{% url_replace request 'page' 1 %}"> &laquo; first</a>
-                <a href="?{% url_replace request 'page' page_obj.previous_page_number %}"> previous </a>
-            {% endif %}
-
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-
-            {% if page_obj.has_next %}
-                <a href="?{% url_replace request 'page' page_obj.next_page_number %}"> next </a>
-                <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
+    <ul class="pagination">
+        {#        <span class="step-links">#}
+        {#            {% if page_obj.has_previous %}#}
+        {#                <a href="?{% url_replace request 'page' 1 %}"> &laquo; first</a>#}
+        {#                <a href="?{% url_replace request 'page' page_obj.previous_page_number %}"> previous </a>#}
+        {#            {% endif %}#}
+        {##}
+        {#            <span class="current">#}
+        {#                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+        {#            </span>#}
+        {##}
+        {#            {% if page_obj.has_next %}#}
+        {#                <a href="?{% url_replace request 'page' page_obj.next_page_number %}"> next </a>#}
+        {#                <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">last &raquo;</a>#}
+        {#            {% endif %}#}
+        {#        </span>#}
+    </ul>
 
 {% endblock content %}
 
 {% block scripts %}
-    <script src={% static 'recipe/recipe_filter.js' %}></script>
+    <script src={% static 'recipe/recipe_filter_ajax.js' %}></script>
 {% endblock scripts %}

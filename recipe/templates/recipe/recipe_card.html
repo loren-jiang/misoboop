@@ -2,7 +2,7 @@
 <div class="card recipe-card">
     <div class="card-image">
         <img src={{ recipe.sm_image_url }}>
-        <span class="card-title"> <a href={{ recipe.get_absolute_url }}> {{ recipe.name }}</a></span>
+        <span class="recipe-card-title card-title"> <a href={{ recipe.get_absolute_url }}> {{ recipe.name }}</a></span>
         <button class="btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">
             <i class="material-icons">share</i>
         </button>

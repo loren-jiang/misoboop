@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Posts" "post-list" %}
+    {% breadcrumb post.name "post-detail" post.slug %}
+{% endblock %}
+
+
+{% block content %}
+    {% render_breadcrumbs %}
+
+    {{ post.text|safe }}
+{% endblock %}

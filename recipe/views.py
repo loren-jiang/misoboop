@@ -1,18 +1,21 @@
 from django.shortcuts import render
+from core.models import BasicTag
+from blog.models import Post
 from recipe.models import Recipe
-from django.views.generic import ListView
-from django.views.generic.detail import DetailView
+from django.views.generic import ListView, DetailView
 from django.utils import timezone
 from django_json_ld.views import JsonLdDetailView
 from django.db.models import F, Q
 from django.http import JsonResponse
+from .filters import filter_recipe_qs
 import json
 
 # Create your views here.
 
 def home(request):
     data = {
-        'latest_3_recipes': Recipe.objects.order_by('-modified_at').select_related()[0:3],
+        'latest_recipes': Recipe.objects.prefetch_related('tags',).order_by('-created_at').select_related()[0:6],
+        'latest_posts': Post.objects.prefetch_related('tags').order_by('-created_at').select_related()[0:6]
     }
     return render(request, 'recipe/home.html', data)
 
@@ -37,20 +40,23 @@ class RecipeDetailView(JsonLdDetailView):
 
 class RecipeListView(ListView):
     model = Recipe
+    paginate_by = 20
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data()
+        context['filter_tags'] = BasicTag.objects.filter(filterable=True)
+
+        return context
 
     def get_queryset(self):
-        kwargs = self.kwargs
-        ingredients = self.request.GET.getlist('ingredient', [])
-        name_icontains = self.request.GET.get('name_icontains')
-        tags = self.request.GET.getlist('tag', [])
-        qs = super().get_queryset()
+        qs = super().get_queryset().prefetch_related('ratings', 'tags').annotate(total_time=F('cook_time')+F('prep_time'))
+        return filter_recipe_qs(self.request, qs)
 
-        if name_icontains != '' and name_icontains is not None:
-            qs = qs.filter(Q(name__icontains=name_icontains))
-        if ingredients:
-            qs = qs.filter(Q(ingredients__name__in=ingredients))
-        if tags:
-            qs = qs.filter(Q(tags__name__in=tags))
-        return qs
+
+def ajax_recipes(request):
+    context = {
+        'filter_tags': BasicTag.objects.filter(filterable=True)
+    }
+    return render(request, 'recipe/recipe_list_ajax.html', context)
 
 

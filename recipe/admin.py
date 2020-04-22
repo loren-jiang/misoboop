@@ -122,6 +122,7 @@ class RecipeAdmin(NonSortableParentAdmin):
     )
     list_filter = (RecipeNameFilter, RecipeTagsFilter)
     list_display = ('name', 'recipe_tags',)
+
     #
     # def get_queryset(self, request):
     #     ## TODO: is this actually optimizing anything?
@@ -141,8 +142,8 @@ class DirectionAdmin(admin.ModelAdmin):
     form = DirectionForm
 
 
+
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Direction, DirectionAdmin)
 admin.site.register(Unit)
-
