@@ -29,6 +29,7 @@ router.register(r'tags', recipe_views_api.TagViewset, 'tag-api')
 
 urlpatterns = [
     path('', recipe_views.home, name='home'),
+    path('about/', recipe_views.about, name='about'),
     path('admin/', admin.site.urls),
     path('ratings/', include('star_ratings.urls', namespace='ratings')),
     path('tinymce/', include('tinymce.urls')),
@@ -37,9 +38,8 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('recipes/', include('recipe.urls')),
     path('blogs/', include('blog.urls')),
-
-    path('ingredients_list', recipe_views_api.IngredientList.as_view()),
-    path('recipes_list', recipe_views_api.RecipeList.as_view()),
+    path('api/ingredients_list/', recipe_views_api.IngredientList.as_view()),
+    path('api/recipes_list/', recipe_views_api.RecipeList.as_view()),
     path('search/recipes/', ajax_recipes, name='ajax-recipe-list')
 
 ]

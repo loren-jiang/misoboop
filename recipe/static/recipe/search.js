@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //Autocomplete with ajax xhr
     $.ajax({
         type: 'GET',
-        url: '/api/recipes/',
+        url: '/api/recipes_list/',
         success: function (response) {
             const ns1 = $('#ns1');
             ns1.prop('disabled', false);

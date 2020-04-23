@@ -161,6 +161,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'recipe/static'),
+    os.path.join(BASE_DIR, 'blog/static'),
+
 ]
 
 STATICFILES_FINDERS = [
@@ -179,6 +181,7 @@ COMPRESS_CSS_FILTERS = [
 
 COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
+    ('text/browserify', 'browserify -e {infile} -o {outfile}'),
 )
 
 # COMPRESS_ENABLED = True
@@ -186,7 +189,7 @@ COMPRESS_PRECOMPILERS = (
 # case-insensitive when looking up tags
 TAGGIT_CASE_INSENSITIVE = True
 
-BREADCRUMBS_TEMPLATE = "recipe/breadcrumbs.html"
+BREADCRUMBS_TEMPLATE = "breadcrumbs.html"
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

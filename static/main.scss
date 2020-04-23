@@ -1,0 +1,6 @@
+/*
+Collects other sass files and compiles to one to rule them all (project level)
+'base.html' then serves it by itself using libsass and django-compressor
+ */
+
+@import "recipe/recipe.scss";

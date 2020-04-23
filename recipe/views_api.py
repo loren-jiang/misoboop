@@ -10,23 +10,46 @@ from taggit_serializer.serializers import TaggitSerializer
 from .filters import RecipeFilterSet, NullsAlwaysLastOrderingFilter
 from django.db.models import F
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.pagination import PageNumberPagination
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+import math
 
-class CustomPagination(PageNumberPagination):
+
+class CustomPageNumberPagination(PageNumberPagination):
     page_size = 20
     page_size_query_param = 'page_size'
     max_page_size = 20
 
     def get_paginated_response(self, data):
+        num_pages = math.ceil(self.page.paginator.count / self.page_size)
         return Response({
             'links': {
-               'next': self.get_next_link(),
-               'previous': self.get_previous_link()
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
             },
             'count': self.page.paginator.count,
-            'results': data,
             'page_size': self.page_size,
+            'num_pages': num_pages,
             'current_page': self.page.number,
+            'results': data,
+        })
+
+
+class CustomLimitOffsetPagination(LimitOffsetPagination):
+    default_limit = 20
+
+    def get_paginated_response(self, data):
+        print(self.__dict__)
+        num_pages = math.ceil(self.count / self.limit)
+        current_page = math.floor(self.offset / self.limit) + 1
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'count': self.count,
+            'num_pages': num_pages,
+            'current_page': current_page,
+            'results': data,
         })
 
 
@@ -42,12 +65,6 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-class SmallResultsSetPagination(PageNumberPagination):
-    page_size = 20
-    page_size_query_param = 'page_size'
-    max_page_size = 100
-
-
 class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows recipes to be viewed or edited if Admin User
@@ -55,7 +72,8 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Recipe.objects.prefetch_related('ingredients', 'tags') \
         .annotate(total_time=F('cook_time') + F('prep_time')) \
         .annotate(avg_ratings=F('ratings__average'))
-    # pagination_class = CustomPagination
+    pagination_class = CustomPageNumberPagination
+    # pagination_class = CustomLimitOffsetPagination
     serializer_class = RecipeSerializer
     filterset_class = RecipeFilterSet
     filter_backends = [DjangoFilterBackend, NullsAlwaysLastOrderingFilter]

@@ -11,69 +11,11 @@
 {% block content %}
     {% render_breadcrumbs %}
     <h2>Recipes</h2>
-    <form method="get" id="recipe_filter_form" action="">
 
-        <div class="row">
-            <div class="col s10">
-                <ul class="collapsible" id="collapsible_filter">
-                    <li>
-                        <div class="collapsible-header"><i class="material-icons">filter_list</i>Filter</div>
-                        <div class="collapsible-body">
-                            <div class="row">
-                                <div class="input-field col s4">
-                                    <input name="name__icontains" placeholder="name" id="first_name" type="text"
-                                           class="validate">
-                                    <label>Name contains</label>
-                                </div>
-
-                                {% if filter_tags|length %}
-                                    <div class="input-field col s4">
-                                        <select multiple id="tags_input" name="tags">
-                                            {#                        <option value="" disabled selected>Choose</option>#}
-                                            {% for tag in filter_tags %}
-                                                <option value={{ tag.name }}> {{ tag.name }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <label>Tags</label>
-                                    </div>
-                                {% endif %}
-
-                                <div class="col s8">
-                                    <label>Ingredients</label>
-                                    <div id="ingredient_chips" class="chips chips-autocomplete"
-                                         style="margin-top: 0"></div>
-                                </div>
-
-
-                            </div>
-
-                            <button class="waves-effect waves-light btn" type="submit"> Search</button>
-                            <button type="reset" id="clear_fields" class="waves-effect waves-red red lighten-3 btn"><i
-                                    class="material-icons right">clear</i>Clear
-                            </button>
-                        </div>
-                    </li>
-
-                </ul>
-            </div>
-            <div class="input-field col s2">
-                <select name="ordering" id="ordering">
-                    <option value="-ratings__average" selected> avg review</option>
-                    <option value="-total_time"> total time</option>
-                    <option value="-modified_at">newest</option>
-                </select>
-                <label>Sort by:</label>
-            </div>
-        </div>
-    </form>
 
     <div class="row">
         <div class="col s12">
-            {#            <ul>#}
-            {#                {% for recipe in object_list %}#}
-            {#                    <li><a href={{ recipe.get_absolute_url }}> {{ recipe.name }} </a></li>#}
-            {#                {% endfor %}#}
-            {#            </ul>#}
+
             <div class="row">
                 {% if page_obj|length %}
                     {% for recipe in page_obj %}

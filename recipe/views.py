@@ -13,11 +13,15 @@ import json
 # Create your views here.
 
 def home(request):
-    data = {
+    context = {
         'latest_recipes': Recipe.objects.prefetch_related('tags',).order_by('-created_at').select_related()[0:6],
         'latest_posts': Post.objects.prefetch_related('tags').order_by('-created_at').select_related()[0:6]
     }
-    return render(request, 'recipe/home.html', data)
+    return render(request, 'home.html', context)
+
+def about(request):
+    context = {}
+    return render(request, 'about.html', context)
 
 def like_recipe(request, *args, **kwargs):
     slug = kwargs.get('slug', None)

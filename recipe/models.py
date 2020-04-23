@@ -34,11 +34,12 @@ class Recipe(CreatedModified):
     sm_image_url = models.URLField(max_length=300, default="https://via.placeholder.com/150")
     ingredients = models.ManyToManyField('Ingredient', through='IngredientAmount', blank=True)
     servings = models.PositiveSmallIntegerField(default=1)
-    tags = TaggableManager(through=TaggedWhatever)
+    tags = TaggableManager(through=TaggedWhatever, blank=True)
     is_published = models.BooleanField(default=False)
     slug = models.SlugField(max_length=100)
     likes = models.PositiveSmallIntegerField(default=1)
     ratings = GenericRelation(Rating, related_query_name='recipes')
+    series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('recipe-detail', args=[self.slug])

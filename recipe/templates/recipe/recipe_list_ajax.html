@@ -5,7 +5,9 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
+    {% breadcrumb "Search" "ajax-recipe-list" %}
     {% breadcrumb "Recipes" "recipe-list" %}
+
 {% endblock %}
 
 {% block content %}
@@ -14,20 +16,28 @@
     <form method="get" id="recipe_filter_form" action="">
 
         <div class="row">
-            <div class="col s10">
+            <div class="col s12 m10 l8">
                 <ul class="collapsible" id="collapsible_filter">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">filter_list</i>Filter</div>
                         <div class="collapsible-body">
                             <div class="row">
-                                <div class="input-field col s4">
+                                <div class="input-field col s5">
                                     <input name="name__icontains" placeholder="name" id="recipe_name_input" type="text"
-                                           class="validate">
+                                           class="validate" autocomplete="off">
                                     <label>Name contains</label>
+                                </div>
+                                <div class="input-field col s7">
+                                    <select id="ordering">
+                                        <option value="-avg_ratings" selected> rating</option>
+                                        <option value="-total_time"> total time</option>
+                                        <option value="-created_at">newest</option>
+                                    </select>
+                                    <label>Sort by:</label>
                                 </div>
 
                                 {% if filter_tags|length %}
-                                    <div class="input-field col s4">
+                                    <div class="input-field col s6">
                                         <select multiple id="tags_input" name="tags">
                                             {% for tag in filter_tags %}
                                                 <option value={{ tag.name }}> {{ tag.name }}</option>
@@ -37,8 +47,8 @@
                                     </div>
                                 {% endif %}
 
-                                <div class="col s8">
-                                    <label>Ingredients</label>
+                                <div class="input-field col s6">
+                                    <label class="chips-label">Ingredients</label>
                                     <div id="ingredient_chips" class="chips chips-autocomplete"
                                          style="margin-top: 0"></div>
                                 </div>
@@ -46,25 +56,20 @@
 
                             </div>
 
-                            <button class="waves-effect waves-light btn" type="submit"> Search</button>
-                            <button type="reset" id="clear_fields" class="waves-effect waves-red red lighten-3 btn"><i
-                                    class="material-icons right">clear</i>Clear
+                            <button class="waves-effect waves-light btn hide" type="submit"> Search</button>
+                            <button type="reset" id="clear_fields" class="waves-effect waves-teal teal lighten-3 btn">
+                                Clear
+                            </button>
+                            <button id="close_filter_form" class="waves-effect waves-red red lighten-1 btn right"><i
+                                    class="material-icons">clear</i>
                             </button>
                         </div>
                     </li>
 
                 </ul>
             </div>
-            <div class="input-field col s2">
-                <select id="ordering">
-                    <option value="-avg_ratings" selected> rating </option>
-                    <option value="-total_time"> total time</option>
-                    <option value="-created_at">newest</option>
-                </select>
-                <label>Sort by:</label>
-            </div>
         </div>
-{#        <input id="recipe_filter_page" name="page" type="hidden" value="1">#}
+        <input id="recipe_filter_page" name="page" type="hidden" value="1">
     </form>
 
     <div class="row">
@@ -89,27 +94,33 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col s12">
+            <ul class="pagination">
+                {#        <span class="step-links">#}
+                {#            {% if page_obj.has_previous %}#}
+                {#                <a href="?{% url_replace request 'page' 1 %}"> &laquo; first</a>#}
+                {#                <a href="?{% url_replace request 'page' page_obj.previous_page_number %}"> previous </a>#}
+                {#            {% endif %}#}
+                {##}
+                {#            <span class="current">#}
+                {#                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+                {#            </span>#}
+                {##}
+                {#            {% if page_obj.has_next %}#}
+                {#                <a href="?{% url_replace request 'page' page_obj.next_page_number %}"> next </a>#}
+                {#                <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">last &raquo;</a>#}
+                {#            {% endif %}#}
+                {#        </span>#}
+            </ul>
+        </div>
+    </div>
 
-    <ul class="pagination">
-        {#        <span class="step-links">#}
-        {#            {% if page_obj.has_previous %}#}
-        {#                <a href="?{% url_replace request 'page' 1 %}"> &laquo; first</a>#}
-        {#                <a href="?{% url_replace request 'page' page_obj.previous_page_number %}"> previous </a>#}
-        {#            {% endif %}#}
-        {##}
-        {#            <span class="current">#}
-        {#                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
-        {#            </span>#}
-        {##}
-        {#            {% if page_obj.has_next %}#}
-        {#                <a href="?{% url_replace request 'page' page_obj.next_page_number %}"> next </a>#}
-        {#                <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">last &raquo;</a>#}
-        {#            {% endif %}#}
-        {#        </span>#}
-    </ul>
+    <div id="demo_paginate">
+
+    </div>
 
 {% endblock content %}
 
 {% block scripts %}
-    <script src={% static 'recipe/recipe_filter_ajax.js' %}></script>
 {% endblock scripts %}

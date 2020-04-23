@@ -1,5 +1,3 @@
-
-
 $(document).ready(function () {
     $('.recipe-carousel').slick({
         dots: true,
@@ -38,11 +36,9 @@ $(document).ready(function () {
 
 });
 
-$(window).on('load', function () {
-
-});
 
 /* functions */
 function showMediaLinks() {
     console.log("todo: showMediaLinks");
 }
+

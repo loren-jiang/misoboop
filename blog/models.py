@@ -15,8 +15,9 @@ class Post(CreatedModified):
     name = models.CharField(max_length=300, unique=True, verbose_name=_('Name'))
     text = HTMLField(default='', verbose_name=_('Text'))
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    tags = TaggableManager(through=TaggedWhatever)
+    tags = TaggableManager(through=TaggedWhatever, blank=True)
     slug = models.SlugField(max_length=100, editable=False)
+    series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
