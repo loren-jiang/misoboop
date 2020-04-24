@@ -5,8 +5,8 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb "Search" "ajax-recipe-list" %}
     {% breadcrumb "Recipes" "recipe-list" %}
+    {% breadcrumb "Search" "search-recipes" %}
 
 {% endblock %}
 
@@ -17,7 +17,7 @@
 
         <div class="row">
             <div class="col s12 m10 l8">
-                <ul class="collapsible" id="collapsible_filter">
+                <ul class="collapsible no-autoinit" id="collapsible_filter">
                     <li>
                         <div class="collapsible-header"><i class="material-icons">filter_list</i>Filter</div>
                         <div class="collapsible-body">
@@ -49,7 +49,7 @@
 
                                 <div class="input-field col s6">
                                     <label class="chips-label">Ingredients</label>
-                                    <div id="ingredient_chips" class="chips chips-autocomplete"
+                                    <div id="ingredient_chips" class="chips chips-autocomplete no-autoinit"
                                          style="margin-top: 0"></div>
                                 </div>
 
@@ -58,7 +58,7 @@
 
                             <button class="waves-effect waves-light btn hide" type="submit"> Search</button>
                             <button type="reset" id="clear_fields" class="waves-effect waves-teal teal lighten-3 btn">
-                                Clear
+                                Reset
                             </button>
                             <button id="close_filter_form" class="waves-effect waves-red red lighten-1 btn right"><i
                                     class="material-icons">clear</i>

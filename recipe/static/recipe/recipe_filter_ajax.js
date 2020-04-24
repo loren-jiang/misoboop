@@ -1,129 +1,160 @@
 var debounce = require('lodash/debounce');
 
+// todo: might need something more robust if more complex parsing needed
+// doesn't support multiple query params as list
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+function cleanQueryParams() {
+    // get the string following the ?
+    var query = window.location.search.substring(1)
+
+// is there anything there ?
+    if (query.length) {
+        // are the new history methods available ?
+        if (window.history != undefined && window.history.pushState != undefined) {
+            // if pushstate exists, add a new state to the history, this changes the url without reloading the page
+
+            window.history.pushState({}, document.title, window.location.pathname);
+        }
+    }
+}
+
+
 $(document).ready(function () {
     let chipsInstances;
     const $recipeFilterForm = $('#recipe_filter_form');
 
-    // initialize materialize css instances
-    const multiSelectElems = document.querySelectorAll('select');
-    const multiSelectInstances = M.FormSelect.init(multiSelectElems, {});
+    // for now, just support passing 'name__icontains' as query param
+    const nameContains = getUrlParameter('name__icontains')
+    if (nameContains) {
+        $('input[name=name__icontains]').val(nameContains);
+        cleanQueryParams();
+    }
 
-    $.ajax({
-        type: 'GET',
-        url: '/api/ingredients/',
-        async: false,
-        success: function (response) {
-            let ingredients = {}
-            for (let i = 0; i < response.length; i++) {
-                if (Object.prototype.toString.call(response[i].name) === "[object String]") {
-                    ingredients[response[i].name] = null;
-                }
-            }
-            chipsInstances = M.Chips.init($('#ingredient_chips'),
-                {
-                    limit: 5,
-                    onChipAdd: function () {
-                        recipeSearch($recipeFilterForm);
-
-                        /* wanted to change placeholder dynamically but doesn't seem possible */
-                        // const instance = M.Chips.getInstance($('#ingredient_chips'));
-                        // instance.options.secondaryPlaceholder = (instance.chipsData.length >= instance.options.limit - 1)
-                        //     ? `limit of ${instance.options.limit}` : '';
-                    },
-                    onChipDelete: function () {
-                        recipeSearch($recipeFilterForm);
-                    },
-                    placeholder: '+ ingredient',
-                    // secondaryPlaceholder:' + ingredient',
-                    autocompleteOptions: {
-                        data: ingredients,
-                        limit: 5,
-                        minLength: 3,
-
+    // only do logic if we're at the right page (aka $recipeFilterForm is in DOM)
+    if ($recipeFilterForm.length) {
+        $.ajax({
+            type: 'GET',
+            url: '/api/ingredients/',
+            async: false,
+            success: function (response) {
+                let ingredients = {}
+                for (let i = 0; i < response.length; i++) {
+                    if (Object.prototype.toString.call(response[i].name) === "[object String]") {
+                        ingredients[response[i].name] = null;
                     }
-                });
-        }
-    });
-    const $filterHeaderIcon = $("#collapsible_filter .collapsible-header .material-icons");
-    const collapsibleInstances = M.Collapsible.init($('#collapsible_filter'), {
-        inDuration: 200,
-        onOpenStart: function () {
-            $filterHeaderIcon.html(`arrow_drop_up`)
-        },
-        onCloseStart: function () {
-            $filterHeaderIcon.html(`filter_list`)
-        }
-    });
+                }
+                chipsInstances = M.Chips.init($('#ingredient_chips'),
+                    {
+                        limit: 5,
+                        onChipAdd: function () {
+                            recipeSearch($recipeFilterForm);
 
-    // retrieve those corresponding instances (will be unique)
-    const chipsInstance = chipsInstances[0]; // const chipsInstance = M.Chips.getInstance($("#ingredient_chips"));
-    const filterCollapseInstance = collapsibleInstances[0];
+                            /* wanted to change placeholder dynamically but doesn't seem possible */
+                            // const instance = M.Chips.getInstance($('#ingredient_chips'));
+                            // instance.options.secondaryPlaceholder = (instance.chipsData.length >= instance.options.limit - 1)
+                            //     ? `limit of ${instance.options.limit}` : '';
+                        },
+                        onChipDelete: function () {
+                            recipeSearch($recipeFilterForm);
+                        },
+                        placeholder: '+ ingredient',
+                        // secondaryPlaceholder:' + ingredient',
+                        autocompleteOptions: {
+                            data: ingredients,
+                            limit: 5,
+                            minLength: 3,
 
-    // retrieve intial list
-    recipeSearch($recipeFilterForm)
+                        }
+                    });
+            }
+        });
+        const $filterHeaderIcon = $("#collapsible_filter .collapsible-header .material-icons");
+        const collapsibleInstances = M.Collapsible.init($('#collapsible_filter'), {
+            inDuration: 200,
+            onOpenStart: function () {
+                $filterHeaderIcon.html(`arrow_drop_up`)
+            },
+            onCloseStart: function () {
+                $filterHeaderIcon.html(`filter_list`)
+            }
+        });
 
-    // event handlers
+        // retrieve those corresponding instances (will be unique)
+        const chipsInstance = chipsInstances[0]; // = M.Chips.getInstance($("#ingredient_chips"));
+        const filterCollapseInstance = collapsibleInstances[0]; // = M.Collapsible.getInstance($('#collapsible_filter'))
 
-    // submit recipe search ajax
-    $recipeFilterForm.submit(function (e) {
-        e.preventDefault();
-        recipeSearch($recipeFilterForm);
-        filterCollapseInstance.close();
-
-    })
-
-    // submit form on ordering change
-    $('#ordering').on('change', function () {
-        recipeSearch($recipeFilterForm);
-    })
-
-    // clear fields and submit recipe search
-    $('#clear_fields').on('click', function (e) {
-        e.preventDefault();
-        resetForm($recipeFilterForm, chipsInstance);
+        // retrieve initial list
         recipeSearch($recipeFilterForm)
-        // filterCollapseInstance.close();
-    })
+        /* Event handlers */
 
-    $('ul.pagination').on('click', '.pagination-link', function (e) {
-        e.preventDefault();
-        $('#recipe_filter_page').val($(this).data("value")); // set page value input to corresponding pagination
-        recipeSearch($recipeFilterForm, true)
-    })
+        // submit recipe search ajax
+        $recipeFilterForm.submit(function (e) {
+            e.preventDefault();
+            recipeSearch($(this));
+            M.Collapsible.getInstance($('#collapsible_filter')).close();
 
-    $recipeFilterForm.find('#recipe_name_input').keyup(debounce(function () {
-        recipeSearch($recipeFilterForm);
-    }, 200));
+        })
 
-    $("#ordering, #tags_input").on('change', function () {
-        recipeSearch($recipeFilterForm);
-    })
+        // submit form on ordering change
+        $('#ordering').on('change', function () {
+            recipeSearch($recipeFilterForm);
+        })
+
+        // clear fields and submit recipe search
+        $('#clear_fields').on('click', function (e) {
+            e.preventDefault();
+            resetForm($recipeFilterForm, chipsInstance);
+            recipeSearch($recipeFilterForm)
+            // M.Collapsible.getInstance($('#collapsible_filter')).close();
+        })
+
+        $('ul.pagination').on('click', '.pagination-link', function (e) {
+            e.preventDefault();
+            $('#recipe_filter_page').val($(this).data("value")); // set page value input to corresponding pagination
+            recipeSearch($recipeFilterForm, true)
+        })
+
+        $recipeFilterForm.find('#recipe_name_input').keyup(debounce(function () {
+            recipeSearch($recipeFilterForm);
+        }, 200));
+
+        $("#ordering, #tags_input").on('change', function () {
+            recipeSearch($recipeFilterForm);
+        })
 
 
-    /* blur not working? */
-    // $('#collapsible_filter').on('blur', function (e) {
-    //     filterCollapseInstance.close();
-    // })
+        /* blur not working? */
+        // $('#collapsible_filter').on('blur', function (e) {
+        //     filterCollapseInstance.close();
+        // })
 
-    // $('#demo_paginate').pagination({
-    //     dataSource: '/api/recipes/',
-    //     locator: 'results',
-    //     totalNumberLocator: function (response) {
-    //         // you can return totalNumber by analyzing response content
-    //         return response.count;
-    //     },
-    //     pageSize: 20,
-    //     ajax: {
-    //         beforeSend: function () {
-    //             dataContainer.html('Loading data from flickr.com ...');
-    //         }
-    //     },
-    //     callback: function (data, pagination) {
-    //         // template method of yourself
-    //         var html = template(data);
-    //         dataContainer.html(html);
-    //     }
-    // })
+        // $('#demo_paginate').pagination({
+        //     dataSource: '/api/recipes/',
+        //     locator: 'results',
+        //     totalNumberLocator: function (response) {
+        //         // you can return totalNumber by analyzing response content
+        //         return response.count;
+        //     },
+        //     pageSize: 20,
+        //     ajax: {
+        //         beforeSend: function () {
+        //             dataContainer.html('Loading data from flickr.com ...');
+        //         }
+        //     },
+        //     callback: function (data, pagination) {
+        //         // template method of yourself
+        //         var html = template(data);
+        //         dataContainer.html(html);
+        //     }
+        // })
+    }
+
 })
 
 function clearIngredientsAndOrdering() {

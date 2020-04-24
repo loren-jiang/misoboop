@@ -25,7 +25,7 @@
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{% block title %} 🥟 MisoBoop  {% endblock %}</title></head>
+    <title>{% block title %}MisoBoop{% endblock %}</title></head>
 {% block jsonld %}  {% endblock %}
 <body>
 
@@ -51,12 +51,12 @@
             <nav class="nav-center" role="navigation">
                 <div class="nav-wrapper">
                     <div class="nav-search">
-                        <form method="GET" action="/recipes/" id="nav_recipe_search">
+                        <form method="GET" action="{% url 'search-recipes' %}" id="nav_recipe_search">
                             <div class="input-field">
                                 <i class="material-icons nav-search-prefix">search</i>
                                 <input disabled id="ns1" type="search" placeholder="search recipe"
                                        autocomplete="off" class="recipe-autocomplete" name="name__icontains" required>
-                                <i class="material-icons">close</i>
+                                <i id="recipe_nav_search_close" class="material-icons">close</i>
                             </div>
                         </form>
 
@@ -66,14 +66,14 @@
                     <ul class="topnav hide-on-med-and-down">
                         <li><a href={% url 'home' %}>Home</a></li>
                         <li>
-                            <a class='dropdown-trigger' href='#' data-target='recipes_nav_dropdown'>
+                            <a class='dropdown-trigger no-autoinit' href='#' data-target='recipes_nav_dropdown'>
                                 Recipes<i class="material-icons right">arrow_drop_down</i>
                             </a>
                         </li>
 
                         <li><a href={% url 'post-list' %}>Blog</a></li>
                         <li><a href={% url 'about' %}>About</a></li>
-                        {#                        <li><a data-target="subscribe_modal" class="modal-trigger">Subscribe</a></li>#}
+                        <li><a data-target="subscribe_modal" class="modal-trigger">Subscribe</a></li>
                     </ul>
 
                     <a href="#" data-target="mobile_sidenav" class="nav-sidenav-trigger sidenav-trigger"><i
@@ -88,17 +88,17 @@
 
     <!-- Recipes nav dropdown -->
     <ul id='recipes_nav_dropdown' class='dropdown-content'>
-        <li><a href="{% url 'recipe-list' %}">Explore</a></li>
+        <li><a href="{% url 'explore-recipes' %}">Explore</a></li>
         <li><a href="#!">By Series</a></li>
         <li class="divider" tabindex="-1"></li>
-        <li><a href="{% url 'ajax-recipe-list' %}">Search</a></li>
+        <li><a href="{% url 'search-recipes' %}">Search</a></li>
     </ul>
 
-    <ul class="sidenav" id="mobile_sidenav">
+    <ul class="sidenav no-autoinit" id="mobile_sidenav">
         <li><a href={% url 'home' %}>Home</a></li>
         {#        <li><a href={% url 'recipe-list' %}>Recipes</a></li>#}
         <li>
-            <ul class="collapsible collapsible-accordion">
+            <ul class="collapsible collapsible-accordion no-autoinit">
                 <li>
                     <a class="collapsible-header">
                         Recipes<i class="material-icons right">arrow_drop_down</i>
@@ -108,7 +108,7 @@
                             <li><a href="{% url 'recipe-list' %}">Explore</a></li>
                             <li><a href="#!">By Series</a></li>
                             <li class="divider" tabindex="-1"></li>
-                            <li><a href="{% url 'ajax-recipe-list' %}">Search</a></li>
+                            <li><a href="{% url 'search-recipes' %}">Search</a></li>
                         </ul>
                     </div>
                 </li>
@@ -133,7 +133,7 @@
 
 
 <!-- Subscribe modal form -->
-<div id="subscribe_modal" class="modal">
+<div id="subscribe_modal" class="modal no-autoinit">
     <div class="modal-content">
         <h4>Modal Header</h4>
         <form enctype="multipart/form-data" method="post" action="/newsletter/recipe-of-the-week/subscribe/">
@@ -182,18 +182,18 @@
 
 {% compress js file base %}
     {# 'text/browserify' allows for 'require' on modules (node.js)  #}
+    <script type="text/browserify" src="{% static "app.js" %}"></script>
+
     <script type="text/javascript" src={% static 'materialize/js/materialize.min.js' %}></script>
     <script type="text/javascript" src={% static 'yall/yall.min.js' %}></script>
+    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
 
-    <script type="text/javascript" src={% static 'recipe/recipe.js' %}></script>
-    <script type="text/javascript" src={% static 'recipe/search.js' %}></script>
+    <script type="text/javascript" src={% static 'recipe/recipe_slick_carousel.js' %}></script>
+    <script type="text/javascript" src={% static 'recipe/recipe_nav_search.js' %}></script>
     <script type="text/browserify" src={% static 'recipe/recipe_filter_ajax.js' %}></script>
 
-    <script type="text/javascript" src={% static 'recipe/subscribe.js' %}></script>
-    <script type="text/javascript" src={% static 'recipe/navs.js' %}></script>
-    <script type="text/javascript" src={% static 'recipe/toc.js' %}></script>
-    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
-    <script type="text/browserify" src="{% static "app.js" %}"></script>
+    <script type="text/browserify" src={% static 'subscribe_modal.js' %}></script>
+    <script type="text/javascript" src={% static 'navs.js' %}></script>
 {% endcompress %}
 
 {# todo: reason out if using compressor is this a good idea? #}

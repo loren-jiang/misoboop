@@ -1,8 +1,12 @@
 from django.urls import path, re_path
-from .views import RecipeDetailView, RecipeListView, like_recipe, ajax_recipes
+from .views import RecipeDetailView, RecipeListView, ExploreRecipesListView, like_recipe, search_recipes, \
+    explore_recipes
 
 urlpatterns = [
-    path('<slug:slug>/', RecipeDetailView.as_view(), name='recipe-detail'),
+    path('recipe/<slug:slug>/', RecipeDetailView.as_view(), name='recipe-detail'),
     path('', RecipeListView.as_view(), name='recipe-list'),
     path('<slug:slug>/like', like_recipe, name='like-recipe'),
+    path('search/', search_recipes, name='search-recipes'),
+    path('explore/', explore_recipes, name='explore-recipes'),
+
 ]

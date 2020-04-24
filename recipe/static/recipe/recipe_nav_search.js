@@ -80,4 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // e.preventDefault();
 
     })
+
+    $('#recipe_nav_search_close').on('click', function () {
+        $('#ns1').val(''); // reset input value on close
+    })
 });

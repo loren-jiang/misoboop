@@ -19,7 +19,7 @@ from django.conf import settings
 from recipe import views as recipe_views
 from recipe import views_api as recipe_views_api
 from rest_framework import routers
-from recipe.views import ajax_recipes
+from recipe.views import search_recipes
 
 router = routers.DefaultRouter()
 # 'recipe-api' is base name to avoid namespace conflicts with 'recipe.urls'
@@ -40,7 +40,6 @@ urlpatterns = [
     path('blogs/', include('blog.urls')),
     path('api/ingredients_list/', recipe_views_api.IngredientList.as_view()),
     path('api/recipes_list/', recipe_views_api.RecipeList.as_view()),
-    path('search/recipes/', ajax_recipes, name='ajax-recipe-list')
 
 ]
 

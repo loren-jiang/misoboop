@@ -1,15 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    /* Materialize inits (prefer using vanilla js) */
+    /* Project level Materialize inits (prefer using vanilla js)
+    * Because 'app.js' is placed at top of 'base.html' scripts,
+    * subsequent inits will take priority?
+    * */
 
-    const modalElems = document.querySelectorAll('.modal');
-    const modalInstances = M.Modal.init(modalElems, {});
+    // const selectElems = document.querySelectorAll('select');
+    // const selectInstances = M.FormSelect.init(selectElems, {});
+    //
+    //
+    // // table of contents for recipe directions
+    // const scrollSpyElems = document.querySelectorAll('.scrollspy');
+    // const scrollSpyInstances = M.ScrollSpy.init(scrollSpyElems, {});
 
-    // table of contents for recipe directions
-    var scrollSpyElems = document.querySelectorAll('.scrollspy');
-    var scrollSpyInstances = M.ScrollSpy.init(scrollSpyElems, options);
-
-    // blanket auto init
-    // to ignore a certain element, you can add the class .no-autoinit
-    // M.AutoInit();
+    // blanket auto init on all Materialize inits
+    // to ignore a certain element, you can add the class .no-autoinit to that element
+    M.AutoInit();
 })
