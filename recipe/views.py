@@ -59,10 +59,7 @@ class RecipeDetailView(JsonLdDetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['now'] = timezone.now()
-        print(serializers.serialize('json', self.object.ingredient_amounts.all()))
-        # context['ingredient_amounts_json'] = serializers.serialize('json', )
         return context
-
 
 class RecipeListView(ListView):
     model = Recipe
