@@ -8,6 +8,10 @@ from django_json_ld.views import JsonLdDetailView
 from django.db.models import F, Q
 from django.http import JsonResponse
 from .filters import filter_recipe_qs
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from django.core import serializers
+
 import json
 
 
@@ -24,6 +28,13 @@ def home(request):
 # About page view which details "Who, What, Where, and Why?"
 def about(request):
     context = {}
+    about = None
+    try:
+        about = Post.objects.get(name='About')
+    except Post.DoesNotExist:
+        pass
+    if about is not None:
+        return HttpResponseRedirect(reverse('post-detail', kwargs={'slug':'about'}))
     return render(request, 'about.html', context)
 
 def like_recipe(request, *args, **kwargs):
@@ -36,15 +47,20 @@ def like_recipe(request, *args, **kwargs):
 
 
 class RecipeDetailView(JsonLdDetailView):
-    queryset = Recipe.objects.prefetch_related('directions',
-                                               'ingredient_amounts',
-                                               'ingredient_amounts__unit',
-                                               'ingredient_amounts__ingredient', )
+    queryset = Recipe.objects.prefetch_related(
+        'author',
+        'directions__ingredient_amounts__ingredient',
+        'directions__ingredient_amounts__unit',
+        'ingredient_amounts__unit',
+        'ingredient_amounts__ingredient').annotate(
+            total_time=F('cook_time') + F('prep_time'))
     model = Recipe
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['now'] = timezone.now()
+        print(serializers.serialize('json', self.object.ingredient_amounts.all()))
+        # context['ingredient_amounts_json'] = serializers.serialize('json', )
         return context
 
 
@@ -59,7 +75,10 @@ class RecipeListView(ListView):
         return context
 
     def get_queryset(self):
-        qs = super().get_queryset().prefetch_related('ratings', 'tags').annotate(
+        qs = super().get_queryset().prefetch_related(
+            'ratings', 'tags',
+            'directions__ingredient_amounts__ingredient',
+            'directions__ingredient_amounts__unit').annotate(
             total_time=F('cook_time') + F('prep_time'))
         return filter_recipe_qs(self.request, qs)
 

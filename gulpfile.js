@@ -11,36 +11,37 @@
 // and reload it whenever a file with the extensions scss,css,html,py,js
 // is changed
 
-var gulp        = require('gulp');
+var gulp = require('gulp');
 var browserSync = require('browser-sync').create();
 var cache = require('gulp-cache');
 
 // This task can be called from the command line with  `gulp dj-runserver`
-gulp.task('dj-runserver', function() {
+gulp.task('dj-runserver', function () {
     const spawn = require('child_process').spawn;
     return spawn('python', ['./manage.py', 'runserver'])
         .stderr.on('data', (data) => {
-        console.log(`${data}`);
-    });
+            console.log(`${data}`);
+        });
 });
 
 
 // Clear cache
-gulp.task('clearCache', function(done) {
-   return cache.clearAll(done);
+gulp.task('clearCache', function (done) {
+    return cache.clearAll(done);
 });
 
 
 function reload(done) {
-  browserSync.reload();
-  done();
+    // browserSync.reload();
+    browserSync.stream({once: true})
+    done();
 }
 
 
 // Tell gulp to executed 'styles' when sass files change, and execute
 // a browser reload when any file changes.
-gulp.task('watch', function() {
-	browserSync.init({
+gulp.task('watch', function () {
+    browserSync.init({
         notify: true,
         proxy: "localhost:8000",
     });

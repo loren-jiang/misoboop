@@ -1,7 +1,11 @@
 /*
 Collects other sass files and compiles to one to rule them all (app-level)
 'base.html' then serves it by itself using libsass and django-compressor
+UPDATE: yeah..@import is well-supported by django-compressor
+saving this file though if I do switch to another
+fancier static management system like pipeline or gulp
  */
+
 @import "_base.scss";
 @import "_toc.scss";
 @import "_recipe_card.scss";
@@ -9,3 +13,4 @@ Collects other sass files and compiles to one to rule them all (app-level)
 @import "_pagination.scss";
 @import "_recipe_list.scss";
 @import "_sidenav.scss";
+

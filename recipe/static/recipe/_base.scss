@@ -3,6 +3,7 @@
 /* materialize override styles */
 body {
   font-family: $main-font-family;
+  font-size: 1.25rem;
 }
 
 input {
@@ -12,7 +13,23 @@ input {
 
 h1, h2, h3, h4 h5 {
   font-family: $header-font-family;
+}
 
+
+/* use browser-default on blog posts */
+
+
+.blog-post ul {
+  padding-left: 3rem !important;
+}
+
+.blog-post li {
+  //list-style-type: simp-chinese-informal !important;
+  list-style-type: square !important;
+}
+
+.blog-post {
+  font-size: 1.3rem;
 }
 
 /* icon styles */
@@ -167,4 +184,18 @@ a.sidenav-trigger i.material-icons {
 img.responsive {
   width: 100%;
   height: auto;
+}
+
+/* hide tooltip */
+.dropdown-content .thumb {
+  display: none;
+}
+
+.range-slider {
+  margin: 7.5px;
+  width: 150px;
+}
+
+.range-slider-target {
+  padding: 3px;
 }

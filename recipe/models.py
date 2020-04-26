@@ -26,6 +26,7 @@ class Recipe(CreatedModified):
     """
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=500, unique=True)
+    short_description = models.TextField(default='')
     description = HTMLField(default='', verbose_name=_('Text'))
     prep_time = models.PositiveSmallIntegerField(blank=True, null=True)
     cook_time = models.PositiveSmallIntegerField(blank=True, null=True)

@@ -5,7 +5,7 @@ from .views import RecipeDetailView, RecipeListView, ExploreRecipesListView, lik
 urlpatterns = [
     path('recipe/<slug:slug>/', RecipeDetailView.as_view(), name='recipe-detail'),
     path('', RecipeListView.as_view(), name='recipe-list'),
-    path('<slug:slug>/like', like_recipe, name='like-recipe'),
+    path('recipe/<slug:slug>/like/', like_recipe, name='like-recipe'),
     path('search/', search_recipes, name='search-recipes'),
     path('explore/', explore_recipes, name='explore-recipes'),
 

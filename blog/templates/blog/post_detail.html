@@ -7,9 +7,14 @@
     {% breadcrumb post.name "post-detail" post.slug %}
 {% endblock %}
 
+{% block title %}
+    {{ block.super }}
+    | {{ post.name }}
+{% endblock title %}
 
 {% block content %}
     {% render_breadcrumbs %}
-
-    {{ post.text|safe }}
+    <div class="blog-post">
+        {{ post.text|safe }}
+    </div>
 {% endblock %}

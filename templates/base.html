@@ -126,8 +126,11 @@
         {% breadcrumb "Home" "home" %}
     {% endblock %}
 
-    {% block content %}
-    {% endblock %}
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
 
 </div>
 
@@ -169,6 +172,8 @@
 
 <!-- PolyFill fetch IE support -->
 <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.0.0/fetch.min.js"></script>
+<script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
+
 <!-- Font Awesome -->
 <script src="https://use.fontawesome.com/81596daef6.js"></script>
 
@@ -181,13 +186,13 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
 
 {% compress js file base %}
-    {# 'text/browserify' allows for 'require' on modules (node.js)  #}
-    <script type="text/browserify" src="{% static "app.js" %}"></script>
-
+    {#    vendor js #}
     <script type="text/javascript" src={% static 'materialize/js/materialize.min.js' %}></script>
     <script type="text/javascript" src={% static 'yall/yall.min.js' %}></script>
     <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
 
+    {# 'text/browserify' allows for 'require' on modules (node.js)  #}
+    <script type="text/browserify" src="{% static "app.js" %}"></script>
     <script type="text/javascript" src={% static 'recipe/recipe_slick_carousel.js' %}></script>
     <script type="text/javascript" src={% static 'recipe/recipe_nav_search.js' %}></script>
     <script type="text/browserify" src={% static 'recipe/recipe_filter_ajax.js' %}></script>

@@ -20,6 +20,7 @@ from recipe import views as recipe_views
 from recipe import views_api as recipe_views_api
 from rest_framework import routers
 from recipe.views import search_recipes
+from filebrowser.sites import site
 
 router = routers.DefaultRouter()
 # 'recipe-api' is base name to avoid namespace conflicts with 'recipe.urls'
@@ -30,6 +31,7 @@ router.register(r'tags', recipe_views_api.TagViewset, 'tag-api')
 urlpatterns = [
     path('', recipe_views.home, name='home'),
     path('about/', recipe_views.about, name='about'),
+    path('admin/filebrowser/', site.urls),
     path('admin/', admin.site.urls),
     path('ratings/', include('star_ratings.urls', namespace='ratings')),
     path('tinymce/', include('tinymce.urls')),

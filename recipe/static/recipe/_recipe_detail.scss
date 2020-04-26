@@ -11,6 +11,12 @@ input.ingredient-amount {
   color: inherit;
   text-align: center;
 }
+.direction-ingredients.collapsible {
+  font-size: 75%;
+  //border: none;
+  //margin: 0;
+  //box-shadow: none;
+}
 
 .direction-markdown ul {
   list-style-type: decimal;
@@ -20,6 +26,16 @@ input.ingredient-amount {
   }
 }
 
+.direction-markdown ul {
+  padding-left: 1.5rem !important;
+}
+
+.direction-markdown li {
+  //list-style-type: simp-chinese-informal !important;
+  list-style-type: square !important;
+}
+
 #like_plus_one.liked {
   color: green;
 }
+

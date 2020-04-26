@@ -1,6 +1,12 @@
 /*
 Collects other sass files and compiles to one to rule them all (project level)
 'base.html' then serves it by itself using libsass and django-compressor
+UPDATE: yeah..@import is well-supported by django-compressor
+saving this file though if I do switch to another
+fancier static management system like pipeline or gulp
  */
 
+// recipe app styling
 @import "recipe/recipe.scss";
+@import "./_flowy_font.scss";
+
