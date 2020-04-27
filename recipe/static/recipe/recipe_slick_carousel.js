@@ -5,6 +5,8 @@ $(document).ready(function () {
         speed: 300,
         slidesToShow: 3,
         slidesToScroll: 3,
+        // nextArrow: '<button class="carousel-next"><i class="material-icons">navigate_next</i></button>',
+        // prevArrow: '<button class="carousel-prev"><i class="material-icons">navigate_before</i></button>',
         responsive: [
             // {
             //   breakpoint: 1024,

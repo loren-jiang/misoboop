@@ -205,7 +205,7 @@ DEBUG_TOOLBAR_CONFIG = {
 
 SITE_ID = 1
 
-STAR_RATINGS_STAR_SPRITE = "/dumpling_sprite_sm.png"
+STAR_RATINGS_STAR_SPRITE = "/assets/dumpling_sprite_sm.png"
 STAR_RATINGS_ANONYMOUS = True
 
 # COMPRESS_OFFLINE = True
@@ -214,7 +214,6 @@ STAR_RATINGS_ANONYMOUS = True
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 
 X_FRAME_OPTIONS = 'sameorigin'
 

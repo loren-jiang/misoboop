@@ -1,15 +1,11 @@
+/* General purpose app initializations and functions mostly in vanilla javascript ES6 */
+
 document.addEventListener('DOMContentLoaded', function () {
 
     /* Project level Materialize inits (prefer using vanilla js)
     * Because 'app.js' is placed at top of 'base.html' scripts,
-    * subsequent inits will take priority?
+    * subsequent inits will take priority
     * */
-
-    // const selectElems = document.querySelectorAll('select');
-    // const selectInstances = M.FormSelect.init(selectElems, {});
-    //
-    //
-
 
     // blanket auto init on all Materialize inits
     // to ignore a certain element, you can add the class .no-autoinit to that element
@@ -24,14 +20,16 @@ document.addEventListener('DOMContentLoaded', function () {
     lazifyImages();
 
     yall({
-        idleLoadTimeout: 0,
-        threshold: 0,
+        idleLoadTimeout: 500,
+        threshold: 100,
     });
 })
 
+
+// add 'lazy' class to img tags and 'data-src' for lazy loading with 'yall.js'
+// also add 'responsive-img' class (materialize CSS)
+// todo: is there a better way of doing this? a bit hacky...
 function lazifyImages() {
-    // add 'lazy' class to img tags and 'data-src' for lazy loading with 'yall.js'
-    // todo: is there a better way of doing this? a bit hacky...
     var region = document.getElementsByClassName("main-content");
     if (region.length) {
         for (k = 0; k < region.length; k++) {
@@ -46,12 +44,7 @@ function lazifyImages() {
     }
 }
 
-// https://materializecss.com/media-css.html
-function responsifyImages(selector) {
-    var images = $(selector).addClass('responsive-img')
-}
-
-// initalize Materialize collapsible components with toggle feature
+// initialize Materialize collapsible components with toggle icon for open/closed state
 function initializeToggleIconCollapsible(collapsibleSelector, iconSelector, openedIcon, closedIcon, options) {
     const $filterHeaderIcon = $(iconSelector);
     const collapsibleInstances = $(collapsibleSelector).collapsible({

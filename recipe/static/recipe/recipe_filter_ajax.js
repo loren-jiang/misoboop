@@ -1,30 +1,3 @@
-var debounce = require('lodash/debounce');
-
-// todo: might need something more robust if more complex parsing needed
-// doesn't support multiple query params as list
-function getUrlParameter(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-}
-
-function cleanQueryParams() {
-    // get the string following the ?
-    var query = window.location.search.substring(1)
-
-// is there anything there ?
-    if (query.length) {
-        // are the new history methods available ?
-        if (window.history != undefined && window.history.pushState != undefined) {
-            // if pushstate exists, add a new state to the history, this changes the url without reloading the page
-
-            window.history.pushState({}, document.title, window.location.pathname);
-        }
-    }
-}
-
-
 $(document).ready(function () {
     let chipsInstances;
     const $recipeFilterForm = $('#recipe_filter_form');
