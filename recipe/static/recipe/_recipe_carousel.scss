@@ -1,0 +1,42 @@
+$arrowDimension: 2.5rem;
+
+.recipe-carousel-wrapper {
+  padding: $arrowDimension;
+}
+
+.carousel-next, .carousel-prev {
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: $arrowDimension;
+  height: $arrowDimension;
+  padding: 0;
+  -webkit-transform: translate(0, -50%) scaleY(1.5);
+  -ms-transform: translate(0, -50%) scaleY(1.5);
+  transform: translate(0, -50%) scaleY(1.5);
+  cursor: pointer;
+  color: black;
+  border: none;
+  outline: 0;
+  background: 0 0;
+
+  &:hover {
+    color: red;
+  };
+
+  &.slick-disabled {
+    color: grey;
+  };
+}
+
+.carousel-next {
+  right: -$arrowDimension;
+}
+
+.carousel-prev {
+  left: -$arrowDimension;
+}
+
+.carousel-arrow-icon {
+  font-size: $arrowDimension;
+}

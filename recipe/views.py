@@ -97,7 +97,7 @@ class ExploreRecipesListView(ListView):
 
     def get_queryset(self):
         qs = super().get_queryset().prefetch_related('ratings', 'tags').annotate(
-            total_time=F('cook_time') + F('prep_time'))
+            total_time=F('cook_time') + F('prep_time')).annotate(avg_ratings=F('ratings__average'))
         return qs
 
 

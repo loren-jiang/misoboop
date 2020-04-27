@@ -19,10 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     lazifyImages();
 
-    yall({
-        idleLoadTimeout: 500,
-        threshold: 100,
-    });
+
 })
 
 
@@ -31,9 +28,11 @@ document.addEventListener('DOMContentLoaded', function () {
 // todo: is there a better way of doing this? a bit hacky...
 function lazifyImages() {
     var region = document.getElementsByClassName("main-content");
+
     if (region.length) {
         for (k = 0; k < region.length; k++) {
-            var img = region[k].getElementsByTagName("img");
+            var img = region[k].querySelectorAll("img:not(.lazy)");
+
             for (i = 0; i < img.length; i++) {
                 img[i].classList.add("lazy", "responsive-img");
                 var src = img[i].src;
@@ -41,7 +40,17 @@ function lazifyImages() {
                 img[i].setAttribute("data-src", src);
             }
         }
+        setTimeout(function () {
+            yall({
+                idleLoadTimeout: 500,
+                threshold: 100,
+                // observeChanges: true,
+                // observeRootSelector: ".main-content"
+            });
+        }, 0)
     }
+
+
 }
 
 // initialize Materialize collapsible components with toggle icon for open/closed state

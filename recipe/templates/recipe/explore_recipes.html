@@ -2,6 +2,8 @@
 {% load django_bootstrap_breadcrumbs %}
 {% load static %}
 {% load recipe_extras %}
+{% load thumbnail %}
+{% load ratings %}
 
 {% block breadcrumbs %}
     {{ block.super }}
@@ -18,17 +20,21 @@
     <div class="row">
         <div class="col s12">
             {% for key, value in tagged_recipes.items %}
+
                 <div>
                     <h5> {{ key }} </h5>
-                    <div class="recipe-carousel">
-                        {% for recipe in value %}
-                            <div class="recipe-slide">
-                                {% include "recipe/recipe_card.html" with recipe=recipe %}
-                            </div>
-                        {% endfor %}
 
+
+                    <div class="recipe-carousel-wrapper">
+                        <div class="recipe-carousel">
+                            {% for recipe in value %}
+                                <div class="recipe-slide">
+                                    {% include "recipe/recipe_card.html" with recipe=recipe %}
+                                </div>
+
+                            {% endfor %}
+                        </div>
                     </div>
-
                 </div>
             {% endfor %}
 

@@ -6,6 +6,7 @@ saving this file though if I do switch to another
 fancier static management system like pipeline or gulp
  */
 
+@import "_theme.scss";
 @import "_base.scss";
 @import "_toc.scss";
 @import "_recipe_card.scss";
@@ -13,4 +14,5 @@ fancier static management system like pipeline or gulp
 @import "_pagination.scss";
 @import "_recipe_list.scss";
 @import "_sidenav.scss";
+@import "_recipe_carousel";
 

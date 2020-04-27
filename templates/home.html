@@ -2,21 +2,20 @@
 
 {% block content %}
     <div class="row">
-        <div class="col offset-s1 s10 l9 latest-recipes ">
-            <div class="card-panel yellow lighten-4">
-                <h3> Latest recipes </h3>
-                <div class="recipe-carousel-wrapper" style="padding: 40px;">
-                    <div class="recipe-carousel">
-                        {% for recipe in latest_recipes %}
-                            <div class="recipe-slide">
-                                {% include "recipe/recipe_card.html" with recipe=recipe %}
-                            </div>
-                        {% endfor %}
-                    </div>
+        <div class="col s12 l9 latest-recipes ">
+            <h3> Latest recipes </h3>
+            {#            <div class="card-panel">#}
+            {#                <h3> Latest recipes </h3>#}
+            {#            </div>#}
+            <div class="recipe-carousel-wrapper">
+                <div class="recipe-carousel">
+                    {% for recipe in latest_recipes %}
+                        <div class="recipe-slide">
+                            {% include "recipe/recipe_card.html" with recipe=recipe %}
+                        </div>
+                    {% endfor %}
                 </div>
-
             </div>
-
 
         </div>
 

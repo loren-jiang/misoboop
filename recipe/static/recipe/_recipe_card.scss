@@ -1,6 +1,3 @@
-//.recipe-card-title {
-//  font-size: 1.3rem !important;
-//  a {
-//    //color: black;
-//  }
-//}
+.card-image.waves-effect {
+  overflow: unset; // very specific bug in chrome where 'lazified' card images not showing with 'waves-effect' class
+}
