@@ -5,6 +5,10 @@ from taggit.models import TagBase, GenericTaggedItemBase
 from django.utils.translation import ugettext_lazy as _
 from tinymce import HTMLField
 from taggit.managers import TaggableManager
+from misoboop.storage_backends import PrivateMediaStorage
+from django.contrib.auth.models import User
+from django.conf import settings
+from sorl.thumbnail import ImageField
 
 # Create your models here.
 class BasicTag(TagBase):
@@ -24,6 +28,15 @@ class TaggedWhatever(GenericTaggedItemBase):
         related_name="%(app_label)s_%(class)s_items",
     )
 
+class NameDescription(models.Model):
+    name = models.CharField(max_length=500, unique=True)
+    description = HTMLField(default='', verbose_name=_('Text'))
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        abstract = True
 
 class CreatedModified(models.Model):
     """
@@ -55,3 +68,29 @@ class Series(CreatedModified):
         ordering = ['name']
         verbose_name = _('Series')
         verbose_name_plural = _('Seriess')
+
+# Media models
+class PublicImage(NameDescription):
+    name = models.CharField(max_length=500, null=True, blank=True)
+    description = HTMLField(default='', verbose_name=_('Text'), null=True, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    upload = ImageField()
+
+    def __str__(self):
+        splits = self.upload.url.split(settings.AWS_PUBLIC_MEDIA_LOCATION)
+        if len(splits) > 1:
+            return self.upload.url.split(settings.AWS_PUBLIC_MEDIA_LOCATION)[1]
+        return self.upload.url
+
+class PrivateImage(models.Model):
+    name = models.CharField(max_length=500, null=True, blank=True)
+    description = HTMLField(default='', verbose_name=_('Text'), null=True, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    upload = ImageField(storage=PrivateMediaStorage)
+    user = models.ForeignKey(User, related_name='images', on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        splits = self.upload.url.split(settings.AWS_PRIVATE_MEDIA_LOCATION)
+        if len(splits) > 1:
+            return self.upload.url.split(settings.AWS_PRIVATE_MEDIA_LOCATION)[1]
+        return self.upload.url

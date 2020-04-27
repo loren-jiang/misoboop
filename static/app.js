@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // // table of contents for recipe directions
     const scrollSpyElems = document.querySelectorAll('.scrollspy');
     const scrollSpyInstances = M.ScrollSpy.init(scrollSpyElems, {
-        scrollOffset:0
+        scrollOffset: 0
     });
 
     lazifyImages();
@@ -50,3 +50,21 @@ function lazifyImages() {
 function responsifyImages(selector) {
     var images = $(selector).addClass('responsive-img')
 }
+
+// initalize Materialize collapsible components with toggle feature
+function initializeToggleIconCollapsible(collapsibleSelector, iconSelector, openedIcon, closedIcon, options) {
+    const $filterHeaderIcon = $(iconSelector);
+    const collapsibleInstances = $(collapsibleSelector).collapsible({
+        onOpenStart: function (el) {
+            $(el).find($filterHeaderIcon).html(openedIcon)
+            // $filterHeaderIcon.html(openedIcon)
+        },
+        onCloseStart: function (el) {
+            $(el).find($filterHeaderIcon).html(closedIcon)
+            // $filterHeaderIcon.html(closedIcon)
+        },
+        ...options
+    });
+}
+
+

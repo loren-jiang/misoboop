@@ -74,6 +74,9 @@ $(document).ready(function () {
                     });
             }
         });
+
+
+
         const $filterHeaderIcon = $("#collapsible_filter .collapsible-header .material-icons");
         const collapsibleInstances = M.Collapsible.init($('#collapsible_filter'), {
             inDuration: 200,

@@ -47,8 +47,10 @@ def like_recipe(request, *args, **kwargs):
 
 
 class RecipeDetailView(JsonLdDetailView):
-    queryset = Recipe.objects.prefetch_related(
+    queryset = Recipe.objects.select_related(
         'author',
+        'image'
+    ).prefetch_related(
         'directions__ingredient_amounts__ingredient',
         'directions__ingredient_amounts__unit',
         'ingredient_amounts__unit',

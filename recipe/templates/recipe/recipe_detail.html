@@ -20,9 +20,11 @@
     </h1>
     <div class="row">
         <div class="col s12 m12 l6">
-            <img class="responsive" src={{ recipe.med_image_url }}/>
+            {#            <img class="responsive-img" src={{ recipe.med_image_url }}/>#}
+            <img class="responsive-img" src={{ recipe.image.upload.url }}>
         </div>
         <div class="col s12 m12 l6">
+
             {% ratings object template_name="recipe/dumpling_ratings.html" icon_height=25 icon_width=25 %}
 
             <div>
@@ -66,7 +68,7 @@
             <div id='dropdown1' class='dropdown-content'>
                 <div class="range-slider">
                     <input class="valign-wrapper" data-target="num_servings_target" type="range" id="num_servings"
-                           value="{{ recipe.servings }}" min="1" max="100"/>
+                           value="{{ recipe.servings }}" min="1" max="{{ recipe.max_servings }}"/>
                 </div>
             </div>
 
@@ -116,7 +118,7 @@
                             <ul class="direction-ingredients collapsible">
                                 <li>
                                     <div class="collapsible-header"><i class="material-icons">arrow_drop_down</i>
-                                        Step ingredients
+                                        Show ingredients
                                         {#                                        <h3>#}
                                         {#                                            {{ direction.name }}#}
                                         {#                                        </h3>#}
@@ -144,9 +146,7 @@
                         {% endif %}
 
                         <div class="direction-markdown">
-                            <blockquote>
-                                {{ direction.text|safe }}
-                            </blockquote>
+                            {{ direction.text|safe }}
                         </div>
                     </div>
                 {% endfor %}
@@ -179,12 +179,21 @@
 
             var servingsRangeInput = document.getElementById("num_servings");
             var sliderTarget = document.getElementById(servingsRangeInput.dataset.target);
-            // var sliderTarget = document.getElementById("range-slider-target");
             sliderTarget.innerHTML = servingsRangeInput.value;
 
             servingsRangeInput.addEventListener("input", function () {
                 sliderTarget.innerHTML = this.value;
             });
+
+            initializeToggleIconCollapsible(
+                '.direction-ingredients.collapsible',
+                '.direction-ingredients.collapsible .material-icons',
+                'arrow_drop_up',
+                'arrow_drop_down',
+                {
+                    inDuration: 200,
+                }
+            )
         });
 
         $(document).ready(function () {
@@ -192,16 +201,9 @@
             const origServings = {{ recipe.servings }};
             const $ingredientAmt = $('span.ingredient-amount');
             const ingredientDefaultValues = ($ingredientAmt.toArray().map(el => parseFloat(el.innerHTML)));
-            console.log(ingredientDefaultValues)
-            {#const $ingredientAmt = $('input.ingredient-amount');#}
-            {#const ingredientDefaultValues = ($ingredientAmt.toArray().map(el => el.defaultValue));#}
+
             $servings.on('change', function () {
-                /*if (parseFloat($servings.val()) < parseFloat($servings.prop("min"))) {
-                    $servings.val($servings.prop("min"));
-                }
-                if (parseFloat($servings.val()) > parseFloat($servings.prop("max"))) {
-                    $servings.val($servings.prop("max"));
-                }*/
+
                 $ingredientAmt.each(
                     (idx, el) => {
                         $(el).html(ingredientDefaultValues[idx] * $servings.val() / origServings)
@@ -209,6 +211,7 @@
                 )
             })
         });
+
         $(document).ready(function () {
             $('#like_plus_one').on('click', function () {
                 $(this).addClass("liked")
