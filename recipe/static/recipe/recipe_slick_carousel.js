@@ -5,16 +5,18 @@ $(document).ready(function () {
         speed: 300,
         slidesToShow: 3,
         slidesToScroll: 3,
+        nextArrow: '<a class="carousel-next"><i class="material-icons carousel-arrow-icon">navigate_next</i></a>',
+        prevArrow: '<a class="carousel-prev"><i class="material-icons carousel-arrow-icon">navigate_before</i></a>',
         responsive: [
-            // {
-            //   breakpoint: 1024,
-            //   settings: {
-            //     slidesToShow: 3,
-            //     slidesToScroll: 3,
-            //     infinite: true,
-            //     dots: true
-            //   }
-            // },
+            {
+              breakpoint: 1200  ,
+              settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                infinite: true,
+                dots: true
+              }
+            },
             {
                 breakpoint: 992,
                 settings: {

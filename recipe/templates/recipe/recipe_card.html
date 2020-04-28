@@ -1,27 +1,79 @@
+{#<div class="card recipe-card">#}
+{#    <div class="card-image">#}
+{#        <img src={{ recipe.image.upload.url }}>#}
+{#        <span class="recipe-card-title card-title"> <a href={{ recipe.get_absolute_url }}> {{ recipe.name }}</a></span>#}
+{#        <button class="btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">#}
+{#            <i class="material-icons">share</i>#}
+{#        </button>#}
+{#        <a style="right: 70px; position: absolute; bottom: -20px" class="hide btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">#}
+{#            <i class="fas fa-facebook-messenger" aria-hidden="true"></i>#}
+{#        </a>#}
+{#        <a style="right: 116px; position: absolute; bottom: -20px" class="hide btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">#}
+{#            <i class="fas fa-facebook-messenger" aria-hidden="true"></i>#}
+{#        </a>#}
+{#    </div>#}
+{#    <div class="card-content">#}
+{#        <span> <b> Time:</b> {{ recipe.total_time }} min</span>#}
+{#        |#}
+{#        <span> <b> Servings:</b> {{ recipe.servings }}</span>#}
+{#        <p>#}
+{#            {%  for tag in recipe.tags.all  %}#}
+{#                {{ tag.name }}#}
+{#            {%  endfor %}#}
+{#        </p>#}
+{#    </div>#}
+{#</div>#}
+
+{% load thumbnail %}
+{% load ratings %}
+{% load recipe_extras %}
 
 <div class="card recipe-card">
-    <div class="card-image">
-        <img src={{ recipe.sm_image_url }}>
-        <span class="recipe-card-title card-title"> <a href={{ recipe.get_absolute_url }}> {{ recipe.name }}</a></span>
-        <button class="btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">
-            <i class="material-icons">share</i>
-        </button>
-        <a style="right: 70px; position: absolute; bottom: -20px" class="hide btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">
-            <i class="fas fa-facebook-messenger" aria-hidden="true"></i>
-        </a>
-        <a style="right: 116px; position: absolute; bottom: -20px" class="hide btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">
-            <i class="fas fa-facebook-messenger" aria-hidden="true"></i>
-        </a>
+    <div class="card-image waves-effect waves-block waves-light">
+
+        {% thumbnail recipe.image.upload "500x500" crop="center" as im %}
+            <img class="activator" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        {% empty %}
+            <img class="activator" src="{{ recipe.sm_image_url }}">
+        {% endthumbnail %}
+        {#        <img class="activator" src={{ recipe.image.upload.url }}>#}
     </div>
     <div class="card-content">
-        <span> <b> Time:</b> {{ recipe.total_time }} min</span>
-        |
-        <span> <b> Servings:</b> {{ recipe.servings }}</span>
-        <p>
-            {%  for tag in recipe.tags.all  %}
-                {{ tag.name }}
-            {%  endfor %}
-        </p>
+        <span class="card-title activator grey-text text-darken-4 flowy-font">{{ recipe.name }}<i
+                class="material-icons right">more_vert</i></span>
+        {#        <p><a class="btn waves-effect" href={{ recipe.get_absolute_url }}>See recipe</a></p>#}
+    </div>
+    <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4">{{ recipe.name }}<i
+                class="material-icons right">close</i></span>
+        <div>
+            {% for tag in recipe.tags.all %}
+                <span class="chip"> {{ tag.name }} </span>
+            {% endfor %}
+        </div>
+        <div>
+            <a class="btn waves-effect" href={{ recipe.get_absolute_url }}>See recipe</a>
+        </div>
+        {#        {% ratings recipe template_name="recipe/dumpling_ratings.html" icon_height=25 icon_width=25 read_only=True %}#}
+        <hr>
+        <div>
+            Prep time: {{ recipe.prep_time|min_to_hr }}
+        </div>
+        <div>
+            Cook time: {{ recipe.cook_time|min_to_hr }}
+        </div>
+        <div>
+            Total time: {{ recipe.total_time|min_to_hr }}
+        </div>
+        <div>
+            Servings: {{ recipe.servings }}
+        </div>
+
+
+
+        {% if recipe.short_description %}
+            <hr>
+            <p>About: {{ recipe.short_description }}</p>
+        {% endif %}
     </div>
 </div>
-

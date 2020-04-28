@@ -20,7 +20,8 @@ class Post(CreatedModified):
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     tags = TaggableManager(through=TaggedWhatever, blank=True)
     slug = models.SlugField(max_length=100, editable=False)
-    series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True)
+    series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True, related_name='posts')
+    is_published = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -30,7 +31,7 @@ class Post(CreatedModified):
         return reverse('post-detail', args=[self.slug])
 
     def __str__(self):
-        return self.headline
+        return self.name + ' | ' + str(self.created_at)
 
     def tag_names_as_list(self):
         return [tag.name for tag in self.tags.order_by('name')]
@@ -63,6 +64,7 @@ class Post(CreatedModified):
                 "name": self.author.name
             }
         }
+
 
     class Meta:
         ordering = ['created_at', 'headline']

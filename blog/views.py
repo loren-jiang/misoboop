@@ -5,6 +5,10 @@ from django.utils import timezone
 
 # Create your views here.
 class PostListView(ListView):
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs
+
     model = Post
     paginate_by = 10
 

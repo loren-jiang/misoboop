@@ -24,6 +24,7 @@ class Recipe(CreatedModified):
     """
     Model representing a recipe, which roughly follows https://jsonld.com/recipe/
     """
+
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=500, unique=True)
     short_description = models.TextField(default='')
@@ -42,7 +43,12 @@ class Recipe(CreatedModified):
     slug = models.SlugField(max_length=100)
     likes = models.PositiveSmallIntegerField(default=1)
     ratings = GenericRelation(Rating, related_query_name='recipes')
-    series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True)
+    series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True, related_name='recipes')
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = _('Recipe')
+        verbose_name_plural = _('Recipes')
 
     def get_absolute_url(self):
         return reverse('recipe-detail', args=[self.slug])
@@ -50,11 +56,6 @@ class Recipe(CreatedModified):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
-    class Meta:
-        ordering = ['name']
-        verbose_name = _('Recipe')
-        verbose_name_plural = _('Recipes')
 
     def __str__(self):
         return self.name

@@ -2,26 +2,25 @@
 
 {% block content %}
     <div class="row">
-        <div class="col offset-s1 s10 l9 latest-recipes ">
-            <div class="card-panel teal lighten-4">
-                <h3> Latest recipes </h3>
-
+        <div class="col s12 l9 latest-recipes ">
+            <h3> Latest recipes </h3>
+            {#            <div class="card-panel">#}
+            {#                <h3> Latest recipes </h3>#}
+            {#            </div>#}
+            <div class="recipe-carousel-wrapper">
                 <div class="recipe-carousel">
                     {% for recipe in latest_recipes %}
                         <div class="recipe-slide">
                             {% include "recipe/recipe_card.html" with recipe=recipe %}
                         </div>
                     {% endfor %}
-
                 </div>
             </div>
-
-
 
         </div>
 
         <div class="welcome col offset-s1 s10 l3  ">
-            <div class="card teal lighten-4">
+            <div class="card yellow lighten-4">
                 <div class="card-content">
                     <div class="card-title">
                         <h3> Welcome </h3>
@@ -35,15 +34,15 @@
                     <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
                 </div>
             </div>
-            <div class="card teal lighten-4">
+            <div class="card yellow lighten-4">
                 <div class="card-content">
                     <div class="card-title">
                         <h3> Latest posts </h3>
                     </div>
                     <ul>
                         {% for post in latest_posts %}
-                            <li> <a href={{ post.get_absolute_url }}>{{ post }}</a> | {{ post.created_at }}</li>
-                        {%  endfor %}
+                            <li><a href={{ post.get_absolute_url }}>{{ post }}</a> | {{ post.created_at }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
 

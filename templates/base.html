@@ -12,11 +12,15 @@
           rel="stylesheet">
 
     {% compress css %}
-        <link type="text/x-scss" href={% static 'main.scss' %} rel="stylesheet" media="screen, projection">
-        <link rel="stylesheet" href={% static 'star-ratings/css/star-ratings.css' %} media="screen,projection">
-        <!--Import materialize.css-->
+        {#        <link type="text/x-scss" href={% static 'materialize/sass/materialize.scss' %} rel="stylesheet"#}
+        {#              media="screen, projection">#}
         <link type="text/css" rel="stylesheet"
-              href={% static 'materialize/css/materialize.min.css' %} media="screen,projection"/>
+              href={% static 'materialize/materialize.min.css' %} media="screen,projection"/>
+        <link rel="stylesheet" href={% static 'star-ratings/css/star-ratings.css' %} media="screen,projection">
+
+        <link type="text/x-scss" href={% static 'css/main.scss' %} rel="stylesheet" media="screen, projection">
+
+
     {% endcompress %}
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" rel="stylesheet">
@@ -35,7 +39,7 @@
         <div class="col s12">
             <div class="site-banner">
                 <a href="/">
-                    <img class="logo" id="misoboop-cat" src={% static 'tama.png' %}/>
+                    <img class="logo" id="misoboop-cat" src={% static 'assets/tama.png' %}/>
                 </a>
 
 
@@ -73,7 +77,7 @@
 
                         <li><a href={% url 'post-list' %}>Blog</a></li>
                         <li><a href={% url 'about' %}>About</a></li>
-                        <li><a data-target="subscribe_modal" class="modal-trigger">Subscribe</a></li>
+{#                        <li><a data-target="subscribe_modal" class="modal-trigger">Subscribe</a></li>#}
                     </ul>
 
                     <a href="#" data-target="mobile_sidenav" class="nav-sidenav-trigger sidenav-trigger"><i
@@ -89,7 +93,7 @@
     <!-- Recipes nav dropdown -->
     <ul id='recipes_nav_dropdown' class='dropdown-content'>
         <li><a href="{% url 'explore-recipes' %}">Explore</a></li>
-        <li><a href="#!">By Series</a></li>
+        <li><a href={% url 'recipe-series-list' %}>By Series</a></li>
         <li class="divider" tabindex="-1"></li>
         <li><a href="{% url 'search-recipes' %}">Search</a></li>
     </ul>
@@ -105,8 +109,8 @@
                     </a>
                     <div class="collapsible-body">
                         <ul>
-                            <li><a href="{% url 'recipe-list' %}">Explore</a></li>
-                            <li><a href="#!">By Series</a></li>
+                            <li><a href="{% url 'explore-recipes' %}">Explore</a></li>
+                            <li><a href={% url 'recipe-series-list' %}>By Series</a></li>
                             <li class="divider" tabindex="-1"></li>
                             <li><a href="{% url 'search-recipes' %}">Search</a></li>
                         </ul>
@@ -170,7 +174,7 @@
 
 <!--JavaScript at end of body for optimized loading-->
 
-<!-- PolyFill fetch IE support -->
+<!-- PolyFills -->
 <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.0.0/fetch.min.js"></script>
 <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
 
@@ -185,20 +189,22 @@
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
 
+<!-- 'text/browserify' allows for 'require' on modules (node.js)  -->
 {% compress js file base %}
-    {#    vendor js #}
-    <script type="text/javascript" src={% static 'materialize/js/materialize.min.js' %}></script>
+    <!-- vendor js -->
+    <script type="text/javascript" src={% static 'materialize/materialize.min.js' %}></script>
     <script type="text/javascript" src={% static 'yall/yall.min.js' %}></script>
     <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
 
-    {# 'text/browserify' allows for 'require' on modules (node.js)  #}
-    <script type="text/javascript" src="{% static "app.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/utils.js" %}"></script>
     <script type="text/javascript" src={% static 'recipe/recipe_slick_carousel.js' %}></script>
-    <script type="text/javascript" src={% static 'recipe/recipe_nav_search.js' %}></script>
-    <script type="text/browserify" src={% static 'recipe/recipe_filter_ajax.js' %}></script>
 
-    <script type="text/browserify" src={% static 'subscribe_modal.js' %}></script>
-    <script type="text/javascript" src={% static 'navs.js' %}></script>
+    <script type="text/javascript" src="{% static "js/app.js" %}"></script>
+    <script type="text/javascript" src={% static 'recipe/recipe_nav_search.js' %}></script>
+    <script type="text/javascript" src={% static 'recipe/recipe_filter_ajax.js' %}></script>
+
+    <script type="text/javascript" src={% static 'js/subscribe_modal.js' %}></script>
+    <script type="text/javascript" src={% static 'js/navs.js' %}></script>
 {% endcompress %}
 
 {# todo: reason out if using compressor is this a good idea? #}

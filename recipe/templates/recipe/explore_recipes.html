@@ -2,6 +2,8 @@
 {% load django_bootstrap_breadcrumbs %}
 {% load static %}
 {% load recipe_extras %}
+{% load thumbnail %}
+{% load ratings %}
 
 {% block breadcrumbs %}
     {{ block.super }}
@@ -9,26 +11,33 @@
     {% breadcrumb "Explore" "explore-recipes" %}
 {% endblock %}
 
-
+{%  block title %}
+    {{ block.super }}
+    | Explore recipes
+{% endblock title %}
 
 {% block content %}
     {% render_breadcrumbs %}
-    <h2>Recipes</h2>
+    <h2>Explore recipes</h2>
 
     <div class="row">
         <div class="col s12">
             {% for key, value in tagged_recipes.items %}
+
                 <div>
-                    <h5> {{ key }} </h5>
-                    <div class="recipe-carousel">
-                        {% for recipe in value %}
-                            <div class="recipe-slide">
-                                {% include "recipe/recipe_card.html" with recipe=recipe %}
-                            </div>
-                        {% endfor %}
+                    <h5 class="center-align"> {{ key }} </h5>
 
+
+                    <div class="recipe-carousel-wrapper">
+                        <div class="recipe-carousel">
+                            {% for recipe in value %}
+                                <div class="recipe-slide">
+                                    {% include "recipe/recipe_card.html" with recipe=recipe %}
+                                </div>
+
+                            {% endfor %}
+                        </div>
                     </div>
-
                 </div>
             {% endfor %}
 

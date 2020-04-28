@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from dotenv import load_dotenv
+from django.templatetags.static import static as django_static
+
 load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -160,7 +162,7 @@ AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_CLOUDFRONT_DOMAIN')
 # s3 static settings
 # STATIC_LOCATION = 'static'
 # STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
-#configures Django to automatically add static files to the S3 bucket when the collectstatic command is run.
+# configures Django to automatically add static files to the S3 bucket when the collectstatic command is run.
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # s3 public media settings
@@ -169,7 +171,6 @@ DEFAULT_FILE_STORAGE = 'misoboop.storage_backends.PublicMediaStorage'
 
 AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
 PRIVATE_FILE_STORAGE = 'misoboop.storage_backends.PrivateMediaStorage'
-
 
 COMPRESS_CSS_FILTERS = [
     'django_compressor_autoprefixer.AutoprefixerFilter',
@@ -205,7 +206,7 @@ DEBUG_TOOLBAR_CONFIG = {
 
 SITE_ID = 1
 
-STAR_RATINGS_STAR_SPRITE = "/dumpling_sprite_sm.png"
+STAR_RATINGS_STAR_SPRITE = "/assets/dumpling_sprite_sm.png"
 STAR_RATINGS_ANONYMOUS = True
 
 # COMPRESS_OFFLINE = True
@@ -213,8 +214,13 @@ STAR_RATINGS_ANONYMOUS = True
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+LIBSASS_CUSTOM_FUNCTIONS = {
+    'static': django_static,
+    'map': lambda mapping, key: mapping.get(key),
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 X_FRAME_OPTIONS = 'sameorigin'
 

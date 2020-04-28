@@ -1,0 +1,48 @@
+$arrowDimension: 2.5rem;
+
+.recipe-carousel-wrapper {
+  padding: $arrowDimension;
+}
+
+.carousel-next, .carousel-prev {
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: $arrowDimension;
+  height: $arrowDimension;
+  padding: 0;
+  -webkit-transform: translate(0, -50%) scaleY(1.5);
+  -ms-transform: translate(0, -50%) scaleY(1.5);
+  transform: translate(0, -50%) scaleY(1.5);
+  cursor: pointer;
+  color: black;
+  border: none;
+  outline: 0;
+  background: 0 0;
+  transition: transform 0.2s ease-in;
+  &:not(.slick-disabled):hover {
+    color: red;
+    -webkit-transform: translate(0, -50%) scale(1.5, 2);
+    -ms-transform: translate(0, -50%) scale(1.5, 2);
+    transform: translate(0, -50%) scale(1.5, 2);
+  }
+;
+
+  &.slick-disabled {
+    color: grey;
+  }
+;
+}
+
+.carousel-next {
+  right: -$arrowDimension;
+}
+
+.carousel-prev {
+  left: -$arrowDimension;
+}
+
+.carousel-arrow-icon {
+  font-size: $arrowDimension;
+}
+

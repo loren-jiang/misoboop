@@ -15,18 +15,29 @@
 
     <div class="row">
         <div class="col s12">
+            <table class="">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Tags</th>
+                </tr>
+                </thead>
 
-            <div class="row">
-                {% if page_obj|length %}
-                    {% for recipe in page_obj %}
-                        <div class="col l3 m4 s10">
-                            {% include "recipe/recipe_card.html" with recipe=recipe %}
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p> no matching recipes found... </p>
-                {% endif %}
-            </div>
+                <tbody>
+                {% for recipe in object_list.all %}
+                    <tr>
+                        <td><a href="{{ recipe.get_absolute_url }}">{{ recipe.name }} </a></td>
+                        <td>{{ recipe.modified_at }}</td>
+                        <td>
+                            {% for tag in recipe.tags.all %}
+                                <span class="chip"> {{ tag.name }}</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -51,5 +62,5 @@
 {% endblock content %}
 
 {% block scripts %}
-{#    <script src={% static 'recipe/recipe_filter.js' %}></script>#}
+    {#    <script src={% static 'recipe/recipe_filter.js' %}></script>#}
 {% endblock scripts %}
