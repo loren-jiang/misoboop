@@ -62,6 +62,9 @@ class Recipe(CreatedModified):
     def total_time(self):
         return self.cook_time + self.prep_time
 
+    def tag_names_as_list(self):
+        return [tag.name for tag in self.tags.order_by('name')]
+
     def get_tags(self):
         return self.tags.select_related()  # todo: need to add when the time comes
 
@@ -99,7 +102,7 @@ class Recipe(CreatedModified):
             "@type": "Recipe",
             "author": str(self.author),
             "cookTime": self.cook_time,
-            "datePublished": self.created_at.date(),
+            "datePublished": self.created_at.date().isoformat(),
             "description": self.description,
             "image": "http://www.example.com/images.jpg",
             "recipeIngredient": self.get_ingredient_amounts_as_list(),
