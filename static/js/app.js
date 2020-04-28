@@ -17,6 +17,18 @@ document.addEventListener('DOMContentLoaded', function () {
         scrollOffset: 0
     });
 
+    var fullWidthCarouselElems = document.querySelectorAll('.carousel');
+    var fullWidthCarouselInstances = M.Carousel.init(fullWidthCarouselElems, {
+        fullWidth: true,
+        indicators: true
+    });
+
+    // const swipeableTabsElems = document.querySelectorAll('.swipeable.tabs')
+    // const swipeableTabsInstances = M.Tabs.init(swipeableTabsElems, {
+    //     swipeable: true,
+    //     // responsiveThreshold: 600, // todo:this doesn't seem to have an effect?
+    // });
+
     lazifyImages();
 
 
@@ -40,14 +52,13 @@ function lazifyImages() {
                 img[i].setAttribute("data-src", src);
             }
         }
-        setTimeout(function () {
-            yall({
-                idleLoadTimeout: 500,
-                threshold: 100,
-                // observeChanges: true,
-                // observeRootSelector: ".main-content"
-            });
-        }, 0)
+
+        yall({
+            idleLoadTimeout: 500,
+            threshold: 200,
+            observeChanges: true,
+            observeRootSelector: 'main-content',
+        });
     }
 
 

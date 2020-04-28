@@ -1,0 +1,24 @@
+<!-- pass in 'title' and 'object_list' with 'get_absolute_url', 'name', 'tags'-->
+<table class="responsive-table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Tags</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for thing in object_list.all %}
+        <tr>
+            <td><a href="{{ thing.get_absolute_url }}">{{ thing.name }} </a></td>
+            <td>{{ thing.modified_at }}</td>
+            <td>
+                {% for tag in thing.tags.all %}
+                    <span class="chip"> {{ tag.name }}</span>
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -26,9 +26,10 @@
 
 {% load thumbnail %}
 {% load ratings %}
+{% load recipe_extras %}
 
 <div class="card recipe-card">
-        <div class="card-image waves-effect waves-block waves-light">
+    <div class="card-image waves-effect waves-block waves-light">
 
         {% thumbnail recipe.image.upload "500x500" crop="center" as im %}
             <img class="activator" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
@@ -40,7 +41,7 @@
     <div class="card-content">
         <span class="card-title activator grey-text text-darken-4 flowy-font">{{ recipe.name }}<i
                 class="material-icons right">more_vert</i></span>
-{#        <p><a class="btn waves-effect" href={{ recipe.get_absolute_url }}>See recipe</a></p>#}
+        {#        <p><a class="btn waves-effect" href={{ recipe.get_absolute_url }}>See recipe</a></p>#}
     </div>
     <div class="card-reveal">
         <span class="card-title grey-text text-darken-4">{{ recipe.name }}<i
@@ -51,27 +52,28 @@
             {% endfor %}
         </div>
         <div>
-            Prep time: {{ recipe.prep_time }}
-        </div>
-        <div>
-            Cook time: {{ recipe.cook_time }}
-        </div>
-        <div>
-            Total time: {{ recipe.total_time }}
-        </div>
-        <div>
-            # of servings: {{ recipe.servings }}
-        </div>
-        <div>
-            {% ratings recipe template_name="recipe/dumpling_ratings.html" icon_height=25 icon_width=25 read_only=True %}
-        </div>
-        <div>
             <a class="btn waves-effect" href={{ recipe.get_absolute_url }}>See recipe</a>
         </div>
+        {#        {% ratings recipe template_name="recipe/dumpling_ratings.html" icon_height=25 icon_width=25 read_only=True %}#}
+        <hr>
+        <div>
+            Prep time: {{ recipe.prep_time|min_to_hr }}
+        </div>
+        <div>
+            Cook time: {{ recipe.cook_time|min_to_hr }}
+        </div>
+        <div>
+            Total time: {{ recipe.total_time|min_to_hr }}
+        </div>
+        <div>
+            Servings: {{ recipe.servings }}
+        </div>
+
+
 
         {% if recipe.short_description %}
             <hr>
-            <p>{{ recipe.short_description }}</p>
+            <p>About: {{ recipe.short_description }}</p>
         {% endif %}
     </div>
 </div>

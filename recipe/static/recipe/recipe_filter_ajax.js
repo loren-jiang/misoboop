@@ -49,7 +49,6 @@ $(document).ready(function () {
         });
 
 
-
         const $filterHeaderIcon = $("#collapsible_filter .collapsible-header .material-icons");
         const collapsibleInstances = M.Collapsible.init($('#collapsible_filter'), {
             inDuration: 200,
@@ -226,12 +225,22 @@ function recipeSearch($form, paginating = false) {
 
 function template(recipes) {
     const $ul = $('#filtered_recipes');
-    let htmlOut = "";
+    let htmlOut = `<table class=''> <tbody>`;
     for (let i = 0; i < recipes.length; i++) {
-        htmlOut += `<li> <a href="${recipes[i].slugged_url}"> ${recipes[i].name} </a> </li>`;
+        formattedTags = ``;
+        for (let k = 0; k < recipes[i].tags.length; k++) {
+            formattedTags += `<span class="chip"> ${recipes[i].tags[k]} </span>`
+        }
+        htmlOut += `<tr> 
+                        <td>
+                            <a href="${recipes[i].slugged_url}"> ${recipes[i].name} </a>
+                        </td> 
+                        <td>${formattedTags}</td>
+                        <td><img class="" width="100" height="100" src="${recipes[i].sm_image_url}"></td>
+                    </tr>`;
     }
-
-    $ul.html(htmlOut ? htmlOut : "No matching recipes...")
+    htmlOut += `</tbody> </table>`;
+    $ul.html(recipes.length ? htmlOut : `<p>No recipes found... <br> <div class="table-flip">(╯°□°)╯︵ ┻━┻</div></p>`)
 };
 
 $.fn.resetToDefault = function () {

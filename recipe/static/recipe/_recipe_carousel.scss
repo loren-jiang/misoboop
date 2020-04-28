@@ -19,14 +19,19 @@ $arrowDimension: 2.5rem;
   border: none;
   outline: 0;
   background: 0 0;
-
-  &:hover {
+  transition: transform 0.2s ease-in;
+  &:not(.slick-disabled):hover {
     color: red;
-  };
+    -webkit-transform: translate(0, -50%) scale(1.5, 2);
+    -ms-transform: translate(0, -50%) scale(1.5, 2);
+    transform: translate(0, -50%) scale(1.5, 2);
+  }
+;
 
   &.slick-disabled {
     color: grey;
-  };
+  }
+;
 }
 
 .carousel-next {
@@ -40,3 +45,4 @@ $arrowDimension: 2.5rem;
 .carousel-arrow-icon {
   font-size: $arrowDimension;
 }
+

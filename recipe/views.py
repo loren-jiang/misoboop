@@ -11,6 +11,7 @@ from .filters import filter_recipe_qs
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core import serializers
+from core.models import Series
 
 import json
 
@@ -81,6 +82,23 @@ class RecipeListView(ListView):
             total_time=F('cook_time') + F('prep_time'))
         return filter_recipe_qs(self.request, qs)
 
+class RecipeSeriesListView(ListView):
+    model = Series
+    template_name = 'recipe/recipe_series.html'
+
+    def get_queryset(self):
+        qs = super().get_queryset().prefetch_related('recipes', 'posts')
+        return qs
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data()
+        # posts = [{'name': post.name, 'content':post.name, 'date':post.created_at}
+        #          for post in self.object.posts.all()]
+        # recipes = [{'name': recipe.name, 'content':recipe.med_image_url, 'date':recipe.created_at}
+        #            for recipe in self.object.recipes.all()]
+        # sorted_recipes_and_posts = sorted(posts + recipes, key=lambda item: item['date'])
+        # context['recipes_and_posts'] = sorted_recipes_and_posts
+        return context
 
 class ExploreRecipesListView(ListView):
     model = Recipe

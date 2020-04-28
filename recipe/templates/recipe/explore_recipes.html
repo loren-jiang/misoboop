@@ -11,18 +11,21 @@
     {% breadcrumb "Explore" "explore-recipes" %}
 {% endblock %}
 
-
+{%  block title %}
+    {{ block.super }}
+    | Explore recipes
+{% endblock title %}
 
 {% block content %}
     {% render_breadcrumbs %}
-    <h2>Recipes</h2>
+    <h2>Explore recipes</h2>
 
     <div class="row">
         <div class="col s12">
             {% for key, value in tagged_recipes.items %}
 
                 <div>
-                    <h5> {{ key }} </h5>
+                    <h5 class="center-align"> {{ key }} </h5>
 
 
                     <div class="recipe-carousel-wrapper">

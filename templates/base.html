@@ -77,7 +77,7 @@
 
                         <li><a href={% url 'post-list' %}>Blog</a></li>
                         <li><a href={% url 'about' %}>About</a></li>
-                        <li><a data-target="subscribe_modal" class="modal-trigger">Subscribe</a></li>
+{#                        <li><a data-target="subscribe_modal" class="modal-trigger">Subscribe</a></li>#}
                     </ul>
 
                     <a href="#" data-target="mobile_sidenav" class="nav-sidenav-trigger sidenav-trigger"><i
@@ -93,7 +93,7 @@
     <!-- Recipes nav dropdown -->
     <ul id='recipes_nav_dropdown' class='dropdown-content'>
         <li><a href="{% url 'explore-recipes' %}">Explore</a></li>
-        <li><a href="#!">By Series</a></li>
+        <li><a href={% url 'recipe-series-list' %}>By Series</a></li>
         <li class="divider" tabindex="-1"></li>
         <li><a href="{% url 'search-recipes' %}">Search</a></li>
     </ul>
@@ -109,8 +109,8 @@
                     </a>
                     <div class="collapsible-body">
                         <ul>
-                            <li><a href="{% url 'recipe-list' %}">Explore</a></li>
-                            <li><a href="#!">By Series</a></li>
+                            <li><a href="{% url 'explore-recipes' %}">Explore</a></li>
+                            <li><a href={% url 'recipe-series-list' %}>By Series</a></li>
                             <li class="divider" tabindex="-1"></li>
                             <li><a href="{% url 'search-recipes' %}">Search</a></li>
                         </ul>
