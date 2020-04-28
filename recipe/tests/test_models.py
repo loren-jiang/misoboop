@@ -13,6 +13,12 @@ class RecipeModelTest(TestCase):
     def tearDown(self):
         pass
 
+    def test_str(self):
+        self.assertEqual(RecipeFactory(name="cheddar doughnuts").name, "cheddar doughnuts")
+
+    def test_total_time(self):
+        self.assertEqual(RecipeFactory(cook_time=30, prep_time=45).total_time(), 75)
+
     def test_slug_is_created_automatically(self):
         banana_bread = RecipeFactory(name="banana bread")
         self.assertEqual(banana_bread.slug, "banana-bread")
@@ -34,7 +40,6 @@ class RecipeModelTest(TestCase):
         char_siu_pork.tags.add("Pork", "Chinese", "Chinese")
         self.assertListEqual([tag.name for tag in char_siu_pork.tags.order_by('name')],
                              ["Chinese", "Pork"])
-
 
 
 

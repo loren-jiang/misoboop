@@ -13,11 +13,14 @@ from core.models import CreatedModified
 
 class Post(CreatedModified):
     name = models.CharField(max_length=300, unique=True, verbose_name=_('Name'))
-    text = HTMLField(default='', verbose_name=_('Text'))
+    image = models.OneToOneField('core.PublicImage', on_delete=models.SET_NULL, blank=True, null=True)
+    summary = models.TextField(default='', verbose_name=_('Summary'), blank=True, null=True)
+    text = HTMLField(default='', verbose_name=_('Text'), blank=True, null=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     tags = TaggableManager(through=TaggedWhatever, blank=True)
     slug = models.SlugField(max_length=100, editable=False)
     series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True, related_name='posts')
+    is_published = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -27,7 +30,7 @@ class Post(CreatedModified):
         return reverse('post-detail', args=[self.slug])
 
     def __str__(self):
-        return self.name
+        return self.name + ' | ' + str(self.created_at)
 
     class Meta:
         ordering = ['name']
