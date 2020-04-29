@@ -7,12 +7,12 @@ from django.utils import timezone
 from django_json_ld.views import JsonLdDetailView
 from django.db.models import F, Q
 from django.http import JsonResponse
-from .filters import filter_recipe_qs
+from .filters import filter_recipe_qs, RecipeFilterSet
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core import serializers
 from core.models import Series
-
+from django_filters.views import FilterView
 import json
 
 
@@ -31,7 +31,7 @@ def about(request):
     context = {}
     about = None
     try:
-        about = Post.objects.get(name='About')
+        about = Post.objects.get(headline='About')
     except Post.DoesNotExist:
         pass
     if about is not None:
@@ -64,15 +64,10 @@ class RecipeDetailView(JsonLdDetailView):
         context['now'] = timezone.now()
         return context
 
-class RecipeListView(ListView):
+class RecipeListView(FilterView):
     model = Recipe
+    filterset_class = RecipeFilterSet
     paginate_by = 20
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data()
-        context['filter_tags'] = BasicTag.objects.filter(filterable=True)
-
-        return context
 
     def get_queryset(self):
         qs = super().get_queryset().prefetch_related(
@@ -80,7 +75,7 @@ class RecipeListView(ListView):
             'directions__ingredient_amounts__ingredient',
             'directions__ingredient_amounts__unit').annotate(
             total_time=F('cook_time') + F('prep_time'))
-        return filter_recipe_qs(self.request, qs)
+        return qs
 
 class RecipeSeriesListView(ListView):
     model = Series
@@ -136,6 +131,6 @@ def explore_recipes(request):
 
 def search_recipes(request):
     context = {
-        'filter_tags': BasicTag.objects.filter(filterable=True)
+        'filter_tags': BasicTag.objects.filter(filterable=True, recipe__isnull=False).distinct()
     }
     return render(request, 'recipe/recipe_list_ajax.html', context)

@@ -95,7 +95,7 @@ $(document).ready(function () {
             recipeSearch($recipeFilterForm, true)
         })
 
-        $recipeFilterForm.find('#recipe_name_input').keyup(debounce(function () {
+        $recipeFilterForm.find('#recipe_name_input, #recipe_search_input').keyup(debounce(function () {
             recipeSearch($recipeFilterForm);
         }, 200));
 
@@ -158,6 +158,7 @@ function appendToForm($form, chipsData, orderings) {
 }
 
 function recipeSearch($form, paginating = false) {
+    // console.log('new search')
     const chipInstance = M.Chips.getInstance($("#ingredient_chips"));
 
     appendToForm($form, chipInstance.chipsData, $('#ordering').val());
@@ -173,8 +174,8 @@ function recipeSearch($form, paginating = false) {
         url: '/api/recipes/',
         data: $form.serialize(),
         success: function (data) {
-            console.log('Submission was successful.');
-            console.log(data);
+            // console.log('Submission was successful.');
+            // console.log(data);
             template(data.results);
 
             const numPages = data.num_pages;
@@ -194,21 +195,6 @@ function recipeSearch($form, paginating = false) {
                     `;
                 }
                 $('.pagination').html(paginationHtml);
-                // $('.pagination').html(
-                //     `
-                //         <li class="disabled">
-                //             <a class="pagination-link" href="#" data-value="${Math.max(parseInt(data.current_page) - 1, 1)}">
-                //                 <i class="material-icons">chevron_left</i>
-                //             </a>
-                //         </li>
-                //         <li class="active"><a href="#!">${data.current_page}</a></li>
-                //         <li class="waves-effect">
-                //             <a class="pagination-link" href="#" data-value="${Math.min(parseInt(data.current_page) + 1, numPages)}">
-                //                 <i class="material-icons">chevron_right</i>
-                //             </a>
-                //         </li>
-                //     `
-                // )
             } else {
                 $('.pagination').html('')
             }
@@ -217,7 +203,7 @@ function recipeSearch($form, paginating = false) {
             $('#recipes_loader').addClass('hide')
         },
         error: function (data) {
-            console.log('An error occurred.');
+            // console.log('An error occurred.');
         },
     })
 }
@@ -225,7 +211,7 @@ function recipeSearch($form, paginating = false) {
 
 function template(recipes) {
     const $ul = $('#filtered_recipes');
-    let htmlOut = `<table class=''> <tbody>`;
+    let htmlOut = `<table class=''><tr><th>Name</th><th>Tags</th><th>Image</th></tr> <tbody>`;
     for (let i = 0; i < recipes.length; i++) {
         formattedTags = ``;
         for (let k = 0; k < recipes[i].tags.length; k++) {
@@ -236,7 +222,7 @@ function template(recipes) {
                             <a href="${recipes[i].slugged_url}"> ${recipes[i].name} </a>
                         </td> 
                         <td>${formattedTags}</td>
-                        <td><img class="" width="100" height="100" src="${recipes[i].sm_image_url}"></td>
+                        <td><img class="" width="auto" height="100" src="${recipes[i].sm_image_url}"></td>
                     </tr>`;
     }
     htmlOut += `</tbody> </table>`;
@@ -252,8 +238,7 @@ $.fn.resetToDefault = function () {
 function resetForm($form, chipsInstance) {
     // clears form and delete ingredient chips
     $form.find('input:text, input:password, input:file, select, textarea').val('');
-    $form.find('input:radio, input:checkbox')
-        .removeAttr('checked').removeAttr('selected');
+    $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
     const numChips = chipsInstance.chipsData.length;
     for (let i = 0; i < numChips; i++) {
         chipsInstance.deleteChip();

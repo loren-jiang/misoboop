@@ -17,11 +17,20 @@
 
         <div class="row">
             <div class="col s12 m10 l8">
+                <div class="row">
+                    <div class="input-field col s12 m8">
+                        <input name="search" placeholder="search" id="recipe_search_input" type="text"
+                               class="validate" autocomplete="off">
+                        <label class="">Search by name, ingredients, or tags</label>
+                    </div>
+                </div>
                 <ul class="collapsible no-autoinit" id="collapsible_filter">
                     <li>
-                        <div class="collapsible-header"><i class="material-icons">filter_list</i>Filter</div>
+                        <div class="collapsible-header"><i class="material-icons">filter_list</i>Filter results</div>
                         <div class="collapsible-body">
+
                             <div class="row">
+
                                 <div class="input-field col s5">
                                     <input name="name__icontains" placeholder="name" id="recipe_name_input" type="text"
                                            class="validate" autocomplete="off">

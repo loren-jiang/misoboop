@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Series, PublicImage, PrivateImage
+from .models import Series, PublicImage, PrivateImage, BasicTag
 from sorl.thumbnail.admin import AdminImageMixin
 
 # Register your models here.
@@ -13,8 +13,13 @@ class PublicImageInline(admin.StackedInline):
 class PublicImageAdmin(AdminImageMixin, admin.ModelAdmin):
     model = PublicImage
 
+class BasicTagAdmin(admin.ModelAdmin):
+    model = BasicTag
 
 
 admin.site.register(Series)
 admin.site.register(PublicImage, PublicImageAdmin)
 admin.site.register(PrivateImage)
+
+admin.site.register(BasicTag, BasicTagAdmin)
+

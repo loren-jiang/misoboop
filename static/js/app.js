@@ -54,7 +54,7 @@ function lazifyImages() {
         }
 
         yall({
-            idleLoadTimeout: 500,
+            idleLoadTimeout: 200,
             threshold: 200,
             observeChanges: true,
             observeRootSelector: 'main-content',

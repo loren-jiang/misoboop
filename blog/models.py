@@ -22,16 +22,18 @@ class Post(CreatedModified):
     slug = models.SlugField(max_length=100, editable=False)
     series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True, related_name='posts')
     is_published = models.BooleanField(default=False)
+    image = models.OneToOneField('core.PublicImage', on_delete=models.SET_NULL, blank=True, null=True)
+    image_url = models.URLField(max_length=300, default="https://via.placeholder.com/150")
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.headline)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('post-detail', args=[self.slug])
 
     def __str__(self):
-        return self.name + ' | ' + str(self.created_at)
+        return self.headline + ' | ' + str(self.created_at)
 
     def tag_names_as_list(self):
         return [tag.name for tag in self.tags.order_by('name')]
@@ -67,6 +69,6 @@ class Post(CreatedModified):
 
 
     class Meta:
-        ordering = ['created_at', 'headline']
+        ordering = ['created_at', 'modified_at', 'headline']
         verbose_name = _('Post')
         verbose_name_plural = _('Posts')

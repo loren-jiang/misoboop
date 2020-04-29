@@ -3,6 +3,7 @@ import django_filters
 from django.db.models import Q, F
 from functools import reduce
 import operator
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 class NullsAlwaysLastOrderingFilter(OrderingFilter):
     """ Use Django nulls_last feature to force nulls to bottom in all orderings. """
@@ -38,3 +39,19 @@ class IcontainsInFilter(django_filters.Filter):
             qs = qs.filter(query).distinct()
         return qs
 
+class SearchFilter(django_filters.Filter):
+    def __init__(self, lookups, weights=None, *args, **kwargs):
+        self.lookups = lookups
+        # self.weights = weights
+        super().__init__(*args, **kwargs)
+
+    def filter(self, qs, value):
+        # todo: implement more robust search ranking w/ weights
+        search_vector = SearchVector(*self.lookups)
+        search_query = SearchQuery(value)
+        # search_rank = SearchRank(search_vector, search_query, weights=self.weights)
+
+        if value and self.lookups:
+            qs = qs.annotate(search=search_vector).filter(search=search_query)
+            # qs = qs.annotate(rank=search_rank).order_by('-rank')
+        return qs

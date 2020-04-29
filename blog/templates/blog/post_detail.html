@@ -4,17 +4,17 @@
 {% block breadcrumbs %}
     {{ block.super }}
     {% breadcrumb "Posts" "post-list" %}
-    {% breadcrumb post.name "post-detail" post.slug %}
+    {% breadcrumb post.headline "post-detail" post.slug %}
 {% endblock %}
 
 {% block title %}
     {{ block.super }}
-    | {{ post.name }}
+    | {{ post.headline }}
 {% endblock title %}
 
 {% block content %}
     {% render_breadcrumbs %}
     <div class="blog-post">
-        {{ post.text|safe }}
+        {{ post.content|safe }}
     </div>
 {% endblock %}

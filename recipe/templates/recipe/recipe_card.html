@@ -1,29 +1,3 @@
-{#<div class="card recipe-card">#}
-{#    <div class="card-image">#}
-{#        <img src={{ recipe.image.upload.url }}>#}
-{#        <span class="recipe-card-title card-title"> <a href={{ recipe.get_absolute_url }}> {{ recipe.name }}</a></span>#}
-{#        <button class="btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">#}
-{#            <i class="material-icons">share</i>#}
-{#        </button>#}
-{#        <a style="right: 70px; position: absolute; bottom: -20px" class="hide btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">#}
-{#            <i class="fas fa-facebook-messenger" aria-hidden="true"></i>#}
-{#        </a>#}
-{#        <a style="right: 116px; position: absolute; bottom: -20px" class="hide btn-floating halfway-fab waves-effect waves-light red" onclick="showMediaLinks()">#}
-{#            <i class="fas fa-facebook-messenger" aria-hidden="true"></i>#}
-{#        </a>#}
-{#    </div>#}
-{#    <div class="card-content">#}
-{#        <span> <b> Time:</b> {{ recipe.total_time }} min</span>#}
-{#        |#}
-{#        <span> <b> Servings:</b> {{ recipe.servings }}</span>#}
-{#        <p>#}
-{#            {%  for tag in recipe.tags.all  %}#}
-{#                {{ tag.name }}#}
-{#            {%  endfor %}#}
-{#        </p>#}
-{#    </div>#}
-{#</div>#}
-
 {% load thumbnail %}
 {% load ratings %}
 {% load recipe_extras %}
@@ -39,12 +13,12 @@
         {#        <img class="activator" src={{ recipe.image.upload.url }}>#}
     </div>
     <div class="card-content">
-        <span class="card-title activator grey-text text-darken-4 flowy-font">{{ recipe.name }}<i
+        <span class="card-title activator grey-text text-darken-4">{{ recipe.name }}<i
                 class="material-icons right">more_vert</i></span>
         {#        <p><a class="btn waves-effect" href={{ recipe.get_absolute_url }}>See recipe</a></p>#}
     </div>
     <div class="card-reveal">
-        <span class="card-title grey-text text-darken-4">{{ recipe.name }}<i
+        <span class="card-title grey-text text-darken-4 flowy-font">{{ recipe.name }}<i
                 class="material-icons right">close</i></span>
         <div>
             {% for tag in recipe.tags.all %}

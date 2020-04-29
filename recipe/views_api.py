@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from taggit.models import Tag
 from taggit_serializer.serializers import TaggitSerializer
-from .filters import RecipeFilterSet, NullsAlwaysLastOrderingFilter
+from .filters import LiveSearchRecipeFilterSet, NullsAlwaysLastOrderingFilter
 from django.db.models import F
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
@@ -75,8 +75,9 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = CustomPageNumberPagination
     # pagination_class = CustomLimitOffsetPagination
     serializer_class = RecipeSerializer
-    filterset_class = RecipeFilterSet
-    filter_backends = [DjangoFilterBackend, NullsAlwaysLastOrderingFilter]
+    filterset_class = LiveSearchRecipeFilterSet
+    filter_backends = [DjangoFilterBackend, NullsAlwaysLastOrderingFilter, filters.SearchFilter]
+    search_fields = ['@name', '@tags__name', '@ingredients__name']
     ordering_fields = ('name', 'modified_at', 'created_at', 'total_time', 'avg_ratings')
 
     # ordering = ['-avg_ratings']

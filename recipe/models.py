@@ -46,7 +46,7 @@ class Recipe(CreatedModified):
     series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True, related_name='recipes')
 
     class Meta:
-        ordering = ['name']
+        ordering = ['name',]
         verbose_name = _('Recipe')
         verbose_name_plural = _('Recipes')
 

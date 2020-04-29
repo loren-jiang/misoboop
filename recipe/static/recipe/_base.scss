@@ -1,4 +1,5 @@
 @import "_base_variables";
+@import "_theme.scss";
 
 /* materialize override styles */
 body {
@@ -198,4 +199,19 @@ a.sidenav-trigger i.material-icons {
 .table-flip {
   margin-top: 2rem;
   font-size: 3rem;
+}
+
+/* Single-item slick carousel */
+.single-item-carousel-title {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: $color1;
+  padding: 1rem;
+  color: white;
+  z-index: 2;
+}
+
+.single-item-carousel-slide {
+  //position: relative;
 }
