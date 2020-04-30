@@ -32,14 +32,12 @@ class Recipe(CreatedModified):
     prep_time = models.PositiveSmallIntegerField(blank=True, null=True)
     cook_time = models.PositiveSmallIntegerField(blank=True, null=True)
     image = models.OneToOneField('core.PublicImage', on_delete=models.SET_NULL, blank=True, null=True)
-    large_image_url = models.URLField(max_length=300, default="https://via.placeholder.com/1000")
-    med_image_url = models.URLField(max_length=300, default="https://via.placeholder.com/400")
-    sm_image_url = models.URLField(max_length=300, default="https://via.placeholder.com/150")
+    placeholder_url = models.URLField(max_length=300, default="https://via.placeholder.com/400")
     ingredients = models.ManyToManyField('Ingredient', through='IngredientAmount', blank=True)
     servings = models.PositiveSmallIntegerField(default=1)
     max_servings = models.PositiveSmallIntegerField(default=25)
     tags = TaggableManager(through=TaggedWhatever, blank=True)
-    is_published = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=True)
     slug = models.SlugField(max_length=100)
     likes = models.PositiveSmallIntegerField(default=1)
     ratings = GenericRelation(Rating, related_query_name='recipes')
@@ -96,6 +94,11 @@ class Recipe(CreatedModified):
     def get_pdf_printout(self):
         pass
 
+    def image_url(self):
+        if self.image:
+            return self.image.upload.url
+        return ''
+
     @property
     def sd(self):
         return {
@@ -105,7 +108,7 @@ class Recipe(CreatedModified):
             "cookTime": self.cook_time,
             "datePublished": self.created_at.date().isoformat(),
             "description": self.description,
-            "image": "http://www.example.com/images.jpg",
+            "image": self.image_url(),
             "recipeIngredient": self.get_ingredient_amounts_as_list(),
             "interactionStatistic": {
                 "@type": "InteractionCounter",

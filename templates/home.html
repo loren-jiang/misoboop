@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% load core_extras %}
+{% load thumbnail %}
 
 {% block content %}
     <div class="row">
-        <div class="col s12 l9 latest-recipes ">
-{#            <h3> Latest recipes </h3>#}
+        <div class="col s12 l8 latest-recipes ">
+            {#            <h3> Latest recipes </h3>#}
 
             <div class="fullwidth-slick-carousel">
                 {% for recipe in latest_recipes %}
@@ -16,14 +17,24 @@
 
         </div>
 
-        <div class="welcome col offset-s1 s10 l3  ">
+        <div class="welcome col offset-s1 s10 l4  ">
             <div class="card color-2">
                 <div class="card-content">
                     <div class="card-title">
                         <h4> Welcome </h4>
                     </div>
-                    <p>I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively.</p>
+                    {% thumbnail welcome_image.upload "300" as im %}
+                        <img src="{{ im.url }}">
+                    {% endthumbnail %}
+                    <p>
+                        You found us!!!
+                        <br>
+                        This blog is all about cooking with an open mind and empty stomach.
+                        It's my take on the Chinese dishes I grew up eating (and really never knowing how
+                        to make).
+                        <br>
+                        Hope y'all enjoy!
+                    </p>
                 </div>
                 <div class="card-action">
                     <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>

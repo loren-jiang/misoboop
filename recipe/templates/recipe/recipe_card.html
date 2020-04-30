@@ -8,7 +8,7 @@
         {% thumbnail recipe.image.upload "500x500" crop="center" as im %}
             <img class="activator" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
         {% empty %}
-            <img class="activator" src="{{ recipe.sm_image_url }}">
+            <img class="activator" src="{{ recipe.placeholder_url }}">
         {% endthumbnail %}
         {#        <img class="activator" src={{ recipe.image.upload.url }}>#}
     </div>

@@ -71,7 +71,7 @@ class Series(CreatedModified):
 
 # Media models
 class PublicImage(NameDescription):
-    name = models.CharField(max_length=500, null=True, blank=True)
+    name = models.CharField(max_length=500, null=True, blank=True, unique=True)
     description = HTMLField(default='', verbose_name=_('Text'), null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     upload = ImageField()

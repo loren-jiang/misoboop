@@ -27,7 +27,7 @@
                     {% if recipe.image.upload.url %}
                         <img class="responsive-img" src={{ recipe.image.upload.url }}>
                     {% else %}
-                        <img class="responsive-img" src={{ recipe.large_image_url }}>
+                        <img class="responsive-img" src={{ recipe.placeholder_url }}>
                     {% endif %}
                     <div class="fixed-action-btn">
                         <a class="btn-floating btn-large red">

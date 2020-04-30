@@ -11,7 +11,7 @@ from .filters import filter_recipe_qs, RecipeFilterSet
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core import serializers
-from core.models import Series
+from core.models import Series, PublicImage
 from django_filters.views import FilterView
 import json
 
@@ -22,7 +22,8 @@ import json
 def home(request):
     context = {
         'latest_recipes': Recipe.objects.prefetch_related('tags', ).order_by('-created_at').select_related()[0:6],
-        'latest_posts': Post.objects.prefetch_related('tags').order_by('-created_at').select_related()[0:6]
+        'latest_posts': Post.objects.prefetch_related('tags').order_by('-created_at').select_related()[0:6],
+        'welcome_image': PublicImage.objects.get(name='miso-rilakkuma')
     }
     return render(request, 'home.html', context)
 
