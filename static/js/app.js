@@ -17,6 +17,18 @@ document.addEventListener('DOMContentLoaded', function () {
         scrollOffset: 0
     });
 
+    // floating action buttons
+    var fabElems = document.querySelectorAll('.fixed-action-btn');
+    var fabInstances = M.FloatingActionButton.init(fabElems, {
+        hoverEnabled: false
+    });
+
+    // on 'blur' close the corresponding FAB
+    $(fabElems).on('blur', function() {
+        $(this).floatingActionButton('close');
+    })
+
+
     var fullWidthCarouselElems = document.querySelectorAll('.carousel');
     var fullWidthCarouselInstances = M.Carousel.init(fullWidthCarouselElems, {
         fullWidth: true,

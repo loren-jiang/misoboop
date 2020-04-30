@@ -30,9 +30,17 @@
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{% block title %}MisoBoop{% endblock %}</title></head>
+    <title>{% block title %}MisoBoop{% endblock %}</title>
+</head>
 {% block jsonld %}  {% endblock %}
 <body>
+{#<div id="fb-root"></div>#}
+{#<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0"></script>#}
+{#<script#}
+{#    type="text/javascript"#}
+{#    async defer#}
+{#    src="//assets.pinterest.com/js/pinit.js"#}
+{#></script>#}
 
 <div class="container">
     <!-- Page Content goes here -->
@@ -40,7 +48,7 @@
         <div class="col s12">
             <div class="site-banner">
                 <a href="/">
-                    <img class="logo" id="misoboop-cat" src={% static 'assets/lucky_dumpling_cat_min.svg' %}/>
+                    <img class="logo" data-pin-nopin="true" id="misoboop-cat" src={% static 'assets/lucky_dumpling_cat_min.svg' %}/>
                 </a>
 
 
@@ -140,17 +148,26 @@
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
-                    <h3 class="white-text slogify">MisoBoop</h3>
+                    <h3 class="white-text banner-font">MisoBoop</h3>
                     <p class="grey-text text-lighten-4">
-                        Questions or comments? Feel free to reach out via <a href="mailto:miso.booper@gmail.com">email.</a>
+                        Questions or comments?
+                        <br>
+                        <span>
+                            Feel free to reach out
+                            <a class="whiten underline" href="mailto:miso.booper@gmail.com">
+                                email.
+                            </a>
+                        </span>
+
                     </p>
                 </div>
                 <div class="col l4 offset-l2 s12">
-                    <h5 class="white-text">Social media</h5>
-                    <div class="social-media-links">
-                        <a href="#"><i class="fa fa-instagram white-text" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-facebook-f white-text" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-twitter white-text" aria-hidden="true"></i></a>
+                    <h5 class="">Social media</h5>
+                    <div class="">
+                        <a class="social-media-link whiten" href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        <a class="social-media-link whiten" href="#"><i class="fa fa-facebook-f" aria-hidden="true"></i></a>
+                        <a class="social-media-link whiten" href="#"><i class="fa fa-twitter"
+                                                                        aria-hidden="true"></i></a>
                     </div>
 
                     {#                    <ul>#}
@@ -241,6 +258,8 @@
 
     <script type="text/javascript" src={% static 'js/subscribe_modal.js' %}></script>
     <script type="text/javascript" src={% static 'js/navs.js' %}></script>
+    <script type="text/javascript" src={% static 'js/social_media.js' %}></script>
+
 {% endcompress %}
 
 {# todo: reason out if using compressor is this a good idea? #}

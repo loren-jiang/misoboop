@@ -225,6 +225,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 X_FRAME_OPTIONS = 'sameorigin'
 
+
+# CACHES = {
+#     'default':{
+#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': '127.0.0.1;11211',
+#     }
+# }
+
 # Override production variables if DJANGO_DEVELOPMENT env variable is set
 if os.environ.get('DJANGO_DEVELOPMENT') is not None:
     print('Development settings used.')

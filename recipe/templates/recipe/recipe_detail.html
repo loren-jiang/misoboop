@@ -6,7 +6,12 @@
 
 {% block jsonld %}
     {% render_json_ld sd %}
-{% endblock %}
+{% endblock jsonld %}
+
+{% block title %}
+    {{ block.super }}
+    | {{ recipe.name }}
+{% endblock title %}
 
 {% block breadcrumbs %}
     {{ block.super }}
@@ -16,6 +21,7 @@
 
 {% block content %}
     {% render_breadcrumbs %}
+
     <div class="row">
         <div class="col s12">
             <h1>
@@ -29,23 +35,46 @@
                     {% else %}
                         <img class="responsive-img" src={{ recipe.placeholder_url }}>
                     {% endif %}
-                    <div class="fixed-action-btn">
+                    <div class="fixed-action-btn" tabindex="0">
                         <a class="btn-floating btn-large red">
                             <i class="large material-icons">share</i>
                         </a>
                         <ul>
-                            <li><a class="btn-floating red tooltipped" data-position="left"
-                                   data-tooltip="Share on Facebook"><i
-                                    class="fa fa-facebook-f" aria-hidden="true"></i></a></li>
-                            <li><a class="btn-floating yellow darken-1 tooltipped" data-position="left"
-                                   data-tooltip="Share on Pinterest"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                            <li>
+                                <a
+                                        rel="noreferrer noopener"
+                                        data-href=""
+                                        data-position="left"
+                                        data-tooltip="Share on Facebook"
+                                        class="btn-floating red tooltipped fb-xfbml-parse-ignore fb-share-link">
+                                    <i class="fa fa-facebook-f" aria-hidden="true"></i>
+                                </a>
                             </li>
-                            <li><a class="btn-floating green tooltipped" data-position="left" data-tooltip="Email"><i
+                            <li>
+                                <a
+                                        rel="noreferrer noopener"
+                                        class="btn-floating yellow darken-1 tooltipped"
+                                        data-position="left"
+                                        data-tooltip="Share on Pinterest"
+                                        data-pin-custom="true" href="https://www.pinterest.com/pin/create/button/"
+                                        data-pin-do="buttonPin"
+                                        data-pin-media={{ recipe.image_url }}>
+                                    <i class="fa fa-pinterest" aria-hidden="true"></i>
+                                </a>
+                                {#                                <a#}
+                                {#                                        rel="noreferrer noopener"#}
+                                {#                                        class="btn-floating yellow darken-1 tooltipped" data-position="left"#}
+                                {#                                        data-tooltip="Share on Pinterest"><i class="fa fa-pinterest"#}
+                                {#                                                                             aria-hidden="true"></i></a>#}
+                            </li>
+                            <li><a
+                                    class="btn-floating green tooltipped" data-position="left" data-tooltip="Email"><i
                                     class="material-icons">email</i></a></li>
                             <li>
-                                <a id="content_copy" tabindex="0" class="btn-floating blue tooltipped"
-                                   data-position="left"
-                                   data-tooltip="Copy url link">
+                                <a
+                                        id="content_copy" tabindex="0" class="btn-floating blue tooltipped"
+                                        data-position="left"
+                                        data-tooltip="Copy url link">
                                     <i class="material-icons">content_copy</i>
                                 </a>
                             </li>
@@ -357,7 +386,19 @@
             return msg;
         }
 
+
     </script>
-{% endblock %}
+
+    <script type="text/javascript">
+        (function (d) {
+            var f = d.getElementsByTagName('SCRIPT')[0], p = d.createElement('SCRIPT');
+            p.type = 'text/javascript';
+            p.async = true;
+            p.src = '//assets.pinterest.com/js/pinit.js';
+            f.parentNode.insertBefore(p, f);
+            p.setAttribute("data-pin-hover", true);
+        }(document));
+    </script>
+{% endblock scripts %}
 
 

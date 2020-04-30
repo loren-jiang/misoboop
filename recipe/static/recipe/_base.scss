@@ -1,7 +1,7 @@
 @import "_base_variables";
 @import "_theme.scss";
 
-/* materialize override styles */
+/* General tag styles */
 body {
   font-family: $main-font-family;
   font-size: 1.25rem;
@@ -12,13 +12,37 @@ input {
 }
 
 
-h1, h2, h3, h4, h5 {
+h1, h2, h3 {
   font-family: $header-font-family;
 }
+
+h4, h5, h6 {
+  font-family: $subheader-font-family;
+}
+
+.btn, .btn-large, .btn-small, nav, input, label {
+  font-family: $subheader-font-family;
+}
+
 
 b {
   font-weight: bold;
 }
+
+
+/* Link styles */
+a {
+  color: #26a69a;
+}
+
+a.whiten {
+  color: black;
+}
+
+a.underline {
+  text-decoration: underline;
+}
+
 
 /* Custom grid layout */
 @media (max-width: 600px) {
@@ -42,8 +66,6 @@ b {
 }
 
 /* use browser-default on blog posts */
-
-
 .blog-post ul {
   padding-left: 3rem !important;
 }
@@ -57,114 +79,10 @@ b {
   font-size: 1.3rem;
 }
 
-/* icon styles */
-
-i.fa {
-  font-size: 2rem;
-}
-
-/* navbar styles */
-
-
-.nav-search {
-  visibility: hidden;
-  transition: 0.3s ease-in;
-  transition-property: visibility;
-}
-
-.nav-search-prefix {
-  position: absolute;
-  padding-left: 1rem;
-}
-
-//nav.nav-center ul {
-//  text-align: center;
-//  ul li {
-//    display: inline;
-//    float: none;
-//    a {
-//      display: inline-block;
-//    }
-//  }
-//}
-
-@mixin center-aligned-nav-grid($num-cols) {
-  display: grid;
-  grid-template-columns: 1fr repeat($num-cols, auto) 1fr;
-  justify-items: center;
-}
-
-nav div.nav-wrapper {
-  @include center-aligned-nav-grid(1);
-
-  .nav-search {
-    grid-column-start: 1;
-    margin-right: auto;
-    //width: 80%;
-    line-height: 100%;
-  }
-
-  @media #{$medium-and-down} {
-    // styles for medium screens and down
-    .nav-search {
-      grid-column: 1 / 4;
-    }
-  }
-
-  .topnav {
-    grid-column-start: 2;
-  }
-
-  .nav-sidenav-trigger {
-    grid-column-start: -1;
-  }
-}
-
-.topnav li a {
-  font-size: 1.25rem;
-}
-
-.sidenav li:first-of-type {
-  padding-top: 2rem;
-}
-
-a.sidenav-trigger i.material-icons {
-  font-size: 3rem;
-}
-
-.sidenav li div.search-wrapper {
-  color: #777;
-  margin-top: -1px;
-  border-top: 1px solid rgba(0, 0, 0, 0.14);
-  -webkit-transition: margin .25s ease;
-  transition: margin .25s ease;
-}
-
-.sidenav li div.search-wrapper input#search {
-  color: #777;
-  display: block;
-  font-size: 16px;
-  font-weight: 300;
-  width: 100%;
-  height: 62px;
-  margin: 0;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 0 45px 0 30px;
-  border: 0;
-}
-
-.sidenav li div.search-wrapper i.material-icons {
-  position: absolute;
-  top: 21px;
-  right: 10px;
-  cursor: pointer;
-}
-
 /* site banner styles */
 
-.slogify {
-  font-family: $banner-font-family !important;
+.banner-font {
+  font-family: $banner-font-family;
 }
 
 .site-banner {
@@ -174,6 +92,10 @@ a.sidenav-trigger i.material-icons {
   .slogan-name {
     margin: 2rem 0 -1.5rem 0;
     font-family: $banner-font-family !important;
+  }
+
+  .slogan-desc {
+    font-family: $header-font-family !important;
   }
 
   .logo {
