@@ -1,6 +1,23 @@
+/* card carousel styles */
+
+.responsive-slick-carousel, .fullwidth-slick-carousel {
+  margin-left: -.75rem;
+  margin-right: -.75rem;
+  margin-bottom: 20px;
+}
+
+
+.slick-carousel-slide {
+  float: left;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 .75rem;
+  min-height: 1px;
+}
+
 $arrowDimension: 2.5rem;
 
-.recipe-carousel-wrapper {
+.slick-carousel-wrapper {
   padding: $arrowDimension;
 }
 

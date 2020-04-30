@@ -1,12 +1,17 @@
 @import "materialize/sass/components/_color-variables";
 
-$color1: color("red", "lighten-2");
-$color2: color("yellow", "lighten-4");
+$color1: color("materialize-red", "lighten-2");
+$color2: color("amber", "lighten-5");
+$color3: color("blue-grey", "lighten-4");
 
 .color-1 {
-  color: $color1;
+  background-color: $color1;
 }
 
 .color-2 {
-  color: $color2;
+  background-color: $color2;
+}
+
+.color-3 {
+  background-color: $color3;
 }

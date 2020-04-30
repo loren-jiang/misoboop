@@ -5,7 +5,7 @@ from recipe.models import Recipe
 from django.views.generic import ListView, DetailView
 from django.utils import timezone
 from django_json_ld.views import JsonLdDetailView
-from django.db.models import F, Q
+from django.db.models import F, Q, Sum, Count
 from django.http import JsonResponse
 from .filters import filter_recipe_qs, RecipeFilterSet
 from django.http import HttpResponse, HttpResponseRedirect
@@ -82,7 +82,9 @@ class RecipeSeriesListView(ListView):
     template_name = 'recipe/recipe_series.html'
 
     def get_queryset(self):
-        qs = super().get_queryset().prefetch_related('recipes', 'posts')
+        qs = super().get_queryset().prefetch_related('recipes', 'posts')\
+            .annotate(num_recipes_and_posts=Count('recipes')+ Count('posts'))\
+            .filter(num_recipes_and_posts__gt=0).order_by()
         return qs
 
     def get_context_data(self, *args, **kwargs):

@@ -13,36 +13,49 @@
         {#        <img class="activator" src={{ recipe.image.upload.url }}>#}
     </div>
     <div class="card-content">
-        <span class="card-title activator grey-text text-darken-4">{{ recipe.name }}<i
-                class="material-icons right">more_vert</i></span>
+        <span class="activator card-title grey-text text-darken-4">
+            <b>{{ recipe.name }}</b>
+{#            <i class="material-icons right">more_vert</i>#}
+        </span>
         {#        <p><a class="btn waves-effect" href={{ recipe.get_absolute_url }}>See recipe</a></p>#}
     </div>
     <div class="card-reveal">
-        <span class="card-title grey-text text-darken-4 flowy-font">{{ recipe.name }}<i
-                class="material-icons right">close</i></span>
+        <span class="card-title grey-text text-darken-4 flowy-font">
+            <b>{{ recipe.name }}</b>
+            <i class="material-icons right">close</i>
+        </span>
+        <hr>
+
         <div>
             {% for tag in recipe.tags.all %}
                 <span class="chip"> {{ tag.name }} </span>
             {% endfor %}
         </div>
+
         <div>
             <a class="btn waves-effect" href={{ recipe.get_absolute_url }}>See recipe</a>
         </div>
         {#        {% ratings recipe template_name="recipe/dumpling_ratings.html" icon_height=25 icon_width=25 read_only=True %}#}
-        <hr>
-        <div>
-            Prep time: {{ recipe.prep_time|min_to_hr }}
-        </div>
-        <div>
-            Cook time: {{ recipe.cook_time|min_to_hr }}
-        </div>
-        <div>
-            Total time: {{ recipe.total_time|min_to_hr }}
-        </div>
-        <div>
-            Servings: {{ recipe.servings }}
-        </div>
 
+        <div class="row">
+            <div class="col">
+                <ul>
+                    <li>
+                        Prep time: {{ recipe.prep_time|min_to_hr }}
+                    </li>
+                    <li>
+                        Cook time: {{ recipe.cook_time|min_to_hr }}
+                    </li>
+                    <li>
+                        Total time: {{ recipe.total_time|min_to_hr }}
+                    </li>
+                    <hr>
+                    <li>
+                        Servings: {{ recipe.servings }}
+                    </li>
+                </ul>
+            </div>
+        </div>
 
 
         {% if recipe.short_description %}

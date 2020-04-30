@@ -29,7 +29,7 @@ class PostFilterView(FilterView):
         context['now'] = timezone.now()
         context['post_tags'] = Post.tags.most_common().filter(filterable=True
               ).annotate(count=Count('id')).order_by('-num_times')[0:10]
-        context['most_recent_posts'] = context['post_list'][0:10]
+        context['latest_posts'] = Post.objects.order_by('-created_at')[0:10]
         return context
 
 class PostDetailView(DetailView):

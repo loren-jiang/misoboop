@@ -1,5 +1,12 @@
 $(document).ready(function () {
-    $('.recipe-carousel').slick({
+    /* Slick slider initialization with single-item */
+    $('.fullwidth-slick-carousel').slick({
+        arrows: false,
+        dots: true,
+    })
+
+    /* Slick slider initialization with responsiveness */
+    $('.responsive-slick-carousel').slick({
         dots: true,
         infinite: false,
         speed: 300,
@@ -9,13 +16,13 @@ $(document).ready(function () {
         prevArrow: '<a class="carousel-prev"><i class="material-icons carousel-arrow-icon">navigate_before</i></a>',
         responsive: [
             {
-              breakpoint: 1200  ,
-              settings: {
-                slidesToShow: 3,
-                slidesToScroll: 3,
-                infinite: true,
-                dots: true
-              }
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
             },
             {
                 breakpoint: 992,

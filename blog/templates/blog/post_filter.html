@@ -9,35 +9,7 @@
 
 {% block content %}
     {% render_breadcrumbs %}
-    <div class="row">
-        <div class="col m3">
-            <div class="card-panel">
-                <form id="post_filter_form" method="get">
-                    {{ filter.form.as_p }}
-                    <input class="btn-small" type="submit" value="Search"/>
-                    <button class="reset btn-small" type="reset"> Clear</button>
-                </form>
-            </div>
-
-            <div class="card-panel">
-                <div> Popular tags</div>
-                {% for tag in post_tags %}
-                    <a class="toggle-tag" href="?tags={{ tag.name }}">
-                        <span id="tag_{{ tag.name }}" data-tag="{{ tag.name }}"
-                              class="chip waves-effect"> {{ tag.name }} | {{ tag.count }} </span>
-                    </a>
-                {% endfor %}
-            </div>
-            <div class="card-panel">
-                <div> Most recent posts</div>
-                <ul>
-                    {% for post in most_recent_posts %}
-                        <li> <a href="{{ post.get_absolute_url }}"> {{ post.headline }}</a> | {{ post.created_at|date }}</li>
-                    {% endfor %}
-                </ul>
-
-            </div>
-        </div>
+    <div class="row flex-m">
 
         <div class="col m9">
 
@@ -66,12 +38,12 @@
             {#                </tbody>#}
             {#            </table>#}
             {% for post in object_list.all %}
-                <div class="row">
+                <div class="row valign-wrapper">
                     <div class="col s12 m3">
                         <img src={{ post.image_url }}>
                     </div>
                     <div class="col s12 m9">
-                        <h3>{{ post.headline }}</h3>
+                        <h4>{{ post.headline }}</h4>
                         <div>
                             {% for tag in post.tags.all %}
                                 <span data-tag={{ tag.name }} class="chip"> {{ tag.name }}</span>
@@ -108,6 +80,48 @@
             </div>
         </div>
 
+        <div class="col m3">
+
+            <div class="card-panel color-2">
+                <p><b>Search</b></p>
+
+                <form class="post-filter-form" method="get">
+                    {{ filter.form.as_p }}
+                    <input class="btn-small" type="submit" value="Search"/>
+                    <button class="reset btn-small" type="reset"> Clear</button>
+                </form>
+            </div>
+
+            <div class="card-panel color-2">
+                <p><b>Popular tags</b></p>
+                {% for tag in post_tags %}
+                    <a class="toggle-tag" href="?tags={{ tag.name }}">
+                        <span id="tag_{{ tag.name }}" data-tag="{{ tag.name }}"
+                              class="chip waves-effect"> {{ tag.name }} | {{ tag.count }} </span>
+                    </a>
+                {% endfor %}
+            </div>
+            <div class="card-panel color-2 hide-on-med-and-down">
+                <p><b>Latest posts</b></p>
+                <table>
+                    {#                        <tr>#}
+                    {#                            <th>Name</th>#}
+                    {#                            <th>Date</th>#}
+                    {#                        </tr>#}
+                    {% for post in latest_posts %}
+                        <tr>
+                            <td>
+                                <a href={{ post.get_absolute_url }}>{{ post.headline }}</a>
+                            </td>
+                            <td>
+                                {{ post.created_at|date }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+        </div>
 
     </div>
 
@@ -126,13 +140,12 @@
             });
 
             $('.reset').click(function (e) {
-                const $form = $('#post_filter_form')
+                const $form = $('.post-filter-form')
                 $form.find('input:text, input:password, input:file, select, textarea').val('');
                 $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
                 $form.submit()
             })
         });
-
     </script>
 {% endblock scripts %}
 

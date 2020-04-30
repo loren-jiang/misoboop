@@ -1,0 +1,18 @@
+{% load core_extras %}
+
+<table>
+    {% if show_header %}
+        <tr>
+            {% for key in keys %}
+                <th> {{ key }}</th>
+            {% endfor %}
+        </tr>
+    {% endif %}
+    {% for value in values %}
+        <tr>
+            {% for key in keys %}
+                <td> {{ value|get_obj_item:key }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>

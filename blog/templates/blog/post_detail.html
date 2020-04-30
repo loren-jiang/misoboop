@@ -14,7 +14,9 @@
 
 {% block content %}
     {% render_breadcrumbs %}
-    <div class="blog-post">
-        {{ post.content|safe }}
+    <div class="row blog-post">
+        <div class="col s10">
+            {{ post.content|safe }}
+        </div>
     </div>
 {% endblock %}

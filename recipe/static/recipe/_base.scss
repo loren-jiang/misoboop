@@ -12,11 +12,34 @@ input {
 }
 
 
-h1, h2, h3, h4 h5 {
+h1, h2, h3, h4, h5 {
   font-family: $header-font-family;
 }
 
+b {
+  font-weight: bold;
+}
 
+/* Custom grid layout */
+@media (max-width: 600px) {
+  .flex-s {
+    display: flex;
+    flex-direction: column; /* Stack on top */
+    div:first-child {
+      order: 2; // stack first child on bottom
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .flex-m {
+    display: flex;
+    flex-direction: column; /* Stack on top */
+    div:first-child {
+      order: 2; // stack first child on bottom
+    }
+  }
+}
 
 /* use browser-default on blog posts */
 
@@ -43,7 +66,6 @@ i.fa {
 /* navbar styles */
 
 
-
 .nav-search {
   visibility: hidden;
   transition: 0.3s ease-in;
@@ -54,6 +76,7 @@ i.fa {
   position: absolute;
   padding-left: 1rem;
 }
+
 //nav.nav-center ul {
 //  text-align: center;
 //  ul li {
@@ -140,46 +163,30 @@ a.sidenav-trigger i.material-icons {
 
 /* site banner styles */
 
+.slogify {
+  font-family: $banner-font-family !important;
+}
+
 .site-banner {
   display: flex;
   justify-content: center;
-  font-family: $header-font-family;
 
   .slogan-name {
     margin: 2rem 0 -1.5rem 0;
+    font-family: $banner-font-family !important;
   }
 
   .logo {
-    width: 150px;
+    width: 100px;
+    margin: 10px;
   }
 }
 
-
-/* card carousel styles */
-
-.recipe-carousel {
-  margin-left: -.75rem;
-  margin-right: -.75rem;
-  margin-bottom: 20px;
-}
-
-
-.recipe-slide {
-  float: left;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 0 .75rem;
-  min-height: 1px;
-}
-
-.slick-next:before, .slick-prev:before {
-  color: black !important;
-}
 
 /* breadcrumbs styles */
 
 .recipe-breadcrumbs li {
-    display: inline;
+  display: inline;
 }
 
 /* hide tooltip */
@@ -202,7 +209,7 @@ a.sidenav-trigger i.material-icons {
 }
 
 /* Single-item slick carousel */
-.single-item-carousel-title {
+.fullwidth-slick-carousel-title {
   position: absolute;
   left: 0;
   top: 0;
@@ -212,6 +219,6 @@ a.sidenav-trigger i.material-icons {
   z-index: 2;
 }
 
-.single-item-carousel-slide {
+.fullwidth-slick-carousel-slide {
   //position: relative;
 }

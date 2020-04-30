@@ -1,3 +1,25 @@
+@import "_theme.scss";
+
 .card-image.waves-effect {
   overflow: unset; // very specific bug in chrome where 'lazified' card images not showing with 'waves-effect' class
+}
+
+.recipe-card .card-title {
+  font-size: 1.25rem;
+}
+
+.recipe-card .card-content {
+  padding: 1.25rem;
+}
+
+.recipe-card .card-content .card-title {
+  line-height: 1.5rem;
+}
+
+.recipe-card .card-reveal .card-title {
+  padding-bottom: 1.5rem;
+}
+
+.recipe-card .card-content, .recipe-card .card-reveal {
+  background: $color2;
 }
