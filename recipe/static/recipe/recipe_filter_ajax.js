@@ -214,6 +214,7 @@ function template(recipes) {
     let htmlOut = `<table class=''><tr><th>Name</th><th>Tags</th><th>Image</th></tr> <tbody>`;
     for (let i = 0; i < recipes.length; i++) {
         formattedTags = ``;
+        console.log(recipes[i])
         for (let k = 0; k < recipes[i].tags.length; k++) {
             formattedTags += `<span class="chip"> ${recipes[i].tags[k]} </span>`
         }
@@ -222,7 +223,7 @@ function template(recipes) {
                             <a href="${recipes[i].slugged_url}"> ${recipes[i].name} </a>
                         </td> 
                         <td>${formattedTags}</td>
-                        <td><img class="" width="auto" height="100" src="${recipes[i].sm_image_url}"></td>
+                        <td><img class="" width="auto" height="100" src="${recipes[i].image ? recipes[i].image.thumbnail : recipes[i].placeholder_url}"></td>
                     </tr>`;
     }
     htmlOut += `</tbody> </table>`;

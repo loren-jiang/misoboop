@@ -8,7 +8,7 @@ from taggit.managers import TaggableManager
 from misoboop.storage_backends import PrivateMediaStorage
 from django.contrib.auth.models import User
 from django.conf import settings
-from sorl.thumbnail import ImageField
+from sorl.thumbnail import ImageField, get_thumbnail
 
 # Create your models here.
 class BasicTag(TagBase):
@@ -75,12 +75,18 @@ class PublicImage(NameDescription):
     description = HTMLField(default='', verbose_name=_('Text'), null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     upload = ImageField()
+    thumbnail = ImageField(null=True, blank=True)
 
     def __str__(self):
-        splits = self.upload.url.split(settings.AWS_PUBLIC_MEDIA_LOCATION)
-        if len(splits) > 1:
-            return self.upload.url.split(settings.AWS_PUBLIC_MEDIA_LOCATION)[1]
+        # splits = self.upload.url.split(settings.AWS_PUBLIC_MEDIA_LOCATION)
+        # if len(splits) > 1:
+        #     return self.upload.url.split(settings.AWS_PUBLIC_MEDIA_LOCATION)[1]
         return self.upload.url
+    #
+    def save(self, *args, **kwargs):
+        if self.upload:
+            self.thumbnail = get_thumbnail(self.upload, '150x150', quality=95, format='JPEG').name
+        super().save(*args, **kwargs)
 
 class PrivateImage(models.Model):
     name = models.CharField(max_length=500, null=True, blank=True)
@@ -90,7 +96,7 @@ class PrivateImage(models.Model):
     user = models.ForeignKey(User, related_name='images', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        splits = self.upload.url.split(settings.AWS_PRIVATE_MEDIA_LOCATION)
-        if len(splits) > 1:
-            return self.upload.url.split(settings.AWS_PRIVATE_MEDIA_LOCATION)[1]
+        # splits = self.upload.url.split(settings.AWS_PRIVATE_MEDIA_LOCATION)
+        # if len(splits) > 1:
+        #     return self.upload.url.split(settings.AWS_PRIVATE_MEDIA_LOCATION)[1]
         return self.upload.url

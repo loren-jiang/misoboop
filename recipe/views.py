@@ -23,20 +23,25 @@ def home(request):
     context = {
         'latest_recipes': Recipe.objects.prefetch_related('tags', ).order_by('-created_at').select_related()[0:6],
         'latest_posts': Post.objects.prefetch_related('tags').order_by('-created_at').select_related()[0:6],
-        'welcome_image': PublicImage.objects.get(name='miso-rilakkuma')
     }
+    welcome_image = None
+    try:
+        welcome_image = PublicImage.objects.get(name='miso-rilakkuma')
+    except PublicImage.DoesNotExist:
+        pass
+    context['welcome_image'] = welcome_image
     return render(request, 'home.html', context)
 
 # About page view which details "Who, What, Where, and Why?"
 def about(request):
     context = {}
-    about = None
-    try:
-        about = Post.objects.get(headline='About')
-    except Post.DoesNotExist:
-        pass
-    if about is not None:
-        return HttpResponseRedirect(reverse('post-detail', kwargs={'slug':'about'}))
+    # about = None
+    # try:
+    #     about = Post.objects.get(headline='About')
+    # except Post.DoesNotExist:
+    #     pass
+    # if about is not None:
+    #     return HttpResponseRedirect(reverse('post-detail', kwargs={'slug':'about'}))
     return render(request, 'about.html', context)
 
 def like_recipe(request, *args, **kwargs):

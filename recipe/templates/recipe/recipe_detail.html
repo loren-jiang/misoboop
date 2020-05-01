@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load django_bootstrap_breadcrumbs %}
 {% load render_json_ld from json_ld %}
 {% load ratings %}
 {% load core_extras %}
+{% load recipe_extras %}
 
 {% block jsonld %}
     {% render_json_ld sd %}
@@ -10,22 +12,81 @@
 
 {% block title %}
     {{ block.super }}
-    | {{ recipe.name }}
+    | {{ recipe }}
 {% endblock title %}
 
 {% block breadcrumbs %}
     {{ block.super }}
     {% breadcrumb "Recipes" "recipe-list" %}
-    {% breadcrumb recipe.name "recipe-detail" recipe.slug %}
+    {% breadcrumb recipe "recipe-detail" recipe.slug %}
 {% endblock %}
 
 {% block content %}
     {% render_breadcrumbs %}
+    <div class="fixed-action-btn" tabindex="0">
+        <a class="btn-floating btn-large red desktop-fab-tip tooltipped" data-tooltip="Share"
+           data-position="left">
+            <i class="large material-icons">share</i>
+        </a>
+        <ul>
+            <li>
+                <a
+                        id="fb_share"
+                        rel="noreferrer noopener"
+                        data-href=""
+                        data-position="left"
+                        data-tooltip="Share on Facebook"
+                        class="desktop-fab-tip btn-floating red  fb-xfbml-parse-ignore fb-share-link tooltipped">
+                    <i class="fa fa-facebook-f" aria-hidden="true"></i>
+                </a>
+
+                <a data-href="fb_share" class="btn-floating mobile-fab-tip">Post</a>
+            </li>
+            <li>
+                <a
+                        id="pin_share"
+                        rel="noreferrer noopener"
+                        class="desktop-fab-tip btn-floating yellow darken-1 tooltipped"
+                        data-position="left"
+                        data-tooltip="Share on Pinterest"
+                        data-pin-custom="true"
+                        href="https://www.pinterest.com/pin/create/button/"
+                        {#                                        data-pin-do="buttonPin"#}
+                        {#                                        data-pin-media={{ recipe.image_url }}#}
+                >
+                    <i class="fa fa-pinterest" aria-hidden="true"></i>
+                </a>
+                <a data-href="pin_share" class="btn-floating mobile-fab-tip">Pin</a>
+            </li>
+            <li>
+                <a
+                        href="mailto:?subject={{ recipe }}&body=Here's a great recipe for
+                                                {{ recipe }}{{ recipe.get_absolute_url }}"
+                        id="email_share"
+                        class="desktop-fab-tip btn-floating green tooltipped" data-position="left"
+                        data-tooltip="Email">
+                    <i class="material-icons">email</i>
+                </a>
+                <a data-href="email_share" class="btn-floating mobile-fab-tip">Email</a>
+
+            </li>
+            {#                            <li>#}
+            {#                                <a#}
+            {#                                        id="content_copy"#}
+            {#                                        class="desktop-fab-tip btn-floating blue tooltipped"#}
+            {#                                        data-position="left"#}
+            {#                                        data-tooltip="Copy url link">#}
+            {#                                    <i class="material-icons">content_copy</i>#}
+            {#                                </a>#}
+            {#                                <a href="#" class="btn-floating mobile-fab-tip fb-share-link">Copy link</a>#}
+            {#                            </li>#}
+        </ul>
+    </div>
 
     <div class="row">
         <div class="col s12">
             <h1>
-                {{ recipe.name }}
+                {{ recipe }}
             </h1>
             <div class="row">
                 <div class="col s12 m12 l6">
@@ -35,63 +96,13 @@
                     {% else %}
                         <img class="responsive-img" src={{ recipe.placeholder_url }}>
                     {% endif %}
-                    <div class="fixed-action-btn" tabindex="0">
-                        <a class="btn-floating btn-large red desktop-fab-tip tooltipped" data-tooltip="Share"
-                           data-position="left">
-                            <i class="large material-icons">share</i>
-                        </a>
-                        <ul>
-                            <li>
-                                <a
-                                        id="fb_share"
-                                        rel="noreferrer noopener"
-                                        data-href=""
-                                        data-position="left"
-                                        data-tooltip="Share on Facebook"
-                                        class="desktop-fab-tip btn-floating red  fb-xfbml-parse-ignore fb-share-link tooltipped">
-                                    <i class="fa fa-facebook-f" aria-hidden="true"></i>
-                                </a>
 
-                                <a data-href="fb_share" class="btn-floating mobile-fab-tip">Post</a>
-                            </li>
-                            <li>
-                                <a
-                                        id="pin_share"
-                                        rel="noreferrer noopener"
-                                        class="desktop-fab-tip btn-floating yellow darken-1 tooltipped"
-                                        data-position="left"
-                                        data-tooltip="Share on Pinterest"
-                                        data-pin-custom="true" href="https://www.pinterest.com/pin/create/button/"
-                                        data-pin-do="buttonPin"
-                                        data-pin-media={{ recipe.image_url }}
-                                >
-                                    <i class="fa fa-pinterest" aria-hidden="true"></i>
-                                </a>
-                                <a data-href="pin_share" class="btn-floating mobile-fab-tip">Pin</a>
-                            </li>
-                            <li>
-                                <a
-                                        href="mailto:?subject={{ recipe.name }}&body=Here's a great recipe for
-                                                {{ recipe.name }}{{ recipe.get_absolute_url }}"
-                                        id="email_share"
-                                        class="desktop-fab-tip btn-floating green tooltipped" data-position="left"
-                                        data-tooltip="Email">
-                                    <i class="material-icons">email</i>
-                                </a>
-                                <a data-href="email_share" class="btn-floating mobile-fab-tip">Email</a>
-
-                            </li>
-                            {#                            <li>#}
-                            {#                                <a#}
-                            {#                                        id="content_copy"#}
-                            {#                                        class="desktop-fab-tip btn-floating blue tooltipped"#}
-                            {#                                        data-position="left"#}
-                            {#                                        data-tooltip="Copy url link">#}
-                            {#                                    <i class="material-icons">content_copy</i>#}
-                            {#                                </a>#}
-                            {#                                <a href="#" class="btn-floating mobile-fab-tip fb-share-link">Copy link</a>#}
-                            {#                            </li>#}
-                        </ul>
+                    <div class="recipe-tags-wrapper">
+                        <b>Tags:</b>
+                        {% for tag in recipe.tags.all %}
+                            <a href="{% url 'search-recipes' %}?tags={{ tag }}"> <span
+                                    class="recipe-tag chip">{{ tag }}</span> </a>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="col s12 m12 l6">
@@ -163,13 +174,13 @@
                                     {% if ingredient_amount.unit %}
                                         <span class="chip">
                                             <span class="ingredient-amount"> {{ ingredient_amount.amount }}</span>
-
-                                            {{ ingredient_amount.unit }}
-                                            of
-                                            {{ ingredient_amount.ingredient }}
+                                            {{ ingredient_amount|render_ing_amt }}
+{#                                            {{ ingredient_amount.unit }}#}
+{#                                            of#}
+{#                                            {{ ingredient_amount.ingredient }}#}
                                     </span>
-                                    {% else %}
-                                        <span class=" chip">{{ ingredient_amount.ingredient }}</span>
+                                        {#                                    {% else %}#}
+                                        {#                                        <span class=" chip">{{ ingredient_amount.ingredient }}</span>#}
                                     {% endif %}
 
                                 {% endfor %}
@@ -185,7 +196,7 @@
                     {{ recipe.description|safe }}
                 </div>
                 <div class="col s12">
-                    <hr>
+                    <hr class="px3">
 
                 </div>
 
@@ -196,7 +207,7 @@
 
                             <div class="flowy-font">
                                 <h3 id="direction-{{ direction.id }}" class="scrollspy">
-                                    {{ direction.name }}
+                                    {{ direction }}
                                 </h3>
 
                                 {% if direction.ingredient_amounts.count %}
@@ -240,7 +251,7 @@
                     <div class="col m2 sticky-toc hide-on-small-only">
                         <ul class="section table-of-contents flowy-font">
                             {% for direction in recipe.directions.all %}
-                                <li><a href="#direction-{{ direction.id }}">{{ direction.name }}</a></li>
+                                <li><a href="#direction-{{ direction.id }}">{{ direction }}</a></li>
                             {% endfor %}
 
                         </ul>
@@ -273,6 +284,8 @@
         }(document));
 
     </script>
+
+    <script type="text/javascript" src={% static 'recipe/recipe_detail.js' %}></script>
 {% endblock scripts %}
 
 

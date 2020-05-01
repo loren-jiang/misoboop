@@ -20,6 +20,26 @@ h4, h5, h6 {
   font-family: $subheader-font-family;
 }
 
+hr.px1 {
+  border-top: 1px solid;
+}
+
+hr.px2 {
+  border-top: 2px solid;
+}
+
+hr.px3 {
+  border-top: 3px solid;
+}
+
+hr.px4 {
+  border: 4px solid;
+}
+
+hr.px5 {
+  border: 5px solid;
+}
+
 .btn, .btn-large, .btn-small, .btn-floating, .btn-flat,
 .material-tooltip, nav, input, label {
   font-family: $subheader-font-family;

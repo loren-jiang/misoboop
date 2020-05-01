@@ -38,6 +38,7 @@ class HomePageTest(TestCase):
         response = self.client.get(reverse('home'))
         self.assertTrue('latest_recipes' in response.context)
         self.assertTrue('latest_posts' in response.context)
+        self.assertTrue('welcome_image' in response.context)
 
 class AboutPageTest(TestCase):
 

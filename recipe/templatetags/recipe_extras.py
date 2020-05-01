@@ -18,3 +18,10 @@ def min_to_hr(value):
     hrs = str(value // 60) + 'hr' if value // 60 else ''
     mins = str(value % 60) + 'min' if value % 60 else ''
     return f'{hrs} {mins}'
+
+@register.filter
+def render_ing_amt(ing_amt):
+    unit_name = str(ing_amt.unit.name)
+    # amount = ing_amt.amount
+    return ing_amt.suffix()
+

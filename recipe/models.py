@@ -64,10 +64,8 @@ class Recipe(CreatedModified):
     def tag_names_as_list(self):
         return [tag.name for tag in self.tags.order_by('name')]
 
-    def get_tags(self):
-        return self.tags.select_related()  # todo: need to add when the time comes
 
-    def get_ingredient_amounts_as_list(self):
+    def ing_amts_as_list(self):
         """
         Get ingredient amounts as list for given recipe with optimized select_related
         :return: list of ingredient amounts
@@ -109,7 +107,7 @@ class Recipe(CreatedModified):
             "datePublished": self.created_at.date().isoformat(),
             "description": self.description,
             "image": self.image_url(),
-            "recipeIngredient": self.get_ingredient_amounts_as_list(),
+            "recipeIngredient": self.ing_amts_as_list(),
             "interactionStatistic": {
                 "@type": "InteractionCounter",
                 "interactionType": "http://schema.org/Comment",
@@ -140,7 +138,7 @@ class Direction(SortableMixin):
     direction_order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
 
     def __str__(self):
-        return f'{self.name}'
+        return self.name
 
     class Meta:
         verbose_name = _('Direction')
@@ -153,6 +151,8 @@ class Direction(SortableMixin):
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=300, blank=True, null=True, unique=True)
+    name_abbrev = models.CharField(max_length=60, blank=True, verbose_name=_('Abbreviation'))
+    plural_name = models.CharField(max_length=60, blank=True, verbose_name=_('Plural name'))
     use_count = models.PositiveIntegerField(default=0)
     # tags = TaggableManager()
 
@@ -178,12 +178,24 @@ class IngredientAmount(models.Model):
     def __str__(self):
         return ' | '.join(list(map(lambda s: str(s), [self.ingredient, self.amount, self.unit])))
 
+    def prefix(self):
+        pass
+
+    def suffix(self):
+        use_plural = self.amount > 1
+        has_real_unit = self.unit.name != "Unit"
+
+        unit_str = self.unit.name_abbrev
+        if use_plural:
+            unit_str = self.unit.plural_abbrev
+        return f"{unit_str + ' of' if has_real_unit else ''} " \
+               f"{self.ingredient.plural_name if (use_plural and self.ingredient.plural_name) else self.ingredient}".lower()
+
     class Meta:
         constraints = [
             models.CheckConstraint(check=models.Q(amount__gte=Decimal('0')), name='amount_gte_0'),
             models.UniqueConstraint(fields=('recipe', 'ingredient'), name='no_duplicate_ingredients_in_recipe')
         ]
-
 
 class Unit(models.Model):
     name = models.CharField(max_length=60, unique=True, verbose_name=_('Name'))
