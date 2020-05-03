@@ -1,19 +1,50 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var elems = document.querySelectorAll(".dropdown-range.dropdown-trigger");
-    var instances = M.Dropdown.init(elems, {
+    // var elems = document.querySelectorAll(".dropdown-range.dropdown-trigger");
+    // var instances = M.Dropdown.init(elems, {
+    //     hover: false,
+    //     coverTrigger: false,
+    //     constrainWidth: false,
+    //     closeOnClick: false
+    // });
+
+    // var servingsRangeInput = document.getElementById("num_servings");
+    // var sliderTarget = document.getElementById(servingsRangeInput.dataset.target);
+    // sliderTarget.innerHTML = servingsRangeInput.value;
+    //
+    // servingsRangeInput.addEventListener("input", function () {
+    //     sliderTarget.innerHTML = this.value;
+    // });
+
+    // Initialize materialize css dropdown for servings input change
+    $('.dropdown-range.dropdown-trigger').dropdown({
         hover: false,
         coverTrigger: false,
         constrainWidth: false,
         closeOnClick: false
     });
 
-    var servingsRangeInput = document.getElementById("num_servings");
-    var sliderTarget = document.getElementById(servingsRangeInput.dataset.target);
-    sliderTarget.innerHTML = servingsRangeInput.value;
+    const $servingsRangeInput = $('#num_servings');
+    const $sliderTarget = $('#'+$servingsRangeInput.data('target'));
+    $sliderTarget.html($servingsRangeInput.val());
 
-    servingsRangeInput.addEventListener("input", function () {
-        sliderTarget.innerHTML = this.value;
+    $servingsRangeInput.on('input', function() {
+       $sliderTarget.html($(this).val());
     });
+
+    /* On servings change, scale ingredients accordingly */
+    const origServings = recipe_servings; // passed Django context variable (see inline js)
+    const $ingredientAmt = $('span.ingredient-amount');
+    const ingredientDefaultValues = ($ingredientAmt.toArray().map(el => parseFloat(el.innerHTML)));
+
+    displayIngAmt($ingredientAmt, ingredientDefaultValues, origServings, $servingsRangeInput.val());
+    $servingsRangeInput.on('change', () => displayIngAmt($ingredientAmt, ingredientDefaultValues, origServings, $servingsRangeInput.val()));
+
+    $('#reset_servings').on('click', function () {
+        $servingsRangeInput.val(recipe_servings);
+        $sliderTarget.html(recipe_servings);
+        $servingsRangeInput.change();
+    })
+
 
     initializeToggleIconCollapsible(
         '.direction-ingredients.collapsible',
@@ -76,20 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById($(this).data('href')).click(); // can't use jQuery here
     })
 
-    /* On servings change, scale ingredients accordingly */
-    const $servings = $('#num_servings');
-    const origServings = recipe_servings;
-    const $ingredientAmt = $('span.ingredient-amount');
-    const ingredientDefaultValues = ($ingredientAmt.toArray().map(el => parseFloat(el.innerHTML)));
-
-    $servings.on('change', function () {
-
-        $ingredientAmt.each(
-            (idx, el) => {
-                $(el).html(ingredientDefaultValues[idx] * $servings.val() / origServings)
-            }
-        )
-    })
 
     $('#like_plus_one').on('click', function () {
         $(this).addClass("liked")
@@ -111,3 +128,135 @@ document.addEventListener("DOMContentLoaded", function () {
 ;
 
 
+function decToFrac(num) {
+    const numOutString = num.toFixed(2);
+    const whole = numOutString.split('.')[0]
+    const decimal = numOutString.split('.')[1]
+}
+
+var decToFracMap = {
+    '10': '1/8',
+    '11': '1/8',
+    '12': '1/8',
+    '13': '1/8',
+    '14': '1/8',
+    '15': '1/8',
+    '16': '1/8',
+    '17': '1/8',
+    '18': '1/8',
+    '19': '1/4',
+    '20': '1/4',
+    '21': '1/4',
+    '22': '1/4',
+    '23': '1/4',
+    '24': '1/4',
+    '25': '1/4',
+    '26': '1/4',
+    '27': '1/4',
+    '28': '1/4',
+    '29': '1/4',
+    '30': '1/3',
+    '31': '1/3',
+    '32': '1/3',
+    '33': '1/3',
+    '34': '1/3',
+    '35': '1/3',
+    '36': '3/8',
+    '37': '3/8',
+    '38': '3/8',
+    '39': '3/8',
+    '40': '3/8',
+    '41': '3/8',
+    '42': '3/8',
+    '43': '3/8',
+    '44': '1/2',
+    '45': '1/2',
+    '46': '1/2',
+    '47': '1/2',
+    '48': '1/2',
+    '49': '1/2',
+    '50': '1/2',
+    '51': '1/2',
+    '52': '1/2',
+    '53': '1/2',
+    '54': '1/2',
+    '55': '1/2',
+    '56': '1/2',
+    '57': '5/8',
+    '58': '5/8',
+    '59': '5/8',
+    '60': '5/8',
+    '61': '5/8',
+    '62': '5/8',
+    '63': '5/8',
+    '64': '5/8',
+    '65': '2/3',
+    '66': '2/3',
+    '67': '2/3',
+    '68': '2/3',
+    '69': '2/3',
+    '70': '2/3',
+    '71': '3/4',
+    '72': '3/4',
+    '73': '3/4',
+    '74': '3/4',
+    '75': '3/4',
+    '76': '3/4',
+    '77': '3/4',
+    '78': '3/4',
+    '79': '3/4',
+    '80': '3/4',
+    '81': '3/4',
+    '82': '7/8',
+    '83': '7/8',
+    '84': '7/8',
+    '85': '7/8',
+    '86': '7/8',
+    '87': '7/8',
+    '88': '7/8',
+    '89': '7/8',
+    '90': '7/8',
+    '91': '7/8',
+    '92': '7/8',
+    '93': '7/8',
+    '94': '1',
+    '95': '1',
+    '96': '1',
+    '97': '1',
+    '98': '1',
+    '99': '1',
+    '00': '0',
+    '01': '0',
+    '02': '0',
+    '03': '0',
+    '04': '0',
+    '05': '0',
+    '06': '0',
+    '07': '1/8',
+    '08': '1/8',
+    '09': '1/8'
+}
+
+
+function displayIngAmt(ingAmts, defaultValues, origServings, servingVal) {
+    ingAmts.each(
+        (idx, el) => {
+            const numOut = defaultValues[idx] * servingVal / origServings;
+            if (imperial_ingredients_set.has($(el).data('name'))) {
+                const splitNum = numOut.toFixed(2).split('.');
+                const frac = splitNum[1] === '00' ? '' : parseFrac(decToFracMap[splitNum[1]]);
+                const base = splitNum[0] === '0' ? '' : splitNum[0];
+                $(el).html(base + ' ' + frac)
+            } else {
+                $(el).html(numOut)
+            }
+
+        }
+    )
+
+}
+
+function parseFrac(fracStr) {
+    const splitFrac = fracStr.split('/');
+    return `<sup>${splitFrac[0]}</sup>&frasl;<sub>${splitFrac[1]}</sub>`
+}

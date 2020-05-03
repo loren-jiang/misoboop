@@ -15,7 +15,7 @@ from taggit.managers import TaggableManager
 from django.contrib.contenttypes.fields import GenericRelation
 from star_ratings.models import Rating
 from core.models import BasicTag, TaggedWhatever
-
+import math
 # Create your models here.
 
 
@@ -179,17 +179,35 @@ class IngredientAmount(models.Model):
         return ' | '.join(list(map(lambda s: str(s), [self.ingredient, self.amount, self.unit])))
 
     def prefix(self):
+        """
+        Outputs nicely formatted number ('prefix') depending on system of measurement; limits to one decimal place
+        :return: str
+        """
+        # todo: not sure if this should just be handled server side since the whole point is scaling and convert
+        # from metric to imperial
+
+        # if imperial, we want to represent as fraction
+
+
+        # first, round to nearest 0.25 since that's really the precision achievable from cooking measurements
+        rounded_amt = round(self.amount * 100 // 25 + self.amount * 100 % 25) / 100
         pass
 
-    def suffix(self):
-        use_plural = self.amount > 1
-        has_real_unit = self.unit.name != "Unit"
 
-        unit_str = self.unit.name_abbrev
-        if use_plural:
-            unit_str = self.unit.plural_abbrev
-        return f"{unit_str + ' of' if has_real_unit else ''} " \
-               f"{self.ingredient.plural_name if (use_plural and self.ingredient.plural_name) else self.ingredient}".lower()
+    def suffix(self):
+        """
+        Outputs nicely formatted descriptor of ingredient amount ('suffix') depending on plurality and units
+        :return: str
+        """
+        is_plural = self.amount > 1
+        has_real_unit = self.unit.name != "Unit"
+        ret = ''
+        if not has_real_unit:
+            ret = f"{self.ingredient.plural_name if (is_plural and self.ingredient.plural_name) else self.ingredient.name}"
+        else:
+            ret = f"{self.unit.plural_abbrev  + ' of'} " \
+               f"{self.ingredient.plural_name if (is_plural and self.ingredient.plural_name) else self.ingredient}"
+        return ret.lower()
 
     class Meta:
         constraints = [
@@ -203,7 +221,7 @@ class Unit(models.Model):
     plural_abbrev = models.CharField(max_length=60, blank=True, verbose_name=_('Plural Abbreviation'))
     TYPE = Choices((0, 'other', 'Other'), (1, 'mass', 'Mass'), (2, 'volume', 'Volume'))
     type = models.IntegerField(choices=TYPE)
-    SYSTEM = Choices((0, 'metric', 'Metric'), (1, 'imperial', 'Imperial'))
+    SYSTEM = Choices((0, 'other', 'Other'), (1, 'metric', 'Metric'), (2, 'imperial', 'Imperial'))
     system = models.IntegerField(choices=SYSTEM, null=True)
 
     def __str__(self):

@@ -142,7 +142,6 @@
                             <!-- Dropdown Trigger -->
                             <a class='dropdown-trigger btn dropdown-range' href='#' data-target='dropdown1'>
                                 <span class="range-slider-target" id="num_servings_target"> </span>
-                                <span></span>
                             </a>
                         </li>
                         <hr>
@@ -157,10 +156,11 @@
 
                     <!-- Dropdown Structure -->
                     <div id='dropdown1' class='dropdown-content'>
-                        <div class="range-slider">
+                        <div class="range-slider input-field">
                             <input class="valign-wrapper" data-target="num_servings_target" type="range"
                                    id="num_servings"
                                    value="{{ recipe.servings }}" min="1" max="{{ recipe.max_servings }}"/>
+                            <button id="reset_servings" class="btn-small" data-value={{ recipe.servings }}> Reset </button>
                         </div>
                     </div>
 
@@ -170,17 +170,14 @@
                         <div class="ingredient-list">
                             <p>
                                 {% for ingredient_amount in recipe.ingredient_amounts.all|dictsortreversed:'amount' %}
-                                    {#                                <span class="ingredient-amount-val">{{ ingredient_amount.amount }}  </span>#}
                                     {% if ingredient_amount.unit %}
                                         <span class="chip">
-                                            <span class="ingredient-amount"> {{ ingredient_amount.amount }}</span>
+                                            <span class="ingredient-amount"
+                                                  data-name="{{ ingredient_amount.ingredient }}"> {{ ingredient_amount.amount }}</span>
                                             {{ ingredient_amount|render_ing_amt }}
-{#                                            {{ ingredient_amount.unit }}#}
-{#                                            of#}
-{#                                            {{ ingredient_amount.ingredient }}#}
+
                                     </span>
-                                        {#                                    {% else %}#}
-                                        {#                                        <span class=" chip">{{ ingredient_amount.ingredient }}</span>#}
+
                                     {% endif %}
 
                                 {% endfor %}
@@ -224,15 +221,10 @@
                                                 {% for ingredient_amount in direction.ingredient_amounts.all|dictsortreversed:'amount' %}
                                                     {% if ingredient_amount.unit %}
                                                         <span class="chip">
-                                                    <span class="ingredient-amount"> {{ ingredient_amount.amount }}</span>
-
-{#                                                    <input size="3" type="number" value="{{ ingredient_amount.amount }}"#}
-{#                                                           disabled#}
-{#                                                           class="ingredient-amount browser-default"/>#}
-                                                    {{ ingredient_amount.unit }}
-                                                    of
-                                                    {{ ingredient_amount.ingredient }}
-                                                </span>
+                                                        <span class="ingredient-amount"
+                                                              data-name="{{ ingredient_amount.ingredient }}"> {{ ingredient_amount.amount }}</span>
+                                                            {{ ingredient_amount|render_ing_amt }}
+                                                    </span>
                                                     {% else %}
                                                         <span class="chip">{{ ingredient_amount.ingredient }}</span>
                                                     {% endif %}
@@ -269,10 +261,6 @@
 {% block scripts %}
 
     <script type="text/javascript">
-
-        var recipe_id = "{{recipe.id}}";
-        var recipe_servings = "{{recipe.servings}}";
-
         // async pinit.js to initialize pinterest sharing
         (function (d) {
             var f = d.getElementsByTagName('SCRIPT')[0], p = d.createElement('SCRIPT');
@@ -282,6 +270,11 @@
             f.parentNode.insertBefore(p, f);
             p.setAttribute("data-pin-hover", true);
         }(document));
+        var recipe_id = "{{recipe.id}}";
+        var recipe_servings = "{{recipe.servings}}";
+
+        var imperial_ingredients = {{ imperial_ingredients|safe }};
+        var imperial_ingredients_set = new Set(imperial_ingredients)
 
     </script>
 
