@@ -47,8 +47,8 @@
     <div class="row">
         <div class="col s12">
             <div class="site-banner">
-                <a href="/">
-                    <img class="logo" data-pin-nopin="true" id="misoboop-cat" src={% static 'assets/lucky_dumpling_cat_min.svg' %}/>
+                <a href={%  url 'home' %}>
+                    <img class="logo" data-pin-nopin="true" id="misoboop-cat" src="{% static 'assets/lucky_dumpling_cat_min.svg' %}">
                 </a>
 
 
@@ -153,7 +153,7 @@
                         Questions or comments?
                         <br>
                         <span>
-                            Feel free to reach out
+                            Feel free to reach out via
                             <a class="whiten underline" href="mailto:miso.booper@gmail.com">
                                 email.
                             </a>
@@ -164,10 +164,8 @@
                 <div class="col l4 offset-l2 s12">
                     <h5 class="">Social media</h5>
                     <div class="">
-                        <a class="social-media-link whiten" href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                        <a class="social-media-link whiten" href="#"><i class="fa fa-facebook-f" aria-hidden="true"></i></a>
-                        <a class="social-media-link whiten" href="#"><i class="fa fa-twitter"
-                                                                        aria-hidden="true"></i></a>
+                        <a class="social-media-link whiten" href="https://www.instagram.com/miso_boop/"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        <a class="social-media-link whiten" href="https://www.pinterest.com/miso_boop/"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
                     </div>
 
                     {#                    <ul>#}

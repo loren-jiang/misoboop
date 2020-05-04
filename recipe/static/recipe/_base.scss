@@ -51,9 +51,25 @@ b {
 }
 
 
+.chip {
+  font-size: 1.2rem;
+    background: $color3;
+}
+
+
+/* Main content wrapper */
+.main-content {
+  min-height: 50vh;
+}
+
 /* Link styles */
 a {
-  color: #26a69a;
+  color: $link-color;
+}
+
+a:hover {
+  // todo: this needs to implemented more cleverly to prevent specificity issues
+  //color: darken($link-color, 15%);
 }
 
 a.whiten {
@@ -63,6 +79,8 @@ a.whiten {
 a.underline {
   text-decoration: underline;
 }
+
+
 
 
 /* Custom grid layout */

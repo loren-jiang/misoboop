@@ -1,19 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // var elems = document.querySelectorAll(".dropdown-range.dropdown-trigger");
-    // var instances = M.Dropdown.init(elems, {
-    //     hover: false,
-    //     coverTrigger: false,
-    //     constrainWidth: false,
-    //     closeOnClick: false
-    // });
-
-    // var servingsRangeInput = document.getElementById("num_servings");
-    // var sliderTarget = document.getElementById(servingsRangeInput.dataset.target);
-    // sliderTarget.innerHTML = servingsRangeInput.value;
-    //
-    // servingsRangeInput.addEventListener("input", function () {
-    //     sliderTarget.innerHTML = this.value;
-    // });
+    /* Servings range input */
 
     // Initialize materialize css dropdown for servings input change
     $('.dropdown-range.dropdown-trigger').dropdown({
@@ -23,10 +9,14 @@ document.addEventListener("DOMContentLoaded", function () {
         closeOnClick: false
     });
 
+    // Gather DOM elements needed
     const $servingsRangeInput = $('#num_servings');
     const $sliderTarget = $('#'+$servingsRangeInput.data('target'));
+
+    // Set initial value
     $sliderTarget.html($servingsRangeInput.val());
 
+    // On input, change slider target html
     $servingsRangeInput.on('input', function() {
        $sliderTarget.html($(this).val());
     });
@@ -36,16 +26,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const $ingredientAmt = $('span.ingredient-amount');
     const ingredientDefaultValues = ($ingredientAmt.toArray().map(el => parseFloat(el.innerHTML)));
 
+    // Initialize ingredient amounts to input value
     displayIngAmt($ingredientAmt, ingredientDefaultValues, origServings, $servingsRangeInput.val());
+
+    // On inout change, change ingredient amount displays
     $servingsRangeInput.on('change', () => displayIngAmt($ingredientAmt, ingredientDefaultValues, origServings, $servingsRangeInput.val()));
 
+    // On button reset, return values accordingly to original servings
     $('#reset_servings').on('click', function () {
         $servingsRangeInput.val(recipe_servings);
         $sliderTarget.html(recipe_servings);
         $servingsRangeInput.change();
     })
 
+    /* Direction ingredient amounts collapsibles */
 
+    // Initialize collapsibles for ingredient amounts displays on directions
     initializeToggleIconCollapsible(
         '.direction-ingredients.collapsible',
         '.direction-ingredients.collapsible .material-icons',
@@ -56,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     );
 
-    // floating action buttons
+    /* Floating action buttons */
     $('.fixed-action-btn').floatingActionButton({
         hoverEnabled: false
     });
@@ -107,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById($(this).data('href')).click(); // can't use jQuery here
     })
 
-
+    /* Like button */
     $('#like_plus_one').on('click', function () {
         $(this).addClass("liked")
         $.ajax({
@@ -125,16 +121,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 })
-;
 
 
-function decToFrac(num) {
-    const numOutString = num.toFixed(2);
-    const whole = numOutString.split('.')[0]
-    const decimal = numOutString.split('.')[1]
-}
-
-var decToFracMap = {
+const decToFracMap = {
     '10': '1/8',
     '11': '1/8',
     '12': '1/8',
@@ -238,10 +227,10 @@ var decToFracMap = {
 }
 
 
-function displayIngAmt(ingAmts, defaultValues, origServings, servingVal) {
-    ingAmts.each(
+function displayIngAmt(ingredientAmounts, defaultValues, origServings, currServings) {
+    ingredientAmounts.each(
         (idx, el) => {
-            const numOut = defaultValues[idx] * servingVal / origServings;
+            const numOut = defaultValues[idx] * currServings / origServings;
             if (imperial_ingredients_set.has($(el).data('name'))) {
                 const splitNum = numOut.toFixed(2).split('.');
                 const frac = splitNum[1] === '00' ? '' : parseFrac(decToFracMap[splitNum[1]]);

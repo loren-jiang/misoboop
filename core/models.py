@@ -1,3 +1,4 @@
+from django.core.files.base import ContentFile
 from django.db import models
 import math
 from django.utils.timezone import now
@@ -84,9 +85,12 @@ class PublicImage(NameDescription):
         return self.upload.url
     #
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs) #first save needed for get_thumbnail to also upload to s3
         if self.upload:
             self.thumbnail = get_thumbnail(self.upload, '150x150', quality=95, format='JPEG').name
         super().save(*args, **kwargs)
+
+
 
 class PrivateImage(models.Model):
     name = models.CharField(max_length=500, null=True, blank=True)

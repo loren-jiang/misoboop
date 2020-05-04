@@ -12,6 +12,10 @@ from core.utils import remove_html_tags, remove_backslash_escaped
 # Create your models here.
 # Models for blogs
 
+class PostManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_published=True)
+
 class Post(CreatedModified):
     headline = models.CharField(max_length=300, unique=True, verbose_name=_('Headline'))
     alt_headline = models.CharField(max_length=300, verbose_name=_('Alternative headline'), blank=True, null=True)
@@ -24,6 +28,7 @@ class Post(CreatedModified):
     is_published = models.BooleanField(default=False)
     image = models.OneToOneField('core.PublicImage', on_delete=models.SET_NULL, blank=True, null=True)
     image_url = models.URLField(max_length=300, default="https://via.placeholder.com/150")
+    objects = PostManager()
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.headline)
@@ -33,7 +38,7 @@ class Post(CreatedModified):
         return reverse('post-detail', args=[self.slug])
 
     def __str__(self):
-        return self.headline + ' | ' + str(self.created_at)
+        return self.headline + ' | ' + str(self.created_at.date())
 
     def tag_names_as_list(self):
         return [tag.name for tag in self.tags.order_by('name')]

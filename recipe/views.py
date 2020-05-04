@@ -5,7 +5,7 @@ from recipe.models import Recipe, Unit
 from django.views.generic import ListView, DetailView
 from django.utils import timezone
 from django_json_ld.views import JsonLdDetailView
-from django.db.models import F, Q, Sum, Count
+from django.db.models import F, Q, Sum, Count, Case, When
 from django.http import JsonResponse
 from .filters import filter_recipe_qs, RecipeFilterSet
 from django.http import HttpResponse, HttpResponseRedirect
@@ -24,7 +24,7 @@ import json
 # Home page view which shows latest recipes 'latest_recipes' and latest blog posts 'latest_posts'
 def home(request):
     context = {
-        'latest_recipes': Recipe.objects.prefetch_related('tags', ).order_by('-created_at').select_related()[0:6],
+        'latest_recipes': Recipe.objects.filter(is_published=True).prefetch_related('tags').order_by('-created_at').select_related()[0:6],
         'latest_posts': Post.objects.prefetch_related('tags').order_by('-created_at').select_related()[0:6],
     }
     welcome_image = None
@@ -45,6 +45,20 @@ def about(request):
     #     pass
     # if about is not None:
     #     return HttpResponseRedirect(reverse('post-detail', kwargs={'slug':'about'}))
+    human_image = None
+    try:
+        human_image = PublicImage.objects.get(name='loren')
+    except PublicImage.DoesNotExist:
+        pass
+    context['human_image'] = human_image
+
+    miso_image = None
+    try:
+        miso_image = PublicImage.objects.get(name='miso on couch')
+    except PublicImage.DoesNotExist:
+        pass
+    context['miso_image'] = miso_image
+
     return render(request, 'about.html', context)
 
 def like_recipe(request, *args, **kwargs):
@@ -65,7 +79,8 @@ class RecipeDetailView(JsonLdDetailView):
         'directions__ingredient_amounts__unit',
         'ingredient_amounts__unit',
         'ingredient_amounts__ingredient').annotate(
-            total_time=F('cook_time') + F('prep_time'))
+            total_time=F('cook_time') + F('prep_time')).filter(
+    )
     model = Recipe
 
     def get_context_data(self, **kwargs):
@@ -99,7 +114,9 @@ class RecipeListView(FilterView):
             'ratings', 'tags',
             'directions__ingredient_amounts__ingredient',
             'directions__ingredient_amounts__unit').annotate(
-            total_time=F('cook_time') + F('prep_time'))
+            total_time=F('cook_time') + F('prep_time')).filter(
+            is_published=True
+        )
         return qs
 
 class RecipeSeriesListView(ListView):
@@ -108,7 +125,8 @@ class RecipeSeriesListView(ListView):
 
     def get_queryset(self):
         qs = super().get_queryset().prefetch_related('recipes', 'posts')\
-            .annotate(num_recipes_and_posts=Count('recipes')+ Count('posts'))\
+            .annotate(num_recipes_and_posts=Count(Case(When(recipes__is_published=True, then=1))) +
+                                            Count(Case(When(posts__is_published=True, then=1))))\
             .filter(num_recipes_and_posts__gt=0).order_by()
         return qs
 

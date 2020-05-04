@@ -16,3 +16,7 @@
 .recipe-card .card-content, .recipe-card .card-reveal {
   background: $color2;
 }
+
+.recipe-card .card-reveal .card-title {
+  padding-left: 0;
+}

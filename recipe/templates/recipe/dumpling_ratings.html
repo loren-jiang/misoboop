@@ -2,8 +2,9 @@
 
 {% block rating_detail %}
     {% block rating_average %}
-        <div class="star-ratings-rating-average">
-            Avg rating: <span class='star-ratings-rating-value'>{{ rating.average|floatformat:"-2" }}</span>
+        <div class="star-ratings-rating-average" style="font-size: 16px; ">
+            <b>Avg rating:</b> <span class='star-ratings-rating-value'>{{ rating.average|floatformat:"-2" }}</span>
+            / 5
         </div>
     {% endblock rating_average %}
     <div class="star-ratings-errors"></div>

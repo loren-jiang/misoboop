@@ -12,72 +12,53 @@
     <div class="row flex-m">
 
         <div class="col m9">
-
-
-            {#            <table class="responsive-table">#}
-            {#                <thead>#}
-            {#                <tr>#}
-            {#                    <th>Name</th>#}
-            {#                    <th>Date</th>#}
-            {#                    <th>Tags</th>#}
-            {#                </tr>#}
-            {#                </thead>#}
-            {##}
-            {#                <tbody>#}
-            {#                {% for post in object_list.all %}#}
-            {#                    <tr>#}
-            {#                        <td><a href="{{ post.get_absolute_url }}">{{ post.name }} </a></td>#}
-            {#                        <td>{{ post.modified_at }}</td>#}
-            {#                        <td>#}
-            {#                            {% for tag in post.tags.all %}#}
-            {#                                <span class="chip"> {{ tag.name }}</span>#}
-            {#                            {% endfor %}#}
-            {#                        </td>#}
-            {#                    </tr>#}
-            {#                {% endfor %}#}
-            {#                </tbody>#}
-            {#            </table>#}
-            {% for post in object_list.all %}
-                <div class="row valign-wrapper">
-                    <div class="col s12 m3">
-                        <img src={{ post.image_url }}>
-                    </div>
-                    <div class="col s12 m9">
-                        <h4>{{ post.headline }}</h4>
-                        <div>
-                            {% for tag in post.tags.all %}
-                                <span data-tag={{ tag.name }} class="chip"> {{ tag.name }}</span>
-                            {% endfor %}
+            {% if object_list %}
+                {% for post in object_list.all %}
+                    <div class="row valign-wrapper">
+                        <div class="col s12 m3">
+                            <img src={{ post.image_url }}>
                         </div>
-                        <div>
-                            {{ post.short_description|truncatewords:100 }}
-                            <a href={{ post.get_absolute_url }}> Read more </a>
+                        <div class="col s12 m9">
+                            <h4>{{ post.headline }}</h4>
+                            <div>
+                                {% for tag in post.tags.all %}
+                                    <span data-tag={{ tag.name }} class="chip"> {{ tag.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <div>
+                                {{ post.short_description|truncatewords:100 }}
+                                <a href={{ post.get_absolute_url }}> Read more </a>
+                            </div>
+
                         </div>
 
+
                     </div>
+                    <hr>
 
+                {% endfor %}
+                <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?{% url_replace request 'page' 1 %}"> &laquo; first</a>
+                        <a href="?{% url_replace request 'page' page_obj.previous_page_number %}"> previous </a>
+                    {% endif %}
 
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?{% url_replace request 'page' page_obj.next_page_number %}"> next </a>
+                        <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">last &raquo;</a>
+                    {% endif %}
+                </span>
                 </div>
-                <hr>
 
-            {% endfor %}
-            <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?{% url_replace request 'page' 1 %}"> &laquo; first</a>
-                <a href="?{% url_replace request 'page' page_obj.previous_page_number %}"> previous </a>
+            {% else %}
+                No blog posts found...
             {% endif %}
 
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-
-            {% if page_obj.has_next %}
-                <a href="?{% url_replace request 'page' page_obj.next_page_number %}"> next </a>
-                <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">last &raquo;</a>
-            {% endif %}
-        </span>
-            </div>
         </div>
 
         <div class="col m3">

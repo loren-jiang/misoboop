@@ -42,7 +42,7 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'filebrowser',
+    'filebrowser', #todo: maybe add later
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,12 +55,12 @@ INSTALLED_APPS = [
     'storages',
     'tinymce',
     'sorl.thumbnail',
-    'newsletter',
-    'threadedcomments',
-    'django_comments',
+    'newsletter', #todo: for sure add later
+    'threadedcomments', #todo: probs add later
+    'django_comments', #needed for threaded comments
     'django_filters',
     'star_ratings',
-    'debug_toolbar',
+    'debug_toolbar', #don't use for production
     'rest_framework',
     'django_json_ld',
     'adminsortable',
@@ -75,7 +75,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -111,13 +110,16 @@ WSGI_APPLICATION = 'misoboop.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('MB_DB_NAME'),
+        'USER': os.getenv('MB_DB_USER'),
+        'PASSWORD': os.getenv('MB_DB_PASSWORD'),
+        'HOST': os.getenv('MB_DB_HOST'),
+        'PORT': os.getenv('MB_DB_PORT'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -150,6 +152,23 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'recipe/static'),
+    os.path.join(BASE_DIR, 'blog/static'),
+]
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',  # for sass
+]
+
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 # aws settings
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
@@ -157,14 +176,13 @@ AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 # AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_CLOUDFRONT_DOMAIN')
+AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_CLOUDFRONT_DOMAIN')  # use cloudfront
 
-# todo: implement this later for vistor image uploads?
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # s3 static settings
-# STATIC_LOCATION = 'static'
-# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
-# configures Django to automatically add static files to the S3 bucket when the collectstatic command is run.
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_LOCATION = 'static'
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+STATICFILES_STORAGE = 'misoboop.storage_backends.CachedS3Boto3Storage'
 
 # s3 public media settings
 AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
@@ -173,19 +191,23 @@ DEFAULT_FILE_STORAGE = 'misoboop.storage_backends.PublicMediaStorage'
 AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
 PRIVATE_FILE_STORAGE = 'misoboop.storage_backends.PrivateMediaStorage'
 
+# django-compressor settings
+COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_URL = STATIC_URL
+COMPRESS_STORAGE = STATICFILES_STORAGE
+
+COMPRESS_ENABLED = True #opposite of DEBUG
+COMPRESS_OFFLINE = True
+
 COMPRESS_CSS_FILTERS = [
     'django_compressor_autoprefixer.AutoprefixerFilter',
     'compressor.filters.cssmin.CSSMinFilter',
 ]
 
-# COMPRESS_REBUILD_TIMEOUT = 0
-
 COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
     ('text/browserify', 'browserify -e {infile} -o {outfile}'),
 )
-
-# COMPRESS_ENABLED = True
 
 # case-insensitive when looking up tags
 TAGGIT_CASE_INSENSITIVE = True
@@ -207,14 +229,10 @@ DEBUG_TOOLBAR_CONFIG = {
 
 SITE_ID = 1
 
-STAR_RATINGS_STAR_SPRITE = "/assets/dumpling_sprite_sm.png"
+# STAR_RATINGS_STAR_SPRITE = STATIC_URL + "assets/dumpling_sprite_sm.png"
 STAR_RATINGS_ANONYMOUS = True
 
-# COMPRESS_OFFLINE = True
-# LIBSASS_OUTPUT_STYLE = 'compressed'
-# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+LIBSASS_OUTPUT_STYLE = 'compressed'
 
 LIBSASS_CUSTOM_FUNCTIONS = {
     'static': django_static,
@@ -225,13 +243,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 X_FRAME_OPTIONS = 'sameorigin'
 
-
 CACHES = {
-    'default':{
+    'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': '127.0.0.1;11211',
     }
 }
+
+THUMBNAIL_FORCE_OVERWRITE = True #https://github.com/jazzband/sorl-thumbnail/issues/351
 
 # Override production variables if DJANGO_DEVELOPMENT env variable is set
 if os.environ.get('DJANGO_DEVELOPMENT') is not None:

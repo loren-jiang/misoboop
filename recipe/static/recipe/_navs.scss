@@ -47,8 +47,11 @@ nav .nav-wrapper {
 
 
 /* Top navbar specific styles */
-nav .nav-wrapper .topnav {
+nav ul li a {
+  //color: $nav-link-color;
+}
 
+nav .nav-wrapper .topnav {
 }
 
 .topnav li a {
@@ -62,6 +65,7 @@ nav .nav-wrapper .topnav {
 
 a.sidenav-trigger i.material-icons {
   font-size: 3rem;
+  //color: $nav-link-color;
 }
 
 .sidenav li div.search-wrapper {

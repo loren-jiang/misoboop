@@ -10,7 +10,7 @@
             <div class="fullwidth-slick-carousel">
                 {% for recipe in latest_recipes %}
                     <div class="slick-carousel-slide">
-                        {% include "recipe/recipe_card.html" with recipe=recipe %}
+                        {% include "recipe/recipe_card.html" with recipe=recipe no_thumbnail=1 %}
                     </div>
                 {% endfor %}
             </div>
@@ -37,9 +37,8 @@
                     </p>
                 </div>
                 <div class="card-action">
-                    <a class="social-media-link" href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                    <a class="social-media-link" href="#"><i class="fa fa-facebook-f" aria-hidden="true"></i></a>
-                    <a class="social-media-link" href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a class="social-media-link" href="https://www.instagram.com/miso_boop/"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    <a class="social-media-link" href="https://www.pinterest.com/miso_boop/"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
                 </div>
             </div>
             <div class="card color-2">

@@ -24,36 +24,36 @@ INTERNAL_IPS = [
 ]
 
 # Application definition
-# INSTALLED_APPS = [
-#     'filebrowser',
-#     'django.contrib.admin',
-#     'django.contrib.auth',
-#     'django.contrib.contenttypes',
-#     'django.contrib.sessions',
-#     'django.contrib.messages',
-#     'django.contrib.staticfiles',
-#     'django.contrib.sites',
-#     'django_extensions',
-#     'storages',
-#     'tinymce',
-#     'sorl.thumbnail',
-#     'newsletter',
-#     'threadedcomments',
-#     'django_comments',
-#     'django_filters',
-#     'star_ratings',
-#     'debug_toolbar',
-#     'rest_framework',
-#     'django_json_ld',
-#     'adminsortable',
-#     'compressor',
-#     'django_bootstrap_breadcrumbs',
-#     'taggit',
-#     'taggit_serializer',
-#     'recipe',
-#     'core',
-#     'blog'
-# ]
+INSTALLED_APPS = [
+    'filebrowser',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django_extensions',
+    'storages',
+    'tinymce',
+    'sorl.thumbnail',
+    'newsletter',
+    'threadedcomments',
+    'django_comments',
+    'django_filters',
+    'star_ratings',
+    'debug_toolbar',
+    'rest_framework',
+    'django_json_ld',
+    'adminsortable',
+    'compressor',
+    'django_bootstrap_breadcrumbs',
+    'taggit',
+    'taggit_serializer',
+    'recipe',
+    'core',
+    'blog'
+]
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -68,27 +68,17 @@ DATABASES = {
     }
 }
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'recipe/static'),
-    os.path.join(BASE_DIR, 'blog/static'),
-]
-
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',  # for sass
-]
-
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage' #default settings
 
+COMPRESS_URL = STATIC_URL
+COMPRESS_STORAGE = STATICFILES_STORAGE
 
-DEBUG_TOOLBAR_CONFIG = {
-    # 'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
-}
 
+DEBUG_TOOLBAR_CONFIG = {}
+
+COMPRESS_ENABLED = False
+COMPRESS_OFFLINE = False
+
+LIBSASS_OUTPUT_STYLE = 'nested'

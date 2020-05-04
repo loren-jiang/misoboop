@@ -71,7 +71,7 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Recipe.objects.prefetch_related('ingredients', 'tags') \
         .annotate(total_time=F('cook_time') + F('prep_time')) \
-        .annotate(avg_ratings=F('ratings__average'))
+        .annotate(avg_ratings=F('ratings__average')).filter(is_published=True)
     pagination_class = CustomPageNumberPagination
     # pagination_class = CustomLimitOffsetPagination
     serializer_class = RecipeSerializer
@@ -114,7 +114,7 @@ class RecipeList(APIView):
     """
 
     def get(self, request, format=None):
-        qs = Recipe.objects.prefetch_related('ingredients', 'tags').order_by('likes')
+        qs = Recipe.objects.prefetch_related('ingredients', 'tags').order_by('likes').filter(is_published=True)
         # qs = Recipe.objects.all()
         serializer = RecipeSerializer(qs, many=True)
         return Response(serializer.data)

@@ -18,6 +18,9 @@ from core.models import BasicTag, TaggedWhatever
 import math
 # Create your models here.
 
+class RecipeManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_published=True)
 
 # todo: add hitCount? https://django-hitcount.readthedocs.io/en/latest/installation.html
 class Recipe(CreatedModified):
@@ -42,6 +45,7 @@ class Recipe(CreatedModified):
     likes = models.PositiveSmallIntegerField(default=1)
     ratings = GenericRelation(Rating, related_query_name='recipes')
     series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True, related_name='recipes')
+    objects = RecipeManager()
 
     class Meta:
         ordering = ['name',]

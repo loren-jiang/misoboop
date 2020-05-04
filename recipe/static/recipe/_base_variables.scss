@@ -3,6 +3,10 @@
 //$subheader-font-family: 'Caveat', cursive;
 $banner-font-family: 'Caveat', cursive;
 
+/* Links */
+$link-color: #26a69a;
+$nav-link-color: #fff;
+
 //$main-font-family: 'Open Sans', sans-serif;
 $main-font-family: 'Lora', serif;
 $header-font-family: 'Lora', serif;
@@ -22,3 +26,4 @@ $extra-large-and-up: "only screen and (min-width : #{$large-screen-up})" !defaul
 $small-and-down: "only screen and (max-width : #{$small-screen})" !default;
 $medium-and-down: "only screen and (max-width : #{$medium-screen})" !default;
 $medium-only: "only screen and (min-width : #{$small-screen-up}) and (max-width : #{$medium-screen})" !default;
+

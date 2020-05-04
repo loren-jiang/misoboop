@@ -20,54 +20,59 @@
 
 
     <div class="row">
-        <div class="col s12 offset-m1 m10 offset-l2 l8">
-            {% for series in object_list.all %}
-                <div class="series-wrapper">
-                    <h4 class="series-title">{{ series.name }}</h4>
-                    {#                <div class="carousel carousel-slider">#}
-                    {#                    {% for recipe in series.recipes.all %}#}
-                    {#                        <a class="carousel-item" href="#recipe_{{ recipe.id }}"><img src={{ recipe.med_image_url }}></a>#}
-                    {##}
-                    {#                    {% endfor %}#}
-                    {##}
-                    {#                </div>#}
-                    <div class="row series-tabs">
-                        <div class="col s12">
-                            <ul class="tabs center">
-                                <li class="tab col s6"><a href="#recipes_{{ series.id }}">Recipes</a></li>
-                                <li class="tab col s6"><a href="#posts_{{ series.id }}">Blog posts</a></li>
-                            </ul>
-                        </div>
-                        <div id="recipes_{{ series.id }}" class="col s12 series-content">
-                            <ul>
-                                {% for recipe in series.recipes.all %}
-                                    <li>
-                                        <a href="{{ recipe.get_absolute_url }}">{{ recipe.name }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+        <div class="col s12 m8 l6">
+            {% if object_list %}
+                {% for series in object_list.all %}
+                    <div class="series-wrapper">
+                        <h4 class="series-title">{{ series.name }}</h4>
 
+                        <div class="row series-tabs">
+                            <div class="col s12">
+                                <ul class="tabs center">
+                                    <li class="tab col s6"><a href="#recipes_{{ series.id }}">Recipes</a></li>
+                                    <li class="tab col s6"><a href="#posts_{{ series.id }}">Blog posts</a></li>
+                                </ul>
+                            </div>
+                            <div id="recipes_{{ series.id }}" class="col s12 series-content">
+                                <ul>
+                                    {% for recipe in series.recipes.all %}
+                                        {% if recipe.is_published %}
+                                            <li>
+                                                <a href="{{ recipe.get_absolute_url }}">{{ recipe }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+
+                            </div>
+                            <div id="posts_{{ series.id }}" class="col s12 series-content">
+                                <ul>
+                                    {% for post in series.posts.all %}
+                                        {% if post.is_published %}
+                                            <li>
+                                                <a href="{{ post.get_absolute_url }}">{{ post }}</a>
+                                            </li>
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
-                        <div id="posts_{{ series.id }}" class="col s12 series-content">
-                            <ul>
-                                {% for post in series.posts.all %}
-                                    <li>
-                                        <a href="{{ recipe.get_absolute_url }}">{{ post.name }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+
+                        {#                    <hr style="transform: scaleX(1.25)">#}
+                        {% if forloop.last %}
+                        {% else %}
+                            <hr>
+                            <br>
+                        {% endif %}
                     </div>
 
-                    {#                    <hr style="transform: scaleX(1.25)">#}
-                    {% if forloop.last %}
-                    {% else %}
-                        <hr>
-                        <br>
-                    {% endif %}
-                </div>
+                {% endfor %}
+            {% else %}
+                No series found...
+                Check back in a bit!
+            {% endif %}
 
-            {% endfor %}
         </div>
     </div>
 {% endblock content %}

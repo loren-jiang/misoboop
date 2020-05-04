@@ -23,6 +23,8 @@
 
 {% block content %}
     {% render_breadcrumbs %}
+
+    {% if recipe.is_published %}
     <div class="fixed-action-btn" tabindex="0">
         <a class="btn-floating btn-large red desktop-fab-tip tooltipped" data-tooltip="Share"
            data-position="left">
@@ -36,17 +38,17 @@
                         data-href=""
                         data-position="left"
                         data-tooltip="Share on Facebook"
-                        class="desktop-fab-tip btn-floating red  fb-xfbml-parse-ignore fb-share-link tooltipped">
+                        class="desktop-fab-tip btn-floating red  fb-xfbml-parse-ignore fb-share-link tooltipped a-default">
                     <i class="fa fa-facebook-f" aria-hidden="true"></i>
                 </a>
 
-                <a data-href="fb_share" class="btn-floating mobile-fab-tip">Post</a>
+                <a data-href="fb_share" class="btn-floating mobile-fab-tip a-default">Post</a>
             </li>
             <li>
                 <a
                         id="pin_share"
                         rel="noreferrer noopener"
-                        class="desktop-fab-tip btn-floating yellow darken-1 tooltipped"
+                        class="desktop-fab-tip btn-floating yellow darken-1 tooltipped a-default"
                         data-position="left"
                         data-tooltip="Share on Pinterest"
                         data-pin-custom="true"
@@ -56,18 +58,18 @@
                 >
                     <i class="fa fa-pinterest" aria-hidden="true"></i>
                 </a>
-                <a data-href="pin_share" class="btn-floating mobile-fab-tip">Pin</a>
+                <a data-href="pin_share" class="btn-floating mobile-fab-tip a-default">Pin</a>
             </li>
             <li>
                 <a
                         href="mailto:?subject={{ recipe }}&body=Here's a great recipe for
                                                 {{ recipe }}{{ recipe.get_absolute_url }}"
                         id="email_share"
-                        class="desktop-fab-tip btn-floating green tooltipped" data-position="left"
+                        class="desktop-fab-tip btn-floating green tooltipped a-default" data-position="left"
                         data-tooltip="Email">
                     <i class="material-icons">email</i>
                 </a>
-                <a data-href="email_share" class="btn-floating mobile-fab-tip">Email</a>
+                <a data-href="email_share" class="btn-floating mobile-fab-tip a-default">Email</a>
 
             </li>
             {#                            <li>#}
@@ -140,9 +142,9 @@
                         <li>
                             <b>Servings:</b>
                             <!-- Dropdown Trigger -->
-                            <a class='dropdown-trigger btn dropdown-range' href='#' data-target='dropdown1'>
+                            <button class='dropdown-trigger btn dropdown-range' href='#' data-target='dropdown1'>
                                 <span class="range-slider-target" id="num_servings_target"> </span>
-                            </a>
+                            </button>
                         </li>
                         <hr>
 
@@ -243,7 +245,7 @@
                     <div class="col m2 sticky-toc hide-on-small-only">
                         <ul class="section table-of-contents flowy-font">
                             {% for direction in recipe.directions.all %}
-                                <li><a href="#direction-{{ direction.id }}">{{ direction }}</a></li>
+                                <li><a class="a-default" href="#direction-{{ direction.id }}">{{ direction }}</a></li>
                             {% endfor %}
 
                         </ul>
@@ -254,7 +256,9 @@
             </div>
         </div>
     </div>
-
+    {% else %}
+        Recipe is in the works! Please check back later!
+    {% endif %}
 
 {% endblock %}
 

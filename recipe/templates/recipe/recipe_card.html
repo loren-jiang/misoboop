@@ -4,13 +4,17 @@
 
 <div class="card recipe-card">
     <div class="card-image waves-effect waves-block waves-light">
+        {% if no_thumbnail %}
+            <img class="activator" src={{ recipe.image.upload.url }}>
+        {% else %}
+            {% thumbnail recipe.image.upload "400x400" crop="center" as im %}
+                <img class="activator" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+            {% empty %}
+                <img class="activator" src="{{ recipe.placeholder_url }}">
+            {% endthumbnail %}
+        {% endif %}
 
-        {% thumbnail recipe.image.upload "500x500" crop="center" as im %}
-            <img class="activator" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-        {% empty %}
-            <img class="activator" src="{{ recipe.placeholder_url }}">
-        {% endthumbnail %}
-        {#        <img class="activator" src={{ recipe.image.upload.url }}>#}
+
     </div>
     <div class="card-content">
         <span class="activator card-title grey-text text-darken-4">
@@ -24,34 +28,35 @@
             <b>{{ recipe.name }}</b>
             <i class="material-icons right">close</i>
         </span>
+        {#        {% ratings recipe template_name="recipe/dumpling_ratings.html" icon_height=25 icon_width=25 read_only=True %}#}
+
         <hr>
 
-        <div>
+        <p>
             {% for tag in recipe.tags.all %}
                 <span class="chip"> {{ tag.name }} </span>
             {% endfor %}
-        </div>
+        </p>
 
-        <div>
+        <p>
             <a class="btn waves-effect" href={{ recipe.get_absolute_url }}>See recipe</a>
-        </div>
-        {#        {% ratings recipe template_name="recipe/dumpling_ratings.html" icon_height=25 icon_width=25 read_only=True %}#}
+        </p>
+
 
         <div class="row">
             <div class="col">
                 <ul>
+                    {#                    <li>#}
+                    {#                        Prep time: {{ recipe.prep_time|min_to_hr }}#}
+                    {#                    </li>#}
+                    {#                    <li>#}
+                    {#                        Cook time: {{ recipe.cook_time|min_to_hr }}#}
+                    {#                    </li>#}
                     <li>
-                        Prep time: {{ recipe.prep_time|min_to_hr }}
+                        <b>Total time:</b> {{ recipe.total_time|min_to_hr }}
                     </li>
                     <li>
-                        Cook time: {{ recipe.cook_time|min_to_hr }}
-                    </li>
-                    <li>
-                        Total time: {{ recipe.total_time|min_to_hr }}
-                    </li>
-                    <hr>
-                    <li>
-                        Servings: {{ recipe.servings }}
+                        <b>Servings:</b> {{ recipe.servings }}
                     </li>
                 </ul>
             </div>
@@ -60,7 +65,7 @@
 
         {% if recipe.short_description %}
             <hr>
-            <p>About: {{ recipe.short_description }}</p>
+            <p><b>About:</b> {{ recipe.short_description }}</p>
         {% endif %}
     </div>
 </div>
