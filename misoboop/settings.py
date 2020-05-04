@@ -254,7 +254,8 @@ THUMBNAIL_FORCE_OVERWRITE = True #https://github.com/jazzband/sorl-thumbnail/iss
 
 # Override production variables if DJANGO_DEVELOPMENT env variable is set
 if os.environ.get('DJANGO_DEVELOPMENT') is not None:
-    print('Development settings used.')
+    # print('Development settings used.')
     from misoboop.settings_dev import *
 else:
-    print('Production settings used.')
+    # print('Production settings used.')
+    pass
