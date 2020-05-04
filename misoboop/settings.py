@@ -31,6 +31,8 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
+    '165.227.9.4',
+    'misoboop.com',
 ]
 
 INTERNAL_IPS = [
