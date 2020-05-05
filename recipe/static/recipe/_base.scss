@@ -4,7 +4,7 @@
 /* General tag styles */
 body {
   font-family: $main-font-family;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
 }
 
 input {
@@ -41,8 +41,8 @@ hr.px5 {
 }
 
 .btn, .btn-large, .btn-small, .btn-floating, .btn-flat,
-.material-tooltip, nav, input, label {
-  font-family: $subheader-font-family;
+.material-tooltip, input, label {
+  font-family: "Open Sans", Sans-serif;
 }
 
 
@@ -53,7 +53,38 @@ b {
 
 .chip {
   font-size: 1.2rem;
-    background: $color3;
+  background: $color3;
+}
+
+input.valid:not([type]),
+input.valid:not([type]):focus,
+input.valid[type=text]:not(.browser-default),
+input.valid[type=text]:not(.browser-default):focus,
+input.valid[type=password]:not(.browser-default),
+input.valid[type=password]:not(.browser-default):focus,
+input.valid[type=email]:not(.browser-default),
+input.valid[type=email]:not(.browser-default):focus,
+input.valid[type=url]:not(.browser-default),
+input.valid[type=url]:not(.browser-default):focus,
+input.valid[type=time]:not(.browser-default),
+input.valid[type=time]:not(.browser-default):focus,
+input.valid[type=date]:not(.browser-default),
+input.valid[type=date]:not(.browser-default):focus,
+input.valid[type=datetime]:not(.browser-default),
+input.valid[type=datetime]:not(.browser-default):focus,
+input.valid[type=datetime-local]:not(.browser-default),
+input.valid[type=datetime-local]:not(.browser-default):focus,
+input.valid[type=tel]:not(.browser-default),
+input.valid[type=tel]:not(.browser-default):focus,
+input.valid[type=number]:not(.browser-default),
+input.valid[type=number]:not(.browser-default):focus,
+input.valid[type=search]:not(.browser-default),
+input.valid[type=search]:not(.browser-default):focus,
+textarea.materialize-textarea.valid,
+textarea.materialize-textarea.valid:focus, .select-wrapper.valid > input.select-dropdown {
+  border-bottom: 1px solid $link-color;
+  -webkit-box-shadow: 0 1px 0 0 $link-color;
+  box-shadow: 0 1px 0 0 $link-color;
 }
 
 
@@ -79,8 +110,6 @@ a.whiten {
 a.underline {
   text-decoration: underline;
 }
-
-
 
 
 /* Custom grid layout */

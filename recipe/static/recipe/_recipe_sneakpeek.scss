@@ -1,0 +1,22 @@
+img.recipe-sneakpeek-image {
+  object-fit: cover;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 250px;
+}
+
+.recipe-sneakpeek-info {
+  font-size: 1rem;
+
+}
+
+.recipe-sneakpeek-date {
+  color: grey;
+}
+
+.recipe-sneakpeek-title {
+  a {
+    color: black;
+  }
+}

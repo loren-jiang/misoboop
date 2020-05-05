@@ -179,3 +179,10 @@ def search_recipes(request):
         'filter_tags': BasicTag.objects.filter(filterable=True, recipe__isnull=False).distinct()
     }
     return render(request, 'recipe/recipe_list_ajax.html', context)
+
+def tagged_by_recipes(request, *args, **kwargs):
+    context = {}
+    tag_slug = kwargs.get('slug', None)
+    context['recipes'] = Recipe.objects.filter(tags__slug__in=[tag_slug]).distinct()
+    context['title'] = f'{tag_slug.capitalize()} recipes'
+    return render(request, 'recipe/tagged_by_recipes.html', context)

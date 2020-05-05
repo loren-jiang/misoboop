@@ -18,8 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-
-
     var fullWidthCarouselElems = document.querySelectorAll('.carousel');
     var fullWidthCarouselInstances = M.Carousel.init(fullWidthCarouselElems, {
         fullWidth: true,
@@ -34,7 +32,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     lazifyImages();
 
-
+    $('.recipe-grid.grid').colcade({
+        columns: '.grid-col',
+        items: '.grid-item'
+    });
 })
 
 

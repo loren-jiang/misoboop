@@ -7,38 +7,34 @@ $(document).ready(function () {
 
     /* Slick slider initialization with responsiveness */
     $('.responsive-slick-carousel').slick({
-        dots: true,
-        infinite: false,
-        speed: 300,
+        adaptiveHeight: true,
+        centerMode: true,
+        centerPadding: '60px',
+        adaptiveHeight: true,
         slidesToShow: 3,
-        slidesToScroll: 3,
         nextArrow: '<a class="carousel-next"><i class="material-icons carousel-arrow-icon">navigate_next</i></a>',
         prevArrow: '<a class="carousel-prev"><i class="material-icons carousel-arrow-icon">navigate_before</i></a>',
         responsive: [
             {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true
-                }
-            },
-            {
+
                 breakpoint: 992,
                 settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
+                    adaptiveHeight: true,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 3,
                 }
             },
             {
                 breakpoint: 600,
                 settings: {
+                    adaptiveHeight: true,
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
                     slidesToShow: 1,
-                    slidesToScroll: 1
                 }
             }
-            // settings: "unslick" to unslick
         ]
     });
 

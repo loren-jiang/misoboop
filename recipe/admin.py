@@ -124,14 +124,9 @@ class RecipeAdmin(NonSortableParentAdmin):
     list_filter = (RecipeNameFilter, RecipeTagsFilter)
     list_display = ('name', 'recipe_tags',)
 
-    #
-    # def get_queryset(self, request):
-    #     ## TODO: is this actually optimizing anything?
-    #     return super().get_queryset(request).prefetch_related('tags',
-    #                                                           'ingredients__ingredient_amounts',
-    #                                                           'ingredient_amounts__unit',
-    #                                                           'directions__ingredient_amounts'
-    #                                                           )
+
+    def get_queryset(self, request):
+        return Recipe.objects.get_all()
 
     def recipe_tags(self, obj):
         return ", ".join([tag.name for tag in obj.tags.order_by()])

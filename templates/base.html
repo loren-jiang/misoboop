@@ -12,6 +12,8 @@
           rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
           rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+          rel="stylesheet">
     {% compress css %}
         {#        <link type="text/x-scss" href={% static 'materialize/sass/materialize.scss' %} rel="stylesheet"#}
         {#              media="screen, projection">#}
@@ -47,8 +49,9 @@
     <div class="row">
         <div class="col s12">
             <div class="site-banner">
-                <a href={%  url 'home' %}>
-                    <img class="logo" data-pin-nopin="true" id="misoboop-cat" src="{% static 'assets/lucky_dumpling_cat_min.svg' %}">
+                <a href={% url 'home' %}>
+                    <img class="logo" data-pin-nopin="true" id="misoboop-cat"
+                         src="{% static 'assets/lucky_dumpling_cat_min.svg' %}">
                 </a>
 
 
@@ -164,8 +167,10 @@
                 <div class="col l4 offset-l2 s12">
                     <h5 class="">Social media</h5>
                     <div class="">
-                        <a class="social-media-link whiten" href="https://www.instagram.com/miso_boop/"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                        <a class="social-media-link whiten" href="https://www.pinterest.com/miso_boop/"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                        <a class="social-media-link whiten" href="https://www.instagram.com/miso_boop/"><i
+                                class="fa fa-instagram" aria-hidden="true"></i></a>
+                        <a class="social-media-link whiten" href="https://www.pinterest.com/miso_boop/"><i
+                                class="fa fa-pinterest" aria-hidden="true"></i></a>
                     </div>
 
                     {#                    <ul>#}
@@ -239,6 +244,9 @@
         crossorigin="anonymous"></script>
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+
+<!-- colcade masonry -->
+<script src="https://unpkg.com/colcade@0/colcade.js"></script>
 
 <!-- 'text/browserify' allows for 'require' on modules (node.js)  -->
 {% compress js file base %}

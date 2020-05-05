@@ -11,23 +11,28 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from sorl.thumbnail import ImageField, get_thumbnail
 
+
 # Create your models here.
+
+
 class BasicTag(TagBase):
     # ... fields here
-    filterable = models.BooleanField(default=False) # if tag is show on Recipe list filtering options
-    shown = models.BooleanField(default=True) # if tag is shown on Recipe detail page
+    filterable = models.BooleanField(default=False)  # if tag is show on Recipe list filtering options
+    shown = models.BooleanField(default=True)  # if tag is shown on Recipe detail page
+    # objects = BasicTagManager()
 
     class Meta:
         verbose_name = _("Tag")
         verbose_name_plural = _("Tags")
 
-class TaggedWhatever(GenericTaggedItemBase):
 
+class TaggedWhatever(GenericTaggedItemBase):
     tag = models.ForeignKey(
         BasicTag,
         on_delete=models.CASCADE,
         related_name="%(app_label)s_%(class)s_items",
     )
+
 
 class NameDescription(models.Model):
     name = models.CharField(max_length=500, unique=True)
@@ -38,6 +43,7 @@ class NameDescription(models.Model):
 
     class Meta:
         abstract = True
+
 
 class CreatedModified(models.Model):
     """
@@ -51,6 +57,7 @@ class CreatedModified(models.Model):
     class Meta:
         abstract = True
 
+
 class Series(CreatedModified):
     """
     Model representing a 'Series', or collection of other models (many-to-one)
@@ -63,12 +70,13 @@ class Series(CreatedModified):
         return self.name
 
     def get_absolute_url(self):
-        return '' #todo: implement
+        return ''  # todo: implement
 
     class Meta:
         ordering = ['name']
         verbose_name = _('Series')
         verbose_name_plural = _('Seriess')
+
 
 # Media models
 class PublicImage(NameDescription):
@@ -83,13 +91,13 @@ class PublicImage(NameDescription):
         # if len(splits) > 1:
         #     return self.upload.url.split(settings.AWS_PUBLIC_MEDIA_LOCATION)[1]
         return self.upload.url
+
     #
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs) #first save needed for get_thumbnail to also upload to s3
+        super().save(*args, **kwargs)  # first save needed for get_thumbnail to also upload to s3
         if self.upload:
             self.thumbnail = get_thumbnail(self.upload, '150x150', quality=95, format='JPEG').name
         super().save(*args, **kwargs)
-
 
 
 class PrivateImage(models.Model):

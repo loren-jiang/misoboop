@@ -16,6 +16,10 @@ class PostManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True)
 
+    def get_all(self):
+        return super().get_queryset()
+
+
 class Post(CreatedModified):
     headline = models.CharField(max_length=300, unique=True, verbose_name=_('Headline'))
     alt_headline = models.CharField(max_length=300, verbose_name=_('Alternative headline'), blank=True, null=True)
@@ -25,7 +29,7 @@ class Post(CreatedModified):
     tags = TaggableManager(through=TaggedWhatever, blank=True)
     slug = models.SlugField(max_length=100, editable=False)
     series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True, related_name='posts')
-    is_published = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=True)
     image = models.OneToOneField('core.PublicImage', on_delete=models.SET_NULL, blank=True, null=True)
     image_url = models.URLField(max_length=300, default="https://via.placeholder.com/150")
     objects = PostManager()

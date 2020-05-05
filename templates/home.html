@@ -4,20 +4,56 @@
 
 {% block content %}
     <div class="row">
-        <div class="col s12 l8 latest-recipes ">
+        <div class="col s12 l9 latest-recipes ">
             {#            <h3> Latest recipes </h3>#}
 
-            <div class="fullwidth-slick-carousel">
-                {% for recipe in latest_recipes %}
-                    <div class="slick-carousel-slide">
-                        {% include "recipe/recipe_card.html" with recipe=recipe no_thumbnail=1 %}
-                    </div>
-                {% endfor %}
-            </div>
+            {#            <div class="fullwidth-slick-carousel">#}
+            {#                {% for recipe in latest_recipes %}#}
+            {#                    <div class="slick-carousel-slide">#}
+            {#                        {% include "recipe/recipe_card.html" with recipe=recipe no_thumbnail=1 %}#}
+            {#                    </div>#}
+            {#                {% endfor %}#}
+            {#            </div>#}
+            {#            <div class="fullwidth-slick-carousel">#}
+            {#                {% for recipe in latest_recipes %}#}
+            {#                    <div class="slick-carousel-slide">#}
+            {#                        {% include "recipe/recipe_card.html" with recipe=recipe no_thumbnail=1 %}#}
+            {#                    </div>#}
+            {#                {% endfor %}#}
+            {#            </div>#}
 
+            <div class="grid">
+                <div class="grid-col grid-col--1"></div>
+                <div class="grid-col grid-col--2"></div>
+                <div class="grid-col grid-col--3"></div>
+                {% include 'recipe/recipes_masonry.html' with recipes=latest_recipes %}
+
+
+                {#                <div class="grid-item grid-item--b">1</div>#}
+                {#                <div class="grid-item grid-item--a">2</div>#}
+                {#                <div class="grid-item grid-item--c">3</div>#}
+                {#                <div class="grid-item grid-item--a">4</div>#}
+                {#                <div class="grid-item grid-item--a">5</div>#}
+                {#                <div class="grid-item grid-item--b">6</div>#}
+                {#                <div class="grid-item grid-item--c">7</div>#}
+                {#                <div class="grid-item grid-item--b">8</div>#}
+                {#                <div class="grid-item grid-item--a">9</div>#}
+                {#                <div class="grid-item grid-item--c">10</div>#}
+                {#                <div class="grid-item grid-item--a">11</div>#}
+                {#                <div class="grid-item grid-item--a">12</div>#}
+                {#                <div class="grid-item grid-item--b">13</div>#}
+                {#                <div class="grid-item grid-item--c">14</div>#}
+                {#                <div class="grid-item grid-item--b">15</div>#}
+                {#                <div class="grid-item grid-item--a">16</div>#}
+                {#                <div class="grid-item grid-item--c">17</div>#}
+                {#                <div class="grid-item grid-item--a">18</div>#}
+                {#                <div class="grid-item grid-item--a">19</div>#}
+                {#                <div class="grid-item grid-item--b">20</div>#}
+                {#                <div class="grid-item grid-item--c">21</div>#}
+            </div>
         </div>
 
-        <div class="welcome col offset-s1 s10 l4  ">
+        <div class="welcome col offset-s1 s10 m3  ">
             <div class="card color-2">
                 <div class="card-content">
                     <div class="card-title">
@@ -37,8 +73,10 @@
                     </p>
                 </div>
                 <div class="card-action">
-                    <a class="social-media-link" href="https://www.instagram.com/miso_boop/"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                    <a class="social-media-link" href="https://www.pinterest.com/miso_boop/"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                    <a class="social-media-link" href="https://www.instagram.com/miso_boop/"><i class="fa fa-instagram"
+                                                                                                aria-hidden="true"></i></a>
+                    <a class="social-media-link" href="https://www.pinterest.com/miso_boop/"><i class="fa fa-pinterest"
+                                                                                                aria-hidden="true"></i></a>
                 </div>
             </div>
             <div class="card color-2">
@@ -74,5 +112,11 @@
 {% endblock %}
 
 {% block scripts %}
-
+    {#    <script src="https://unpkg.com/colcade@0/colcade.js"></script> {# for masonry #}
+    {#    <script>#}
+    {#        $('.grid').colcade({#}
+    {#            columns: '.grid-col',#}
+    {#            items: '.grid-item'#}
+    {#        });#}
+    {#    </script>#}
 {% endblock scripts %}

@@ -71,7 +71,7 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Recipe.objects.prefetch_related('ingredients', 'tags') \
         .annotate(total_time=F('cook_time') + F('prep_time')) \
-        .annotate(avg_ratings=F('ratings__average')).filter(is_published=True)
+        .annotate(avg_ratings=F('ratings__average'))
     pagination_class = CustomPageNumberPagination
     # pagination_class = CustomLimitOffsetPagination
     serializer_class = RecipeSerializer

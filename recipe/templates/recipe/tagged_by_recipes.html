@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }}
+    | {{ title }}
+{% endblock title %}
+
+{% block content %}
+    {% include "recipe/recipes_masonry.html" with recipes=recipes %}
+{% endblock content %}

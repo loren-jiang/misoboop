@@ -19,7 +19,7 @@
                             <img src={{ post.image_url }}>
                         </div>
                         <div class="col s12 m9">
-                            <h4>{{ post.headline }}</h4>
+                            <h5>{{ post.headline }}</h5>
                             <div>
                                 {% for tag in post.tags.all %}
                                     <span data-tag={{ tag.name }} class="chip"> {{ tag.name }}</span>
@@ -64,7 +64,6 @@
         <div class="col m3">
 
             <div class="card-panel color-2">
-                <p><b>Search</b></p>
 
                 <form class="post-filter-form" method="get">
                     {{ filter.form.as_p }}
@@ -74,7 +73,7 @@
             </div>
 
             <div class="card-panel color-2">
-                <p><b>Popular tags</b></p>
+                <h5> Popular tags </h5>
                 {% for tag in post_tags %}
                     <a class="toggle-tag" href="?tags={{ tag.name }}">
                         <span id="tag_{{ tag.name }}" data-tag="{{ tag.name }}"
@@ -83,7 +82,7 @@
                 {% endfor %}
             </div>
             <div class="card-panel color-2 hide-on-med-and-down">
-                <p><b>Latest posts</b></p>
+                <h5> Latest posts </h5>
                 <table>
                     {#                        <tr>#}
                     {#                            <th>Name</th>#}

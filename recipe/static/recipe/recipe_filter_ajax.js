@@ -2,13 +2,18 @@ $(document).ready(function () {
     let chipsInstances;
     const $recipeFilterForm = $('#recipe_filter_form');
 
-    // for now, just support passing 'name__icontains' as query param
-    const nameContains = getUrlParameter('name__icontains')
+    // Gather query params from url
+    // Right now, support for name__icontains and tags
+    const searchParams = new URLSearchParams(window.location.search)
+    const recipeTags = searchParams.getAll('tags')
+    const nameContains = searchParams.get('name__icontains')
     if (nameContains) {
         $('input[name=name__icontains]').val(nameContains);
-        cleanQueryParams();
     }
-
+    if (recipeTags) {
+        $('#tags_input').val(recipeTags)
+    }
+    cleanQueryParams();
     // only do logic if we're at the right page (aka $recipeFilterForm is in DOM)
     if ($recipeFilterForm.length) {
         $.ajax({
@@ -136,7 +141,6 @@ function clearIngredientsAndOrdering() {
     // delete old input values to prevent form propagation
     $('input[name=ingredients]').remove();
     $('input[name=ordering]').remove();
-
 }
 
 function appendToForm($form, chipsData, orderings) {
@@ -167,17 +171,14 @@ function recipeSearch($form, paginating = false) {
         $('#recipe_filter_page').val("1");
     }
 
-
+    const form_data = $form.serialize();
     $('#recipes_loader').removeClass('hide')
     $.ajax({
         type: $form.attr('method'),
         url: '/api/recipes/',
-        data: $form.serialize(),
+        data: form_data,
         success: function (data) {
-            // console.log('Submission was successful.');
-            // console.log(data);
-            template(data.results);
-
+            template(data.results, $('#tags_input').val());
             const numPages = data.num_pages;
             let paginationHtml = "";
             const paginateWindowSize = 5;
@@ -209,24 +210,43 @@ function recipeSearch($form, paginating = false) {
 }
 
 
-function template(recipes) {
+function template(recipes, tags_input) {
+    const tags_map = {};
+    for (let i = 0; i < tags_input.length; i++) {
+        tags_map[tags_input[i]] = 1;
+    }
     const $ul = $('#filtered_recipes');
-    let htmlOut = `<table class=''><tr><th>Name</th><th>Tags</th><th>Image</th></tr> <tbody>`;
+    // let htmlOut = `<table class=''><tr><th>Name</th><th>Tags</th><th>Image</th></tr> <tbody>`;
+    let htmlOut = ``;
     for (let i = 0; i < recipes.length; i++) {
         formattedTags = ``;
-        console.log(recipes[i])
         for (let k = 0; k < recipes[i].tags.length; k++) {
-            formattedTags += `<span class="chip"> ${recipes[i].tags[k]} </span>`
+            formattedTags += `<span class="chip truncate ${tags_map[recipes[i].tags[k]] ? 'red lighten-4' : ''}"> 
+                ${recipes[i].tags[k]} </span>`
         }
-        htmlOut += `<tr> 
-                        <td>
-                            <a href="${recipes[i].slugged_url}"> ${recipes[i].name} </a>
-                        </td> 
-                        <td>${formattedTags}</td>
-                        <td><img class="" width="auto" height="100" src="${recipes[i].image ? recipes[i].image.thumbnail : recipes[i].placeholder_url}"></td>
-                    </tr>`;
+        // htmlOut += `<tr>
+        //                 <td>
+        //                     <a href="${recipes[i].slugged_url}"> ${recipes[i].name} </a>
+        //                 </td>
+        //                 <td>${formattedTags}</td>
+        //                 <td><img class="" width="auto" height="100" src="${recipes[i].image ? recipes[i].image.thumbnail : recipes[i].placeholder_url}"></td>
+        //             </tr>`;
+        htmlOut += `<div class="row valign-wrapper">
+                        <div class="col s4">
+                            <img class="responsive-img"
+                                src="${recipes[i].image ? recipes[i].image.thumbnail : recipes[i].placeholder_url}">
+                        </div>
+                        <div class="col s8"> 
+                            <h5> ${recipes[i].name} </h5>
+                            ${formattedTags}
+                            <br>
+                            <a href="${recipes[i].slugged_url}"> Read more </a>
+                        </div>
+                       
+                    </div>
+                    <hr>`
     }
-    htmlOut += `</tbody> </table>`;
+    // htmlOut += `</tbody> </table>`;
     $ul.html(recipes.length ? htmlOut : `<p>No recipes found... <br> <div class="table-flip">(╯°□°)╯︵ ┻━┻</div></p>`)
 };
 

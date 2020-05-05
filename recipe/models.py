@@ -22,6 +22,9 @@ class RecipeManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True)
 
+    def get_all(self):
+        return super().get_queryset()
+
 # todo: add hitCount? https://django-hitcount.readthedocs.io/en/latest/installation.html
 class Recipe(CreatedModified):
     """

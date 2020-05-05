@@ -6,4 +6,7 @@ class PostAdmin(admin.ModelAdmin):
     model = Post
     readonly_fields = ["slug"]
 
-admin.site.register(Post)
+    def get_queryset(self, request):
+        return Post.objects.get_all()
+
+admin.site.register(Post, PostAdmin)

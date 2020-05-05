@@ -1,0 +1,26 @@
+{% load thumbnail %}
+{% load ratings %}
+{% load recipe_extras %}
+
+<div class="recipe-sneakpeek">
+    <img class="recipe-sneakpeek-image" src={{ recipe.image.upload.url }}>
+    <span class="recipe-sneakpeek-info">
+            {% for tag in recipe.tags.all %}
+
+                {% if forloop.last %}
+                    <a href="{% url 'tagged-by-recipes' slug=tag.slug %}" class="recipe-sneakpeek-tag"> {{ tag }}</a>
+
+                {% else %}
+                    <a href="{% url 'tagged-by-recipes' slug=tag.slug %}" class="recipe-sneakpeek-tag"> {{ tag }}, </a>
+                {% endif %}
+
+            {% endfor %}
+        <span class="recipe-sneakpeek-date"> — {{ recipe.created_at|date }}</span>
+    </span>
+
+    <h5 class="recipe-sneakpeek-title"><a href="{{ recipe.get_absolute_url }}"> {{ recipe.name }}</a></h5>
+    <div class="hide-on-small-and-down">
+        {{ recipe.short_description|truncatewords:25 }}
+    </div>
+
+</div>
