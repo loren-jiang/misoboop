@@ -35,26 +35,31 @@
                             </div>
                             <div id="recipes_{{ series.id }}" class="col s12 series-content">
                                 <ul>
-                                    {% for recipe in series.recipes.all %}
-                                        {% if recipe.is_published %}
+                                    {% if series.recipes.all %}
+                                        {% for recipe in series.recipes.all %}
                                             <li>
                                                 <a href="{{ recipe.get_absolute_url }}">{{ recipe }}</a>
                                             </li>
-                                        {% endif %}
-                                    {% endfor %}
+                                        {% endfor %}
+                                    {% else %}
+                                        No recipes in series...
+                                    {% endif %}
+
                                 </ul>
 
                             </div>
                             <div id="posts_{{ series.id }}" class="col s12 series-content">
                                 <ul>
-                                    {% for post in series.posts.all %}
-                                        {% if post.is_published %}
+                                    {% if series.posts.all %}
+                                        {% for post in series.posts.all %}
                                             <li>
                                                 <a href="{{ post.get_absolute_url }}">{{ post }}</a>
                                             </li>
-                                        {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        No posts in series....
+                                    {% endif %}
 
-                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
