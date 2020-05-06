@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load django_bootstrap_breadcrumbs %}
+{% load static %}
+{% load recipe_extras %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Recipes" "recipe-list" %}
+    {% breadcrumb "Explore" "explore-recipes" %}
+
+{% endblock %}
+
+{% block title %}
+    {{ block.super }}
+    | Recipe series
+{% endblock title %}
+
+{% block content %}
+    {% render_breadcrumbs %}
+
+
+    <div class="row">
+        <div class="col s12 m10">
+            {% if object_list %}
+                {% for series in object_list.all %}
+                    <h4 class="series-title">{{ series.name }}</h4>
+                    <div class="series-wrapper row">
+                        <div class="col s6 m2">
+                            <img src="{{ series.image.thumbnail.url }}">
+                            <a href="{{ series.get_absolute_url }}"> View more </a>
+
+                        </div>
+                        <div class="col s12 m10">
+
+                            <div> {{ series.description|safe }}</div>
+
+                            <p>
+                                Blog posts:
+                                {% for post in series.posts.all %}
+                                    {% if forloop.last %}
+                                        <a href="{{ post.get_absolute_url }}"> {{ post }}</a>
+                                    {% else %}
+                                        <a href="{{ post.get_absolute_url }}"> {{ post }}</a> |
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+
+                            <p>
+                                Recipes:
+                                {% for post in series.recipes.all %}
+                                    <a href="{{ recipes.get_absolute_url }}"> {{ post }}</a>
+                                {% endfor %}
+                            </p>
+                        </div>
+
+
+                        {% if forloop.last %}
+                        {% else %}
+                            <hr>
+                            <br>
+                        {% endif %}
+                    </div>
+
+                {% endfor %}
+            {% else %}
+                No series found...
+                Check back in a bit!
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            let $series = $('.series-wrapper');
+
+            $series.each(function () {
+                // Get series content
+                var $seriesContent = $(this).find('.series-content');
+
+                // Get an array of all element heights
+                var elementHeights = $seriesContent.map(function () {
+                    return $(this).height();
+                }).get();
+
+                // Math.max takes a variable number of arguments
+                // `apply` is equivalent to passing each height as an argument
+                var maxHeight = Math.max.apply(null, elementHeights);
+
+                // Set each height to the max height
+                $seriesContent.height(maxHeight);
+            });
+
+
+        });
+    </script>
+{% endblock scripts %}

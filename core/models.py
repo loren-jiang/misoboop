@@ -10,7 +10,8 @@ from misoboop.storage_backends import PrivateMediaStorage
 from django.contrib.auth.models import User
 from django.conf import settings
 from sorl.thumbnail import ImageField, get_thumbnail
-
+from django.utils.text import slugify
+from django.urls import reverse
 
 # Create your models here.
 
@@ -65,12 +66,18 @@ class Series(CreatedModified):
     name = models.CharField(max_length=500, unique=True)
     description = HTMLField(default='', verbose_name=_('Text'))
     tags = TaggableManager(through=TaggedWhatever, blank=True)
+    image = models.OneToOneField('core.PublicImage', on_delete=models.SET_NULL, blank=True, null=True)
+    slug = models.SlugField(max_length=100, editable=False)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return ''  # todo: implement
+        return reverse('series-detail', args=[self.slug])
 
     class Meta:
         ordering = ['name']

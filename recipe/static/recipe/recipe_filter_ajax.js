@@ -221,7 +221,9 @@ function template(recipes, tags_input) {
     for (let i = 0; i < recipes.length; i++) {
         formattedTags = ``;
         for (let k = 0; k < recipes[i].tags.length; k++) {
-            formattedTags += `<span class="chip truncate ${tags_map[recipes[i].tags[k]] ? 'red lighten-4' : ''}"> 
+            formattedTags += `<span 
+                   style="font-size: 12px;"
+                class="chip truncate ${tags_map[recipes[i].tags[k]] ? 'red lighten-4' : ''}"> 
                 ${recipes[i].tags[k]} </span>`
         }
         // htmlOut += `<tr>
@@ -231,15 +233,21 @@ function template(recipes, tags_input) {
         //                 <td>${formattedTags}</td>
         //                 <td><img class="" width="auto" height="100" src="${recipes[i].image ? recipes[i].image.thumbnail : recipes[i].placeholder_url}"></td>
         //             </tr>`;
-        htmlOut += `<div class="row valign-wrapper">
-                        <div class="col s4">
+        htmlOut += `<div class="row">
+                        <div class="col s6 m3">
                             <img class="responsive-img"
+                                style="
+                                    object-fit: cover;
+                                    width: 100%;
+                                    max-height: 125px;
+                                "
                                 src="${recipes[i].image ? recipes[i].image.thumbnail : recipes[i].placeholder_url}">
                         </div>
-                        <div class="col s8"> 
+                        <div class="col s12 m9"> 
                             <h5> ${recipes[i].name} </h5>
                             ${formattedTags}
                             <br>
+                            
                             <a href="${recipes[i].slugged_url}"> Read more </a>
                         </div>
                        

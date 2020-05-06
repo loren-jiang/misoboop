@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     lazifyImages();
 
-    $('.recipe-grid.grid').colcade({
+    $('.grid').colcade({
         columns: '.grid-col',
         items: '.grid-item'
     });

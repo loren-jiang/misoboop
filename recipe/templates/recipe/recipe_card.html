@@ -3,23 +3,23 @@
 {% load recipe_extras %}
 
 <div class="card recipe-card">
-    <div class="card-image waves-effect waves-block waves-light">
+    <div class="card-image">
         {% if no_thumbnail %}
-            <img class="activator" src={{ recipe.image.upload.url }}>
+            <img class="" src={{ recipe.image.upload.url }}>
         {% else %}
             {% thumbnail recipe.image.upload "400x400" crop="center" as im %}
-                <img class="activator" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                <img class="" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
             {% empty %}
-                <img class="activator" src="{{ recipe.placeholder_url }}">
+                <img class="" src="{{ recipe.placeholder_url }}">
             {% endthumbnail %}
         {% endif %}
 
 
     </div>
     <div class="card-content">
-        <span class="activator card-title grey-text text-darken-4 ">
+        <span class="activator card-title grey-text text-darken-4 truncate">
             {{ recipe.name }}
-{#            <i class="material-icons right">more_vert</i>#}
+            <i class="material-icons right">more_vert</i>
         </span>
         {#        <p><a class="btn waves-effect" href={{ recipe.get_absolute_url }}>See recipe</a></p>#}
     </div>

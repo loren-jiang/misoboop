@@ -7,10 +7,10 @@ $(document).ready(function () {
 
     /* Slick slider initialization with responsiveness */
     $('.responsive-slick-carousel').slick({
-        adaptiveHeight: true,
+        // adaptiveHeight: true,
         centerMode: true,
         centerPadding: '60px',
-        adaptiveHeight: true,
+        infinite: false,
         slidesToShow: 3,
         nextArrow: '<a class="carousel-next"><i class="material-icons carousel-arrow-icon">navigate_next</i></a>',
         prevArrow: '<a class="carousel-prev"><i class="material-icons carousel-arrow-icon">navigate_before</i></a>',
@@ -19,16 +19,16 @@ $(document).ready(function () {
 
                 breakpoint: 992,
                 settings: {
-                    adaptiveHeight: true,
+                    // adaptiveHeight: true,
                     centerMode: true,
                     centerPadding: '40px',
-                    slidesToShow: 3,
+                    slidesToShow: 2,
                 }
             },
             {
                 breakpoint: 600,
                 settings: {
-                    adaptiveHeight: true,
+                    // adaptiveHeight: true,
                     arrows: false,
                     centerMode: true,
                     centerPadding: '40px',

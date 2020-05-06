@@ -16,7 +16,11 @@
                 {% for post in object_list.all %}
                     <div class="row valign-wrapper">
                         <div class="col s12 m3">
-                            <img src={{ post.image_url }}>
+                            {% if post.thumbnail %}
+                                <img src="{{ post.thumbnail.upload.url }}">
+                            {% else %}
+                                <img src={{ post.placeholder_url }}>
+                            {% endif %}
                         </div>
                         <div class="col s12 m9">
                             <h5>{{ post.headline }}</h5>
@@ -64,7 +68,7 @@
         <div class="col m3">
 
             <div class="card-panel color-2">
-
+                <h5> Search </h5>
                 <form class="post-filter-form" method="get">
                     {{ filter.form.as_p }}
                     <input class="btn-small" type="submit" value="Search"/>

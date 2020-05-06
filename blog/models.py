@@ -31,7 +31,7 @@ class Post(CreatedModified):
     series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True, related_name='posts')
     is_published = models.BooleanField(default=True)
     image = models.OneToOneField('core.PublicImage', on_delete=models.SET_NULL, blank=True, null=True)
-    image_url = models.URLField(max_length=300, default="https://via.placeholder.com/150")
+    placeholder_url = models.URLField(max_length=300, default="https://via.placeholder.com/150")
     objects = PostManager()
 
     def save(self, *args, **kwargs):
@@ -42,7 +42,7 @@ class Post(CreatedModified):
         return reverse('post-detail', args=[self.slug])
 
     def __str__(self):
-        return self.headline + ' | ' + str(self.created_at.date())
+        return self.headline
 
     def tag_names_as_list(self):
         return [tag.name for tag in self.tags.order_by('name')]

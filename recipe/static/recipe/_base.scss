@@ -90,7 +90,7 @@ textarea.materialize-textarea.valid:focus, .select-wrapper.valid > input.select-
 
 /* Main content wrapper */
 .main-content {
-  min-height: 50vh;
+  min-height: 80vh;
 }
 
 /* Link styles */
@@ -127,7 +127,7 @@ a.underline {
   .flex-m {
     display: flex;
     flex-direction: column; /* Stack on top */
-    div:first-child {
+    & > div:first-child {
       order: 2; // stack first child on bottom
     }
   }

@@ -5,52 +5,8 @@
 {% block content %}
     <div class="row">
         <div class="col s12 l9 latest-recipes ">
-            {#            <h3> Latest recipes </h3>#}
-
-            {#            <div class="fullwidth-slick-carousel">#}
-            {#                {% for recipe in latest_recipes %}#}
-            {#                    <div class="slick-carousel-slide">#}
-            {#                        {% include "recipe/recipe_card.html" with recipe=recipe no_thumbnail=1 %}#}
-            {#                    </div>#}
-            {#                {% endfor %}#}
-            {#            </div>#}
-            {#            <div class="fullwidth-slick-carousel">#}
-            {#                {% for recipe in latest_recipes %}#}
-            {#                    <div class="slick-carousel-slide">#}
-            {#                        {% include "recipe/recipe_card.html" with recipe=recipe no_thumbnail=1 %}#}
-            {#                    </div>#}
-            {#                {% endfor %}#}
-            {#            </div>#}
-
-            <div class="grid">
-                <div class="grid-col grid-col--1"></div>
-                <div class="grid-col grid-col--2"></div>
-                <div class="grid-col grid-col--3"></div>
-                {% include 'recipe/recipes_masonry.html' with recipes=latest_recipes %}
-
-
-                {#                <div class="grid-item grid-item--b">1</div>#}
-                {#                <div class="grid-item grid-item--a">2</div>#}
-                {#                <div class="grid-item grid-item--c">3</div>#}
-                {#                <div class="grid-item grid-item--a">4</div>#}
-                {#                <div class="grid-item grid-item--a">5</div>#}
-                {#                <div class="grid-item grid-item--b">6</div>#}
-                {#                <div class="grid-item grid-item--c">7</div>#}
-                {#                <div class="grid-item grid-item--b">8</div>#}
-                {#                <div class="grid-item grid-item--a">9</div>#}
-                {#                <div class="grid-item grid-item--c">10</div>#}
-                {#                <div class="grid-item grid-item--a">11</div>#}
-                {#                <div class="grid-item grid-item--a">12</div>#}
-                {#                <div class="grid-item grid-item--b">13</div>#}
-                {#                <div class="grid-item grid-item--c">14</div>#}
-                {#                <div class="grid-item grid-item--b">15</div>#}
-                {#                <div class="grid-item grid-item--a">16</div>#}
-                {#                <div class="grid-item grid-item--c">17</div>#}
-                {#                <div class="grid-item grid-item--a">18</div>#}
-                {#                <div class="grid-item grid-item--a">19</div>#}
-                {#                <div class="grid-item grid-item--b">20</div>#}
-                {#                <div class="grid-item grid-item--c">21</div>#}
-            </div>
+            <h3> Latest recipes </h3>
+            {% include 'recipe/recipes_masonry.html' with recipes=latest_recipes %}
         </div>
 
         <div class="welcome col offset-s1 s10 m3  ">
@@ -59,8 +15,8 @@
                     <div class="card-title">
                         <h4> Welcome </h4>
                     </div>
-                    {% thumbnail welcome_image.upload "300" as im %}
-                        <img src="{{ im.url }}">
+                    {% thumbnail welcome_image.upload "300" crop="center" as im %}
+                        <img class="" width="{{ im.width }}" height="{{ im.height }}" src={{ im.url }}>
                     {% endthumbnail %}
                     <p>
                         You found us!!!
@@ -86,10 +42,6 @@
                     </div>
 
                     <table>
-                        {#                        <tr>#}
-                        {#                            <th>Name</th>#}
-                        {#                            <th>Date</th>#}
-                        {#                        </tr>#}
                         {% for post in latest_posts %}
                             <tr>
                                 <td>
@@ -104,9 +56,6 @@
                 </div>
 
             </div>
-        </div>
-        <div class="col s12 m6">
-
         </div>
     </div>
 {% endblock %}

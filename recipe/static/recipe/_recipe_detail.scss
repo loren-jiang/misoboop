@@ -46,6 +46,17 @@ input.ingredient-amount {
 }
 
 .recipe-tag.chip {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   //color: #fff;
+  &:hover {
+    background-color: $color1;
+  }
+}
+
+.ingredient-tag {
+  font-size: 1rem;
+}
+
+.ingredient-list {
+  padding-top: 20px;
 }

@@ -105,7 +105,7 @@
     <!-- Recipes nav dropdown -->
     <ul id='recipes_nav_dropdown' class='dropdown-content'>
         <li><a href="{% url 'explore-recipes' %}">Explore</a></li>
-        <li><a href={% url 'recipe-series-list' %}>By Series</a></li>
+        <li><a href={% url 'series-list' %}>By Series</a></li>
         <li class="divider" tabindex="-1"></li>
         <li><a href="{% url 'search-recipes' %}">Search</a></li>
     </ul>
@@ -122,7 +122,7 @@
                     <div class="collapsible-body">
                         <ul>
                             <li><a href="{% url 'explore-recipes' %}">Explore</a></li>
-                            <li><a href={% url 'recipe-series-list' %}>By Series</a></li>
+                            <li><a href={% url 'series-list' %}>By Series</a></li>
                             <li class="divider" tabindex="-1"></li>
                             <li><a href="{% url 'search-recipes' %}">Search</a></li>
                         </ul>
@@ -150,8 +150,12 @@
     <footer class="page-footer">
         <div class="container">
             <div class="row">
-                <div class="col l6 s12">
-                    <h3 class="white-text banner-font">MisoBoop</h3>
+                <div class="col l2 s4">
+                    {#                    <img class="logo" style="max-width: 100%; height: auto;" data-pin-nopin="true" id="misoboop-cat"#}
+                    {#                         src="{% static 'assets/lucky_dumpling_cat_min.svg' %}">#}
+                </div>
+                <div class="col l5 s8">
+                    <h3 class="white-text banner-font" style="margin-top:0; ">MisoBoop</h3>
                     <p class="grey-text text-lighten-4">
                         Questions or comments?
                         <br>
@@ -164,7 +168,7 @@
 
                     </p>
                 </div>
-                <div class="col l4 offset-l2 s12">
+                <div class="col l5 s12">
                     <h5 class="">Social media</h5>
                     <div class="">
                         <a class="social-media-link whiten" href="https://www.instagram.com/miso_boop/"><i
@@ -182,12 +186,11 @@
                 </div>
             </div>
         </div>
-        {#        <div class="footer-copyright">#}
-        {#            <div class="container">#}
-        {#                © 2014 Copyright Text#}
-        {#                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>#}
-        {#            </div>#}
-        {#        </div>#}
+        <div class="footer-copyright">
+            <div class="container">
+                © {% now "Y" %} MisoBoop
+            </div>
+        </div>
     </footer>
 
 </div>

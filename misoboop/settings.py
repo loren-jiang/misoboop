@@ -33,6 +33,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '165.227.9.4',
     'misoboop.com',
+    '.misoboop.com',
 ]
 
 INTERNAL_IPS = [
@@ -44,7 +45,7 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'filebrowser', #todo: maybe add later
+    'filebrowser',  # todo: maybe add later
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,12 +58,12 @@ INSTALLED_APPS = [
     'storages',
     'tinymce',
     'sorl.thumbnail',
-    'newsletter', #todo: for sure add later
-    'threadedcomments', #todo: probs add later
-    'django_comments', #needed for threaded comments
+    'newsletter',  # todo: for sure add later
+    'threadedcomments',  # todo: probs add later
+    'django_comments',  # needed for threaded comments
     'django_filters',
     'star_ratings',
-    'debug_toolbar', #don't use for production
+    'debug_toolbar',  # don't use for production
     'rest_framework',
     'django_json_ld',
     'adminsortable',
@@ -198,7 +199,7 @@ COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_URL = STATIC_URL
 COMPRESS_STORAGE = STATICFILES_STORAGE
 
-COMPRESS_ENABLED = True #opposite of DEBUG
+COMPRESS_ENABLED = True  # opposite of DEBUG
 COMPRESS_OFFLINE = True
 
 COMPRESS_CSS_FILTERS = [
@@ -252,7 +253,7 @@ CACHES = {
     }
 }
 
-THUMBNAIL_FORCE_OVERWRITE = True #https://github.com/jazzband/sorl-thumbnail/issues/351
+THUMBNAIL_FORCE_OVERWRITE = True  # https://github.com/jazzband/sorl-thumbnail/issues/351
 
 # Override production variables if DJANGO_DEVELOPMENT env variable is set
 if os.environ.get('DJANGO_DEVELOPMENT') is not None:

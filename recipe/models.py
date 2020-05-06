@@ -25,12 +25,10 @@ class RecipeManager(models.Manager):
     def get_all(self):
         return super().get_queryset()
 
-# todo: add hitCount? https://django-hitcount.readthedocs.io/en/latest/installation.html
 class Recipe(CreatedModified):
     """
     Model representing a recipe, which roughly follows https://jsonld.com/recipe/
     """
-
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=500, unique=True)
     short_description = models.TextField(default='')
@@ -48,7 +46,7 @@ class Recipe(CreatedModified):
     likes = models.PositiveSmallIntegerField(default=1)
     ratings = GenericRelation(Rating, related_query_name='recipes')
     series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True, related_name='recipes')
-    objects = RecipeManager()
+    objects = RecipeManager() # all() is automatically filtered (is_published=True)
 
     class Meta:
         ordering = ['name',]

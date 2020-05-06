@@ -27,7 +27,10 @@
             {% for key, value in tagged_recipes.items %}
 
                 <div>
-                    <h5 class="center-align"> {{ key }} </h5>
+                    <h4 class="center-align"> {{ key }} </h4>
+                    <div class="center-align" style="font-size: 15px;">
+                        <a href="{% url 'tagged-by-recipes' slug=key|lower %}"> see all </a>
+                    </div>
 
 
                     <div class="slick-carousel-wrapper">
