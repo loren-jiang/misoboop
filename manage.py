@@ -2,7 +2,9 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from dotenv import load_dotenv, find_dotenv
 
+load_dotenv(find_dotenv())
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'misoboop.settings')

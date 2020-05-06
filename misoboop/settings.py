@@ -11,10 +11,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
+# load_dotenv()
+
 from django.templatetags.static import static as django_static
 
-load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -256,7 +257,8 @@ CACHES = {
 THUMBNAIL_FORCE_OVERWRITE = True  # https://github.com/jazzband/sorl-thumbnail/issues/351
 
 # Override production variables if DJANGO_DEVELOPMENT env variable is set
-if os.environ.get('DJANGO_DEVELOPMENT') is not None:
+# and USE_PRODUCTION env variable is not set
+if os.environ.get('DJANGO_DEVELOPMENT') and not os.environ.get('USE_PRODUCTION'):
     # print('Development settings used.')
     from misoboop.settings_dev import *
 else:

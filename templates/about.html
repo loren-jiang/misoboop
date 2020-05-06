@@ -4,31 +4,56 @@
     | About
 {% endblock title %}
 {% block content %}
-    <div class="blog-post">
-        <h2>Mission</h2>
-        <p>In creating this blog, I hope to bring a few key things to the dinner table:</p>
-        <ul>
-            <li>
-                <h4><strong>Practicality</strong></h4>
-                If you’re looking for inspiration on wagyu beef recipes, this probably isn’t the place for you. For the
-                most part, the recipes on this site will focus on ingredients and techniques readily accessible to the
-                everyday home cook. There’s a time and occasion for extravagance, but I will try to share recipes that
-                don’t require fancy kitchen accessories or ingredients.
-            </li>
-            <li>
-                <h4><strong>Honesty</strong></h4>
-                Cooking is all about trial and error -- some things taste great, others not so much, but the key thing
-                is I won’t lie to you that they do. Instead, I’ll do my best to iterate and improve.
-            </li>
-            <li>
-                <h4><strong>American cooking with Chinese roots</strong></h4>
-                No, not literally ginseng… Raised on my mom’s cooking, I can assure you that Chinese dishes can
-                sometimes be lackluster. The purpose of this blog isn’t to recreate authenticity, but rather to present
-                Chinese dishes in a way that reflects the melting pot that is America.
-            </li>
-        </ul>
-        <h2>What's in a name?</h2>
-        <p>Well...it’s pretty simple. My cat’s name is Miso and she likes to boop while I’m cooking.<br><br></p>
-        <img style="max-height: 600px;" src="{{ miso_image.upload.url }}">
+    <div class="row">
+        <div class="col s12">
+            <div class="">
+                <h2>Mission</h2>
+                <p>In creating this blog, I hope to bring a few key things to the dinner table:</p>
+
+                <ul>
+
+                    <li>
+                        <h4><strong>Practicality</strong></h4>
+                        If you’re looking for inspiration on wagyu beef recipes, this probably isn’t the place for
+                        you.
+                        For the
+                        most part, the recipes on this site will focus on ingredients and techniques readily
+                        accessible
+                        to the
+                        everyday home cook. There’s a time and occasion for extravagance, but I will try to share
+                        recipes that
+                        don’t require fancy kitchen accessories or ingredients.
+
+                    </li>
+                    <li>
+                        <h4><strong>Honesty</strong></h4>
+                        Cooking is all about trial and error -- some things taste great, others not so much, but the
+                        key
+                        thing
+                        is I won’t lie to you that they do. Instead, I’ll do my best to iterate and improve.
+
+                    </li>
+                    <li>
+                        <h4><strong>American cooking with Chinese roots</strong></h4>
+                        No, not literally ginseng… Raised on my mom’s cooking, I can assure you that Chinese dishes
+                        can
+                        sometimes be lackluster. The purpose of this blog isn’t to recreate authenticity, but rather
+                        to
+                        present
+                        Chinese dishes in a way that reflects the melting pot that is America.
+
+                    </li>
+                </ul>
+                <hr>
+                <h2>What's in a name?</h2>
+                <p>Well...it’s pretty simple. My cat’s name is Miso and she likes to boop while I’m cooking.<br><br></p>
+                <figure>
+                    <img style="max-height: 600px;" src="{{ miso_image.upload.url }}">
+                    <figcaption><i>p.s. she's polydactyl so her paws look like well... mittens </i></figcaption>
+                </figure>
+
+            </div>
+
+        </div>
     </div>
 {% endblock %}

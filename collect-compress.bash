@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cd ~/Documents/code_projects/django/misoboop;
+source ~/environments/misoboop_env/bin/activate;
+
+# use production settings neede for static file collection
+export USE_PRODUCTION=true;
+
+# collectstatic will push to s3
+python manage.py collectstatic --no-input;
+# django-compressor will handle versioning and push to s3
+# output files are version controled for cache busting
+python manage.py compress;

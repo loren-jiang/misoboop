@@ -11,3 +11,6 @@ staticfiles/
 # ignore secrets
 misoboop/.env
 *.env
+
+# ignore pycharm
+.idea/
