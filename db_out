@@ -266,7 +266,7 @@ CREATE TABLE public.blog_post (
     content text NOT NULL,
     slug character varying(100) NOT NULL,
     is_published boolean NOT NULL,
-    image_url character varying(300) NOT NULL,
+    placeholder_url character varying(300) NOT NULL,
     author_id integer,
     image_id integer,
     series_id integer
@@ -419,7 +419,9 @@ CREATE TABLE public.core_series (
     created_at timestamp with time zone,
     modified_at timestamp with time zone,
     name character varying(500) NOT NULL,
-    description text NOT NULL
+    description text NOT NULL,
+    image_id integer,
+    slug character varying(100) NOT NULL
 );
 
 
@@ -1820,7 +1822,7 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 --
 
 COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
-1	pbkdf2_sha256$150000$mbNhdAuLLmDo$U12WeAdBckBcvDD31WxGtcjfyLKCNBI9uBrvUOPVg2o=	2020-05-01 10:38:39.382329-07	t	loren			miso.booper@gmail.com	t	t	2020-04-29 19:01:12.989212-07
+1	pbkdf2_sha256$150000$mbNhdAuLLmDo$U12WeAdBckBcvDD31WxGtcjfyLKCNBI9uBrvUOPVg2o=	2020-05-05 20:20:04.651225-07	t	loren			miso.booper@gmail.com	t	t	2020-04-29 19:01:12.989212-07
 \.
 
 
@@ -1844,9 +1846,8 @@ COPY public.auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
 -- Data for Name: blog_post; Type: TABLE DATA; Schema: public; Owner: loren
 --
 
-COPY public.blog_post (id, created_at, modified_at, headline, alt_headline, short_description, content, slug, is_published, image_url, author_id, image_id, series_id) FROM stdin;
-1	2020-05-04 13:57:09.685383-07	2020-05-04 14:02:09.740378-07	Testing testing	\N		<p>testing testing</p>	testing-testing	t	https://via.placeholder.com/150	1	\N	1
-2	2020-05-04 14:03:42.763326-07	2020-05-04 14:03:42.763352-07	asd	\N		<p>sad</p>	asd	f	https://via.placeholder.com/150	1	\N	2
+COPY public.blog_post (id, created_at, modified_at, headline, alt_headline, short_description, content, slug, is_published, placeholder_url, author_id, image_id, series_id) FROM stdin;
+3	2020-05-05 14:07:05.321293-07	2020-05-05 16:05:03.760642-07	Salt, Fat, Acid,  Heat	\N	Samin Nosrat really is one of my favorite chefs and her cookbook Salt, Fat, Acid, Heat is a great read. It's less of a cookbook and more a cooking guide.	<p>Samin Nosrat really is one of my favorite chefs and her cookbook <em>Salt, Fat, Acid, Heat</em> is a great read. It's less of a cookbook and more a cooking guide on four essential elements -- SFAH.</p>\r\n<p>I'll try to highlight some of my favorite tips and recipes from her book.</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>	salt-fat-acid-heat	t	https://via.placeholder.com/150	\N	\N	2
 \.
 
 
@@ -1858,7 +1859,12 @@ COPY public.core_basictag (id, name, slug, filterable, shown) FROM stdin;
 1	Korean	korean	f	t
 3	Chinese	chinese	f	t
 2	Pork	pork	t	t
-4	Testing	testing	f	t
+4	Cookware	cookware	t	t
+5	Stir-fry	stir-fry	t	t
+12	Vegetarian	vegetarian	t	t
+13	Noodles	noodles	t	t
+14	Beef	beef	t	t
+15	30-min meals	30-min-meals	t	t
 \.
 
 
@@ -1878,9 +1884,11 @@ COPY public.core_publicimage (id, name, description, uploaded_at, upload, thumbn
 2	Hong Shao Carnitas Burrito		2020-04-30 19:46:01.879564-07	hong-shao-carnitas.jpeg	cache/61/bc/61bc7560061b34445c92cf6783836bca.jpg
 1	miso-rilakkuma		2020-04-29 22:03:05.94719-07	miso_rilakkuma.jpg	cache/cd/e2/cde2e81f8033a02d0b83fd28f77f122a.jpg
 3	miso popping head		2020-05-03 13:02:27.756539-07	miso_popping_head.jpg	cache/f6/57/f657bbe8a3bed342f9d7218d9a6c899f.jpg
-4	dumpling		2020-05-03 13:56:59.232329-07	dumpling.png	cache/c3/a9/c3a93b48ac7c2c51c83ff21a185e8a81.jpg
 5	loren		2020-05-03 23:32:20.208893-07	loren.jpg	cache/c2/7a/c27a784171aaaa80bb61bbc2b950b207.jpg
-6	miso on couch		2020-05-03 23:32:43.856978-07	miso_on_couch.jpg	cache/f7/b0/f7b0bec89e061648942b9f003f46c526.jpg
+7	bronze-measuring-cups		2020-05-05 18:34:33.708278-07	measuring-up.jpg	cache/79/89/7989395c5e12604caaddd38251c6e6d6.jpg
+8	beef noodle soup		2020-05-05 20:22:24.008873-07	beef_noodle_soup.jpg	cache/56/bd/56bdabc2d46c547d35ad34b477ce85e4.jpg
+4	dumpling		2020-05-03 13:56:59.232329-07	takeout-fried-rice.jpg	cache/ec/4a/ec4a4eda7e3538b7801de1f9f32eba16.jpg
+6	miso on couch		2020-05-03 23:32:43.856978-07	kimchi_fried_rice.jpg	cache/0b/60/0b60d993cccb4bfb0731404fa798b000.jpg
 \.
 
 
@@ -1888,9 +1896,9 @@ COPY public.core_publicimage (id, name, description, uploaded_at, upload, thumbn
 -- Data for Name: core_series; Type: TABLE DATA; Schema: public; Owner: loren
 --
 
-COPY public.core_series (id, created_at, modified_at, name, description) FROM stdin;
-1	2020-05-04 14:02:07.057491-07	2020-05-04 14:02:07.057524-07	Test series	<p>a</p>
-2	2020-05-04 14:03:26.872943-07	2020-05-04 14:03:26.872976-07	test2	<p>teste2</p>\r\n<p>&nbsp;</p>
+COPY public.core_series (id, created_at, modified_at, name, description, image_id, slug) FROM stdin;
+1	2020-05-04 14:02:07.057491-07	2020-05-05 18:49:24.341151-07	Cooking between the lines	<p>Recipes, particuarly Asian ones, often call for ingredients that are hard too find or techniques that require specialized cookware. In this series, I hope to simplifiy some of the more classical Chinese recipes I know.</p>	\N	cooking-between-the-lines
+2	2020-05-04 14:03:26.872943-07	2020-05-05 18:49:24.344745-07	Measuring up cookbooks	<p>In this series, I highlight some of my favortie cookbook's and their recipes.</p>	7	measuring-up-cookbooks
 \.
 
 
@@ -1902,7 +1910,11 @@ COPY public.core_taggedwhatever (id, object_id, content_type_id, tag_id) FROM st
 1	1	25	1
 2	1	25	2
 3	1	25	3
-4	1	32	4
+7	3	25	5
+8	2	25	5
+9	2	25	2
+10	4	25	13
+11	4	25	14
 \.
 
 
@@ -1969,6 +1981,39 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 56	2020-05-04 14:02:09.74506-07	1	Testing testing | 2020-05-04	2	[{"changed": {"fields": ["series"]}}]	32	1
 57	2020-05-04 14:03:26.87813-07	2	test2	1	[{"added": {}}]	30	1
 58	2020-05-04 14:03:42.767831-07	2	asd | 2020-05-04	1	[{"added": {}}]	32	1
+59	2020-05-04 23:33:00.320084-07	2	Kimchi Fried Rice	2	[{"changed": {"fields": ["image", "tags"]}}]	25	1
+60	2020-05-04 23:33:26.759344-07	3	test	1	[{"added": {}}]	25	1
+61	2020-05-05 01:56:52.719531-07	4	Cookware	2	[{"changed": {"fields": ["name"]}}]	27	1
+62	2020-05-05 01:56:57.743997-07	4	Cookware	2	[{"changed": {"fields": ["slug"]}}]	27	1
+63	2020-05-05 01:57:02.258009-07	4	Cookware	2	[{"changed": {"fields": ["filterable"]}}]	27	1
+64	2020-05-05 12:25:09.907769-07	3	test	2	[{"changed": {"fields": ["tags"]}}]	25	1
+65	2020-05-05 12:27:41.019131-07	3	test	2	[{"changed": {"fields": ["tags"]}}]	25	1
+66	2020-05-05 13:27:35.847305-07	1	Cooking between the lines	2	[{"changed": {"fields": ["name", "description"]}}]	30	1
+67	2020-05-05 13:28:48.898569-07	2	Look inside the cookcook	2	[{"changed": {"fields": ["name", "description"]}}]	30	1
+68	2020-05-05 14:05:57.633001-07	2	Cook marks	2	[{"changed": {"fields": ["name", "description"]}}]	30	1
+69	2020-05-05 14:07:05.337795-07	3	Salt, Fat, Acid,  Heat | 2020-05-05	1	[{"added": {}}]	32	1
+70	2020-05-05 14:15:34.751162-07	3	Salt, Fat, Acid,  Heat | 2020-05-05	2	[{"changed": {"fields": ["is_published"]}}]	32	1
+71	2020-05-05 14:18:43.254442-07	3	Salt, Fat, Acid,  Heat | 2020-05-05	2	[{"changed": {"fields": ["series"]}}]	32	1
+72	2020-05-05 14:41:23.200706-07	5	Stir-fry	2	[{"changed": {"fields": ["name", "slug"]}}]	27	1
+73	2020-05-05 14:41:28.600989-07	5	Stir-fry	2	[{"changed": {"fields": ["filterable"]}}]	27	1
+74	2020-05-05 14:42:09.399836-07	2	Kimchi Fried Rice	2	[{"changed": {"fields": ["tags"]}}]	25	1
+75	2020-05-05 14:42:55.322224-07	2	Kimchi Fried Rice	2	[{"changed": {"fields": ["tags"]}}]	25	1
+76	2020-05-05 16:05:03.782192-07	3	Salt, Fat, Acid,  Heat | 2020-05-05	2	[{"changed": {"fields": ["short_description", "content"]}}]	32	1
+77	2020-05-05 17:47:26.809224-07	1	Testing testing | 2020-05-04	3		32	1
+78	2020-05-05 17:47:26.818403-07	2	asd | 2020-05-04	3		32	1
+79	2020-05-05 18:34:40.128605-07	7	https://di0n0okh38ak5.cloudfront.net/media/public/measuring-up.jpg	1	[{"added": {}}]	28	1
+80	2020-05-05 18:34:47.021431-07	2	Measuring up cookbooks	2	[{"changed": {"fields": ["name", "image"]}}]	30	1
+81	2020-05-05 20:20:25.628026-07	12	Vegetarian	1	[{"added": {}}]	27	1
+82	2020-05-05 20:20:37.144903-07	13	Noodles	1	[{"added": {}}]	27	1
+83	2020-05-05 20:20:46.4519-07	14	Beef	1	[{"added": {}}]	27	1
+84	2020-05-05 20:21:23.580266-07	15	30-min meals	1	[{"added": {}}]	27	1
+85	2020-05-05 20:22:29.965365-07	8	https://di0n0okh38ak5.cloudfront.net/media/public/beef_noodle_soup.jpg	1	[{"added": {}}]	28	1
+86	2020-05-05 20:23:18.882822-07	4	Beef Noodle Soup	1	[{"added": {}}]	25	1
+87	2020-05-05 20:28:14.006256-07	4	https://di0n0okh38ak5.cloudfront.net/media/public/takeout-fried-rice.jpg	2	[{"changed": {"fields": ["upload"]}}]	28	1
+88	2020-05-05 20:29:31.201351-07	3	Takeout fried rice	2	[{"changed": {"fields": ["name", "short_description", "description"]}}]	25	1
+89	2020-05-05 20:42:33.361253-07	6	https://di0n0okh38ak5.cloudfront.net/media/public/miso_on_couch.jpg	2	[]	28	1
+90	2020-05-05 20:42:56.724057-07	6	https://di0n0okh38ak5.cloudfront.net/media/public/kimchi_fried_rice.jpg	2	[{"changed": {"fields": ["upload"]}}]	28	1
+91	2020-05-05 20:43:13.240415-07	2	Kimchi Fried Rice	2	[{"changed": {"fields": ["author", "short_description", "description"]}}]	25	1
 \.
 
 
@@ -2084,6 +2129,10 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 49	recipe	0007_auto_20200501_2203	2020-05-01 15:03:08.863-07
 50	recipe	0008_auto_20200501_2203	2020-05-01 15:03:32.52467-07
 51	recipe	0009_auto_20200502_0141	2020-05-01 18:50:00.04369-07
+52	blog	0003_auto_20200505_2117	2020-05-05 14:17:36.138678-07
+53	blog	0004_auto_20200506_0050	2020-05-05 17:51:00.400903-07
+54	core	0004_series_image	2020-05-05 18:31:11.563952-07
+55	core	0005_series_slug	2020-05-05 18:48:43.944744-07
 \.
 
 
@@ -2096,6 +2145,9 @@ ps74hej0l9xqw3az60y5mxukmficzu5z	Nzc0ZjlkMGM4NDc5MWUxMDRlZTBjMjBjMjhlMDYxNDEwZjR
 h08qxs2n2cw0pnbpwawnij3gkpaycrsv	Nzc0ZjlkMGM4NDc5MWUxMDRlZTBjMjBjMjhlMDYxNDEwZjRkOWIzYTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJkOGI5ZTM2ZmM4ZTlmOTJhNDZiZGYxODNmYjdjMGU0N2QxMjU0NDBlIn0=	2020-05-14 17:51:10.061846-07
 4c24n1rjun6aonozhhp887lxlfk8hha0	Nzc0ZjlkMGM4NDc5MWUxMDRlZTBjMjBjMjhlMDYxNDEwZjRkOWIzYTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJkOGI5ZTM2ZmM4ZTlmOTJhNDZiZGYxODNmYjdjMGU0N2QxMjU0NDBlIn0=	2020-05-14 19:07:33.784806-07
 a6829x1b2h79akzxlc0kc2qb1sza4loz	Nzc0ZjlkMGM4NDc5MWUxMDRlZTBjMjBjMjhlMDYxNDEwZjRkOWIzYTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJkOGI5ZTM2ZmM4ZTlmOTJhNDZiZGYxODNmYjdjMGU0N2QxMjU0NDBlIn0=	2020-05-15 10:38:39.391174-07
+um5uh9eo91kb1r4td26appgtl8xy545g	Nzc0ZjlkMGM4NDc5MWUxMDRlZTBjMjBjMjhlMDYxNDEwZjRkOWIzYTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJkOGI5ZTM2ZmM4ZTlmOTJhNDZiZGYxODNmYjdjMGU0N2QxMjU0NDBlIn0=	2020-05-19 01:55:01.532856-07
+p24vx22gboc8qnhhp74iv2vc6bqeltrn	Nzc0ZjlkMGM4NDc5MWUxMDRlZTBjMjBjMjhlMDYxNDEwZjRkOWIzYTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJkOGI5ZTM2ZmM4ZTlmOTJhNDZiZGYxODNmYjdjMGU0N2QxMjU0NDBlIn0=	2020-05-19 14:39:56.632009-07
+xw9cqol57fypopbok6cf4y333vv0oqow	Nzc0ZjlkMGM4NDc5MWUxMDRlZTBjMjBjMjhlMDYxNDEwZjRkOWIzYTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJkOGI5ZTM2ZmM4ZTlmOTJhNDZiZGYxODNmYjdjMGU0N2QxMjU0NDBlIn0=	2020-05-19 20:20:04.658314-07
 \.
 
 
@@ -2245,7 +2297,9 @@ COPY public.recipe_ingredientamount (id, amount, ingredient_id, recipe_id, unit_
 
 COPY public.recipe_recipe (id, created_at, modified_at, name, short_description, description, prep_time, cook_time, servings, max_servings, is_published, slug, likes, author_id, image_id, series_id, placeholder_url) FROM stdin;
 1	2020-04-29 19:06:26.907634-07	2020-04-30 22:18:30.027799-07	Hong Shao Carnitas Burrito	This is a spin on "hong shao" or red braised pork belly, which takes the same braising technique for pork shoulder. Add some kimchi and fried rice (or whatever you have) and you got yourself a burrito (or taco).	<h4>Chinese ...burrito?</h4>\r\n<p>Yeah...basicaly. This idea came to me after making hong shao pork belly and realizing the absurd amount of congealed fat upon opening the fridge leftovers. If you've never made hong shao pork belly, I definitely recommend you check out this <a href="https://thewoksoflife.com/shanghai-style-braised-pork-belly/">recipe </a>(although I think the simmering time should be much, much longer). Anyhow, I thought "carnitas is basically fried in it's own fat -- can we take a similar approach... and what if we put it in a burrito?" &nbsp;</p>\r\n<p>Short answer is yes, but it's <em>waaay</em> to much fat. First time I made this, I used pork belly and the decidence was quite overwhelming.&nbsp;</p>\r\n<p><img src="https://thumbnails-photos.amazon.com/v1/thumbnail/4gaMrxTTTwKVMpbGNE4wrw?viewBox=1201%2C901&amp;ownerId=A2SSMUSNBKJMOU&amp;groupShareToken=KEzW9AndTNGhWO4FWP53Gw.yoA8KVQH6T3v0-cm_YMtcG" alt="Das fat." width="600" height="450" /></p>\r\n<p>The 2-part solution? Let's use pork shoulder instead. And let's cut that fat with some acid in the form of kimchi! Overall, this recipe has such deep flavors with very few ingredients -- definitely bang for your buck.</p>\r\n<p><img src="https://thumbnails-photos.amazon.com/v1/thumbnail/InR7uQtpQkaUH4zeTH5aJw?viewBox=1352%2C901&amp;ownerId=A2SSMUSNBKJMOU&amp;groupShareToken=c4Nlv9gJSF6SVnP1bExRyQ.C_wIj0Hdoe8ajBScPIoPGo" alt="ingredients on display" width="600" height="400" /></p>\r\n<h4>Do it your own way!</h4>\r\n<p>A great thing about this recipe is the customizability. Make the pork ahead of time! Instead of kimchi fried rice (it's what I had in plenty at the time), you could use any sort of fried rice or stir-fry. I used tortilla because I thought they'd wrap well (and I'm lazy...), but you could use any sort of wrappable bread. Or perhaps use corn tortillas and go the taco route. Follow your heart...the world is your oyster.</p>\r\n<h4>Miso boop!</h4>\r\n<p>This is my first recipe post, but basically I'll try to include a cute photo of Miso (who did the burrito impersonation better?). Enjoy!</p>\r\n<p><img style="float: left;" src="https://thumbnails-photos.amazon.com/v1/thumbnail/MWCVn8VfQfmzUeRTNOzQiQ?viewBox=1309%2C901&amp;ownerId=A2SSMUSNBKJMOU&amp;groupShareToken=_PuDhkgHSAKwdScaESYY1Q.dA2wX4-wqDv9r0fDWKvpZ7" alt="Two floofy burritos..." width="600" height="413" /></p>\r\n<p><img src="https://thumbnails-photos.amazon.com/v1/thumbnail/LA9I3fEXRB2bxGL0QZxm4w?viewBox=1201%2C901&amp;ownerId=A2SSMUSNBKJMOU&amp;groupShareToken=pt1LjalfQAmsv6SU8z2Jaw.ou3sC6P_qHYHK74t8Roib5" alt="two burritos" width="600" height="450" /></p>	120	15	4	25	t	hong-shao-carnitas-burrito	1	\N	2	\N	https://via.placeholder.com/400
-2	2020-04-30 17:51:52.501296-07	2020-05-04 13:56:13.254215-07	Kimchi Fried Rice	Kimchi fried reice	<p>rice</p>	0	0	1	25	t	kimchi-fried-rice	1	\N	\N	\N	https://via.placeholder.com/400
+4	2020-05-05 20:23:18.728642-07	2020-05-05 20:23:18.72866-07	Beef Noodle Soup	Recipe coming soon	<p>Recipe coming soon</p>	0	0	1	25	t	beef-noodle-soup	1	1	8	\N	https://via.placeholder.com/400
+3	2020-05-04 23:33:26.699266-07	2020-05-05 20:29:31.181102-07	Takeout fried rice	Recipe coming soon	<p>Recipe coming soon</p>	0	0	1	25	t	takeout-fried-rice	1	\N	4	\N	https://via.placeholder.com/400
+2	2020-04-30 17:51:52.501296-07	2020-05-05 20:43:13.214571-07	Kimchi Fried Rice	Recipe coming soon	<p>Recipe coming soon</p>	0	0	1	25	t	kimchi-fried-rice	1	1	6	\N	https://via.placeholder.com/400
 \.
 
 
@@ -2270,6 +2324,7 @@ COPY public.recipe_unit (id, name, name_abbrev, plural_abbrev, type, system) FRO
 COPY public.star_ratings_rating (id, count, total, average, object_id, content_type_id) FROM stdin;
 2	0	0	0.000	2	25
 1	2	8	4.000	1	25
+3	0	0	0.000	4	25
 \.
 
 
@@ -2315,13 +2370,16 @@ COPY public.thumbnail_kvstore (key, value) FROM stdin;
 sorl-thumbnail||image||c4d542eabae1eb5e4bf05cd11114c6b8	{"name": "miso_rilakkuma.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [2048, 1365]}
 sorl-thumbnail||image||4b93c47e5aa848b2b65acd6a2b7b778c	{"name": "cache/d6/d4/d6d4919b06366dab8303486e44b14f74.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [120, 80]}
 sorl-thumbnail||image||0b0baed7324716c36795f753e6520c29	{"name": "cache/4d/33/4d33d1327493d7b8202d8ea49032cc6a.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [150, 100]}
+sorl-thumbnail||image||25953931a7682bf76b1c36923fe09b3d	{"name": "cache/9e/54/9e547685058010a615321ac782067e34.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [400, 400]}
 sorl-thumbnail||image||10b48b71541b23fd7ab5ea193c3e8a7f	{"name": "cache/f7/1b/f71b013d24dc6191198661cc2f605857.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [300, 200]}
 sorl-thumbnail||image||640c3b28ee7aa65ea424a1027901d2e6	{"name": "hong-shao-carnitas.jpeg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [1201, 900]}
 sorl-thumbnail||image||9ada6080798e1dd516c1e0fe694dd63e	{"name": "cache/c1/09/c109d702ecdbad21cdc9e9d112e73a57.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [500, 500]}
 sorl-thumbnail||image||b27acf4af17076d5c52e0d51ed5c558f	{"name": "cache/61/bc/61bc7560061b34445c92cf6783836bca.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [150, 112]}
+sorl-thumbnail||image||f753947f2779a3c068a6a37b8e532105	{"name": "cache/70/e0/70e0d57069a22612da326824d78409a9.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [400, 400]}
 sorl-thumbnail||image||ae18a1df099b2d8d10fdd7dc9044106d	{"name": "cache/75/7e/757ed424b9178a2fb6fbb4333eb89c41.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [107, 80]}
+sorl-thumbnail||thumbnails||f3d0cc7506ce44e519914658df043c61	["f753947f2779a3c068a6a37b8e532105", "7af986ba63f2cfeed9a82cbec6e9b15b", "b20127c8722067e0ef4249497e973bcd"]
 sorl-thumbnail||image||fcabc953a61e9176f1e5af9f16e40c92	{"name": "cache/cd/e2/cde2e81f8033a02d0b83fd28f77f122a.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [150, 100]}
-sorl-thumbnail||thumbnails||c4d542eabae1eb5e4bf05cd11114c6b8	["fcabc953a61e9176f1e5af9f16e40c92", "10b48b71541b23fd7ab5ea193c3e8a7f", "0b0baed7324716c36795f753e6520c29", "4b93c47e5aa848b2b65acd6a2b7b778c"]
+sorl-thumbnail||thumbnails||6cdc6bf9cbff0deb46a694772ed0adbb	["df7345954d9d5b6efa2e007ddd69cd8b", "25953931a7682bf76b1c36923fe09b3d", "13d3d4e7a95c8441ca99113569e5f732"]
 sorl-thumbnail||image||e50f5d618da76ae4700a3462ae95e492	{"name": "miso_popping_head.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [2580, 2674]}
 sorl-thumbnail||image||21c4f654d0b47bfb186b9896ad26bcf7	{"name": "cache/57/5f/575f4de7f8cf5be491f492aa72480a05.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [77, 80]}
 sorl-thumbnail||image||aa45290b1f29ed2835e60a8e2e353c08	{"name": "cache/2c/7d/2c7d4a30355b3e27b257eba38aed1406.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [107, 80]}
@@ -2330,18 +2388,40 @@ sorl-thumbnail||image||2dd9f2d891aef279a03dd2778809115e	{"name": "cache/f6/57/f6
 sorl-thumbnail||thumbnails||e50f5d618da76ae4700a3462ae95e492	["2dd9f2d891aef279a03dd2778809115e", "21c4f654d0b47bfb186b9896ad26bcf7"]
 sorl-thumbnail||image||6cdc6bf9cbff0deb46a694772ed0adbb	{"name": "dumpling.png", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [512, 512]}
 sorl-thumbnail||image||df7345954d9d5b6efa2e007ddd69cd8b	{"name": "cache/c3/a9/c3a93b48ac7c2c51c83ff21a185e8a81.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [150, 150]}
-sorl-thumbnail||thumbnails||6cdc6bf9cbff0deb46a694772ed0adbb	["df7345954d9d5b6efa2e007ddd69cd8b"]
 sorl-thumbnail||image||1f09b3b115c08c065b76331403c4fcfa	{"name": "loren.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [800, 533]}
 sorl-thumbnail||image||d13e0df4d3b2ea8a6ce659feb9c70635	{"name": "cache/c2/7a/c27a784171aaaa80bb61bbc2b950b207.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [150, 100]}
 sorl-thumbnail||thumbnails||1f09b3b115c08c065b76331403c4fcfa	["d13e0df4d3b2ea8a6ce659feb9c70635"]
 sorl-thumbnail||image||f3d0cc7506ce44e519914658df043c61	{"name": "miso_on_couch.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [800, 1144]}
 sorl-thumbnail||image||7af986ba63f2cfeed9a82cbec6e9b15b	{"name": "cache/f7/b0/f7b0bec89e061648942b9f003f46c526.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [105, 150]}
 sorl-thumbnail||image||b20127c8722067e0ef4249497e973bcd	{"name": "cache/c0/86/c086ae76a27ef016906d565f88f89314.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [56, 80]}
-sorl-thumbnail||thumbnails||f3d0cc7506ce44e519914658df043c61	["7af986ba63f2cfeed9a82cbec6e9b15b", "b20127c8722067e0ef4249497e973bcd"]
+sorl-thumbnail||image||cacdbf90893312911f01fab633f4e2b0	{"name": "cache/91/94/91947d907ab4316a3d462dc235a7d8b1.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [300, 200]}
 sorl-thumbnail||image||5cb37f7baf4e41ed39f3596b3493a79b	{"name": "cache/a8/d8/a8d8ff65934792a74033549837287414.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [56, 80]}
 sorl-thumbnail||thumbnails||7af986ba63f2cfeed9a82cbec6e9b15b	["5cb37f7baf4e41ed39f3596b3493a79b"]
 sorl-thumbnail||image||6b60f3008b6a9616530515c1f20ec57b	{"name": "cache/b5/ae/b5ae8f1ab97a9e0fa1a11d059935627c.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [400, 400]}
 sorl-thumbnail||thumbnails||640c3b28ee7aa65ea424a1027901d2e6	["b27acf4af17076d5c52e0d51ed5c558f", "6b60f3008b6a9616530515c1f20ec57b", "ae18a1df099b2d8d10fdd7dc9044106d", "9ada6080798e1dd516c1e0fe694dd63e"]
+sorl-thumbnail||image||dcc6d8cd2c7ef08e0f0b836a52eb6395	{"name": "cache/3d/4a/3d4a8671bf9cb721af98ddc088822d39.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [300, 200]}
+sorl-thumbnail||thumbnails||c4d542eabae1eb5e4bf05cd11114c6b8	["10b48b71541b23fd7ab5ea193c3e8a7f", "dcc6d8cd2c7ef08e0f0b836a52eb6395", "cacdbf90893312911f01fab633f4e2b0", "4b93c47e5aa848b2b65acd6a2b7b778c", "0b0baed7324716c36795f753e6520c29", "a4d771a3722d212a0cb88f7f6a8fe419", "fcabc953a61e9176f1e5af9f16e40c92"]
+sorl-thumbnail||image||a4d771a3722d212a0cb88f7f6a8fe419	{"name": "cache/66/27/66278ee5db0f11458971788e482557f6.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [300, 300]}
+sorl-thumbnail||image||8e454e1ef4cd6c6c9470386f334ddfd2	{"name": "measuring-up.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [4297, 2833]}
+sorl-thumbnail||image||1aa0721d0513e7a65f9046edc0a972a6	{"name": "cache/79/89/7989395c5e12604caaddd38251c6e6d6.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [150, 99]}
+sorl-thumbnail||thumbnails||8e454e1ef4cd6c6c9470386f334ddfd2	["1aa0721d0513e7a65f9046edc0a972a6"]
+sorl-thumbnail||image||e9db0b9465b53a373d647187b6e50a69	{"name": "beef_noodle_soup.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [1549, 876]}
+sorl-thumbnail||image||457a258db3bf70bbeed85ff594964f60	{"name": "cache/56/bd/56bdabc2d46c547d35ad34b477ce85e4.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [150, 85]}
+sorl-thumbnail||image||13d3d4e7a95c8441ca99113569e5f732	{"name": "cache/e7/46/e74668d17bbf0cd1a73ed1c20435f6cd.png", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [80, 80]}
+sorl-thumbnail||image||15ba90d313e5f8e9b08b691b22930a8a	{"name": "cache/7f/21/7f21a8b98c728de08f032a98b4d95608.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [80, 80]}
+sorl-thumbnail||thumbnails||df7345954d9d5b6efa2e007ddd69cd8b	["15ba90d313e5f8e9b08b691b22930a8a"]
+sorl-thumbnail||image||7b8f717854ac93a1f3e4bd761963b157	{"name": "takeout-fried-rice.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [800, 533]}
+sorl-thumbnail||image||2939a7fcb798f89fad928bba50cc81fb	{"name": "cache/ec/4a/ec4a4eda7e3538b7801de1f9f32eba16.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [150, 100]}
+sorl-thumbnail||image||d504aec82cc7a7e79327bbce925121c2	{"name": "cache/2b/e3/2be316b045698199e4c4dba0886b951b.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [400, 400]}
+sorl-thumbnail||thumbnails||7b8f717854ac93a1f3e4bd761963b157	["2939a7fcb798f89fad928bba50cc81fb", "d504aec82cc7a7e79327bbce925121c2"]
+sorl-thumbnail||image||2c4cea6956432813189da8dd836df5a6	{"name": "cache/30/3e/303efd062ccb814676ea5ea221bd7ca4.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [400, 400]}
+sorl-thumbnail||thumbnails||e9db0b9465b53a373d647187b6e50a69	["2c4cea6956432813189da8dd836df5a6", "457a258db3bf70bbeed85ff594964f60"]
+sorl-thumbnail||image||d7b7f84261b51f24745dfaec170cb7aa	{"name": "kimchi_fried_rice.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [1862, 1251]}
+sorl-thumbnail||image||8e6970c4b397966ebaadf4a830428024	{"name": "cache/0b/60/0b60d993cccb4bfb0731404fa798b000.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [150, 101]}
+sorl-thumbnail||image||599d0429d5b0e8807995b32a62bbfced	{"name": "cache/53/01/53017f5f695912ad5d62d7866193da2d.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [400, 400]}
+sorl-thumbnail||thumbnails||d7b7f84261b51f24745dfaec170cb7aa	["8e6970c4b397966ebaadf4a830428024", "599d0429d5b0e8807995b32a62bbfced"]
+sorl-thumbnail||image||accaf2ff695402189496ed68fc06c6cd	{"name": "cache/fd/50/fd507fc985ae5edfb7c897b3b46d3682.jpg", "storage": "misoboop.storage_backends.PublicMediaStorage", "size": [120, 80]}
+sorl-thumbnail||thumbnails||fcabc953a61e9176f1e5af9f16e40c92	["accaf2ff695402189496ed68fc06c6cd"]
 \.
 
 
@@ -2391,14 +2471,14 @@ SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
 -- Name: blog_post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: loren
 --
 
-SELECT pg_catalog.setval('public.blog_post_id_seq', 2, true);
+SELECT pg_catalog.setval('public.blog_post_id_seq', 4, true);
 
 
 --
 -- Name: core_basictag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: loren
 --
 
-SELECT pg_catalog.setval('public.core_basictag_id_seq', 4, true);
+SELECT pg_catalog.setval('public.core_basictag_id_seq', 15, true);
 
 
 --
@@ -2412,7 +2492,7 @@ SELECT pg_catalog.setval('public.core_privateimage_id_seq', 1, false);
 -- Name: core_publicimage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: loren
 --
 
-SELECT pg_catalog.setval('public.core_publicimage_id_seq', 6, true);
+SELECT pg_catalog.setval('public.core_publicimage_id_seq', 8, true);
 
 
 --
@@ -2426,14 +2506,14 @@ SELECT pg_catalog.setval('public.core_series_id_seq', 2, true);
 -- Name: core_taggedwhatever_id_seq; Type: SEQUENCE SET; Schema: public; Owner: loren
 --
 
-SELECT pg_catalog.setval('public.core_taggedwhatever_id_seq', 4, true);
+SELECT pg_catalog.setval('public.core_taggedwhatever_id_seq', 11, true);
 
 
 --
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: loren
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 58, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 91, true);
 
 
 --
@@ -2461,7 +2541,7 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 32, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: loren
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 51, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 55, true);
 
 
 --
@@ -2552,7 +2632,7 @@ SELECT pg_catalog.setval('public.recipe_ingredientamount_id_seq', 12, true);
 -- Name: recipe_recipe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: loren
 --
 
-SELECT pg_catalog.setval('public.recipe_recipe_id_seq', 2, true);
+SELECT pg_catalog.setval('public.recipe_recipe_id_seq', 4, true);
 
 
 --
@@ -2566,7 +2646,7 @@ SELECT pg_catalog.setval('public.recipe_unit_id_seq', 6, true);
 -- Name: star_ratings_rating_id_seq; Type: SEQUENCE SET; Schema: public; Owner: loren
 --
 
-SELECT pg_catalog.setval('public.star_ratings_rating_id_seq', 2, true);
+SELECT pg_catalog.setval('public.star_ratings_rating_id_seq', 3, true);
 
 
 --
@@ -2756,6 +2836,14 @@ ALTER TABLE ONLY public.core_publicimage
 
 ALTER TABLE ONLY public.core_publicimage
     ADD CONSTRAINT core_publicimage_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: core_series core_series_image_id_key; Type: CONSTRAINT; Schema: public; Owner: loren
+--
+
+ALTER TABLE ONLY public.core_series
+    ADD CONSTRAINT core_series_image_id_key UNIQUE (image_id);
 
 
 --
@@ -3289,6 +3377,20 @@ CREATE INDEX core_publicimage_name_0d3eafbd_like ON public.core_publicimage USIN
 --
 
 CREATE INDEX core_series_name_c7f4a713_like ON public.core_series USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: core_series_slug_29a744a1; Type: INDEX; Schema: public; Owner: loren
+--
+
+CREATE INDEX core_series_slug_29a744a1 ON public.core_series USING btree (slug);
+
+
+--
+-- Name: core_series_slug_29a744a1_like; Type: INDEX; Schema: public; Owner: loren
+--
+
+CREATE INDEX core_series_slug_29a744a1_like ON public.core_series USING btree (slug varchar_pattern_ops);
 
 
 --
@@ -3832,6 +3934,14 @@ ALTER TABLE ONLY public.blog_post
 
 ALTER TABLE ONLY public.core_privateimage
     ADD CONSTRAINT core_privateimage_user_id_21502299_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: core_series core_series_image_id_48dde17d_fk_core_publicimage_id; Type: FK CONSTRAINT; Schema: public; Owner: loren
+--
+
+ALTER TABLE ONLY public.core_series
+    ADD CONSTRAINT core_series_image_id_48dde17d_fk_core_publicimage_id FOREIGN KEY (image_id) REFERENCES public.core_publicimage(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
