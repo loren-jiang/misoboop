@@ -3,7 +3,10 @@
 {% load recipe_extras %}
 
 <div class="recipe-sneakpeek">
-    <a class="waves-effect waves-light" href="{{ recipe.get_absolute_url }}"><img class="recipe-sneakpeek-image " src={{ recipe.image.upload.url }}></a>
+    <div>
+        <a class="waves-effect waves-light" href="{{ recipe.get_absolute_url }}"><img class="recipe-sneakpeek-image "
+                                                                                      src={{ recipe.image.upload.url }}></a>
+    </div>
     <span class="recipe-sneakpeek-info">
             {% for tag in recipe.tags.all %}
 
