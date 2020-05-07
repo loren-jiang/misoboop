@@ -1,0 +1,17 @@
+/* Link styles */
+a.basic-link {
+  color: $link-color;
+
+  &:hover {
+    color: darken($link-color, 15%);
+    text-decoration: underline;
+  }
+}
+
+a.whiten {
+  color: black;
+}
+
+a.underline {
+  text-decoration: underline;
+}

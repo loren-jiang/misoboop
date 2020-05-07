@@ -3,7 +3,7 @@
         {% for url, label in breadcrumbs %}
             <li>
                 {% ifnotequal forloop.counter breadcrumbs_total %}
-                    <a href="{{ url }}">{{ label|safe }}</a>
+                    <a class="basic-link" href="{{ url }}">{{ label|safe }}</a>
                 {% else %}
                     {{ label|safe }}
                 {% endifnotequal %}
@@ -13,7 +13,5 @@
             </li>
         {% endfor %}
     </div>
-
-
 </div>
 

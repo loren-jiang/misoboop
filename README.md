@@ -28,10 +28,30 @@ Feel free to fork (in most scenarios), but please attribute it back to me -- e.g
 - Simple 'blog' app for managing posts
 
 
-## Installation & Setup
+## Notes: Installation & Setup
 
 ### pip
+pip install the dependencies found in `requirements.txt`
+- `pip install requirements.txt`
 
 ### npm
+npm install the dependencies found in `package.json`
+- `npm install`
 
-## Deployment and Production
+## Notes: Development
+General workflow: 
+- `bash ./start-project.bash` to run tests and start development server with `settings_dev.py`
+
+Static and media files are served by AWS S3 + CloudFront
+
+## Notes: Production
+General workflow:
+- run `bash ./collect-compress.bash` to collect and compress static files to `STATIC_ROOT` and `COMPRESS_ROOT` respectively, which should be AWS S3 bucket
+- `git add .` or whatever you need to 
+- `git commit -m "[message]"`
+- `git push origin master && git push live master` -- the 2nd push is to automatically serve new files on push for remote repo on Digital Ocean (more elegant solutions exist) 
+
+## Notes: Database
+Generally, shouldn't need to make schema changes, but if necessary, that should be handled in version control
+
+The trickier part is how to sync up development vs production database (or maintain dedicated DB server)

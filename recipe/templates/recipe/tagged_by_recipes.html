@@ -6,5 +6,10 @@
 {% endblock title %}
 
 {% block content %}
-    {% include "recipe/recipes_masonry.html" with recipes=recipes %}
+    <div class="row">
+        <div class="col s12">
+            {% include "recipe/recipes_masonry.html" with recipes=recipes %}
+
+        </div>
+    </div>
 {% endblock content %}

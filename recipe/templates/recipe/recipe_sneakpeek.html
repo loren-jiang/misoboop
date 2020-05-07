@@ -3,15 +3,17 @@
 {% load recipe_extras %}
 
 <div class="recipe-sneakpeek">
-    <img class="recipe-sneakpeek-image" src={{ recipe.image.upload.url }}>
+    <a class="waves-effect waves-light" href="{{ recipe.get_absolute_url }}"><img class="recipe-sneakpeek-image " src={{ recipe.image.upload.url }}></a>
     <span class="recipe-sneakpeek-info">
             {% for tag in recipe.tags.all %}
 
                 {% if forloop.last %}
-                    <a href="{% url 'tagged-by-recipes' slug=tag.slug %}" class="recipe-sneakpeek-tag"> {{ tag }}</a>
+                    <a class="basic-link" href="{% url 'tagged-by-recipes' slug=tag.slug %}"
+                       class="recipe-sneakpeek-tag"> {{ tag }}</a>
 
                 {% else %}
-                    <a href="{% url 'tagged-by-recipes' slug=tag.slug %}" class="recipe-sneakpeek-tag"> {{ tag }}, </a>
+                    <a class="basic-link" href="{% url 'tagged-by-recipes' slug=tag.slug %}"
+                       class="recipe-sneakpeek-tag"> {{ tag }}, </a>
                 {% endif %}
 
             {% endfor %}

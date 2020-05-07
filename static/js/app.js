@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', function () {
         columns: '.grid-col',
         items: '.grid-item'
     });
+    console.log($('.grid'));
+    $('.grid').removeClass('fade-in');
 })
 
 

@@ -15,8 +15,10 @@ img.recipe-sneakpeek-image {
   color: grey;
 }
 
-.recipe-sneakpeek-title {
-  a {
-    color: black;
+.recipe-sneakpeek-title a {
+  color: currentColor;
+  &:hover {
+    color: $link-color;
+    text-decoration: underline;
   }
 }

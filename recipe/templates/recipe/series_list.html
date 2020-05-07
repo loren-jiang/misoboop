@@ -27,9 +27,10 @@
                     <div class="series-wrapper row">
                         <div class="col s6 m2">
                             <img src="{{ series.image.thumbnail.url }}">
-                            <a href="{{ series.get_absolute_url }}"> View more </a>
+                            <a class="basic-link" href="{{ series.get_absolute_url }}"> View more </a>
 
                         </div>
+
                         <div class="col s12 m10">
 
                             <div> {{ series.description|safe }}</div>
@@ -38,9 +39,9 @@
                                 Blog posts:
                                 {% for post in series.posts.all %}
                                     {% if forloop.last %}
-                                        <a href="{{ post.get_absolute_url }}"> {{ post }}</a>
+                                        <a class="basic-link" href="{{ post.get_absolute_url }}"> {{ post }}</a>
                                     {% else %}
-                                        <a href="{{ post.get_absolute_url }}"> {{ post }}</a> |
+                                        <a class="basic-link" href="{{ post.get_absolute_url }}"> {{ post }}</a> |
                                     {% endif %}
                                 {% endfor %}
                             </p>

@@ -45,7 +45,7 @@
                         {% for post in latest_posts %}
                             <tr>
                                 <td>
-                                    <a href={{ post.get_absolute_url }}>{{ post.headline }}</a>
+                                    <a class="basic-link" href={{ post.get_absolute_url }}>{{ post.headline }}</a>
                                 </td>
                                 <td>
                                     {{ post.created_at|date }}

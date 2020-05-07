@@ -60,3 +60,12 @@ input.ingredient-amount {
 .ingredient-list {
   padding-top: 20px;
 }
+
+.recipe-description a {
+  color: $link-color;
+
+  &:hover {
+    color: darken($link-color, 15%);
+    text-decoration: underline;
+  }
+}
