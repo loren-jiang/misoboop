@@ -90,13 +90,6 @@
                             <img class="responsive-img" src={{ recipe.placeholder_url }}>
                         {% endif %}
 
-                        <div class="recipe-tags-wrapper">
-                            <b>Tags:</b>
-                            {% for tag in recipe.tags.all %}
-                                <a href="{% url 'tagged-by-recipes' slug=tag.slug %}"> <span
-                                        class="recipe-tag chip">{{ tag }}</span> </a>
-                            {% endfor %}
-                        </div>
                     </div>
                     <div class="col s12 m12 l6">
 
@@ -157,9 +150,20 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="recipe-tags-wrapper">
+                            <b>Tags:</b>
+                            {% for tag in recipe.tags.all %}
+                                <a href="{% url 'tagged-by-recipes' slug=tag.slug %}"> <span
+                                        class="recipe-tag chip">{{ tag }}</span> </a>
+                            {% endfor %}
+                        </div>
+
+                    </div>
 
 
-                        <div>
+                    <div class="col s12">
+                        <hr>
+                        <div class="recipe-ingredients">
                             <b>Ingredients: </b>
                             <div class="ingredient-list">
                                 {% for ingredient_amount in recipe.ingredient_amounts.all|dictsortreversed:'amount' %}
@@ -179,7 +183,6 @@
                         </div>
 
                     </div>
-
 
                     <div class="col s12 recipe-description flowy-font">
                         {{ recipe.description|safe }}

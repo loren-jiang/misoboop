@@ -12,23 +12,7 @@ input.ingredient-amount {
   text-align: center;
 }
 
-.direction-markdown ul {
-  list-style-type: decimal;
 
-  li {
-    list-style: circle;
-    margin-left: 30px;
-  }
-}
-
-.direction-markdown ul {
-  padding-left: 1.5rem !important;
-}
-
-.direction-markdown li {
-  //list-style-type: simp-chinese-informal !important;
-  list-style-type: square !important;
-}
 
 #like_plus_one.liked {
   color: green;
@@ -53,6 +37,10 @@ input.ingredient-amount {
   }
 }
 
+.recipe-ingredients {
+  padding-top: 1rem;
+}
+
 .ingredient-tag {
   font-size: 1rem;
 }
@@ -69,3 +57,34 @@ input.ingredient-amount {
     text-decoration: underline;
   }
 }
+
+.recipe-description ul, .direction-markdown ul {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+
+.recipe-description ul > li, .direction-markdown ul > li {
+    list-style-type: disc;
+}
+
+//.direction-markdown ul {
+//  list-style-type: decimal;
+//
+//  li {
+//    list-style: circle;
+//    margin-left: 30px;
+//  }
+//}
+//
+//.direction-markdown ul {
+//  padding-left: 1.5rem !important;
+//}
+//
+//.direction-markdown li {
+//  //list-style-type: simp-chinese-informal !important;
+//  list-style-type: square !important;
+//}
