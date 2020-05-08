@@ -16,7 +16,7 @@
                         <h4> Welcome </h4>
                     </div>
                     {% thumbnail welcome_image.upload "300" crop="center" as im %}
-                        <img class="" width="{{ im.width }}" height="{{ im.height }}" src={{ im.url }}>
+                        <img class="responsive-img" width="{{ im.width }}" height="{{ im.height }}" src={{ im.url }}>
                     {% endthumbnail %}
                     <p>
                         You found us!!!
@@ -61,11 +61,5 @@
 {% endblock %}
 
 {% block scripts %}
-    {#    <script src="https://unpkg.com/colcade@0/colcade.js"></script> {# for masonry #}
-    {#    <script>#}
-    {#        $('.grid').colcade({#}
-    {#            columns: '.grid-col',#}
-    {#            items: '.grid-item'#}
-    {#        });#}
-    {#    </script>#}
+
 {% endblock scripts %}

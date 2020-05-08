@@ -5,12 +5,12 @@
 <div class="card recipe-card">
     <div class="card-image">
         {% if no_thumbnail %}
-            <img class="" src={{ recipe.image.upload.url }}>
+            <img class="responsive-img" src={{ recipe.image.upload.url }}>
         {% else %}
             {% thumbnail recipe.image.upload "400x400" crop="center" as im %}
-                <img class="" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                <img class="responsive-img" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
             {% empty %}
-                <img class="" src="{{ recipe.placeholder_url }}">
+                <img class="responsive-img" src="{{ recipe.placeholder_url }}">
             {% endthumbnail %}
         {% endif %}
 

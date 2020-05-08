@@ -226,13 +226,6 @@ function template(recipes, tags_input) {
                 class="chip truncate ${tags_map[recipes[i].tags[k]] ? 'red lighten-4' : ''}"> 
                 ${recipes[i].tags[k]} </span>`
         }
-        // htmlOut += `<tr>
-        //                 <td>
-        //                     <a href="${recipes[i].slugged_url}"> ${recipes[i].name} </a>
-        //                 </td>
-        //                 <td>${formattedTags}</td>
-        //                 <td><img class="" width="auto" height="100" src="${recipes[i].image ? recipes[i].image.thumbnail : recipes[i].placeholder_url}"></td>
-        //             </tr>`;
         htmlOut += `<div class="row">
                         <div class="col s6 m3">
                             <img class="responsive-img"
@@ -248,7 +241,7 @@ function template(recipes, tags_input) {
                             ${formattedTags}
                             <br>
                             
-                            <a href="${recipes[i].slugged_url}"> Read more </a>
+                            <a class="basic-link" href="${recipes[i].slugged_url}"> Read more </a>
                         </div>
                        
                     </div>
