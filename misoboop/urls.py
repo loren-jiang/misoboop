@@ -21,6 +21,8 @@ from recipe import views_api as recipe_views_api
 from rest_framework import routers
 from recipe.views import search_recipes
 from filebrowser.sites import site
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import StaticViewSitemap, BlogSitemap, RecipeSitemap
 
 router = routers.DefaultRouter()
 # 'recipe-api' is base name to avoid namespace conflicts with 'recipe.urls'
@@ -28,7 +30,16 @@ router.register(r'recipes', recipe_views_api.RecipeViewSet, 'recipe-api')
 router.register(r'ingredients', recipe_views_api.IngredientViewSet, 'ingredient-api')
 router.register(r'tags', recipe_views_api.TagViewset, 'tag-api')
 
+sitemaps = {
+    'static': StaticViewSitemap,
+    'blog': BlogSitemap,
+    'recipe': RecipeSitemap,
+}
+
 urlpatterns = [
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
+         name='django.contrib.sitemaps.views.sitemap'),
+    path('robots.txt', include('robots.urls')),
     path('', recipe_views.home, name='home'),
     path('about/', recipe_views.about, name='about'),
     path('admin/filebrowser/', site.urls),
@@ -42,7 +53,6 @@ urlpatterns = [
     path('blogs/', include('blog.urls')),
     path('api/ingredients_list/', recipe_views_api.IngredientList.as_view()),
     path('api/recipes_list/', recipe_views_api.RecipeList.as_view()),
-
 ]
 
 if settings.DEBUG:

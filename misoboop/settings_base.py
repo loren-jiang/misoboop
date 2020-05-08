@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.postgres',
     'django.contrib.sitemaps',
+    'robots',
     'django_extensions',
     'storages',
     'tinymce',
