@@ -203,11 +203,12 @@ def explore_recipes(request):
         total_time=F('cook_time') + F('prep_time')).annotate(avg_ratings=F('ratings__average'))
     context['tags'] = tags
     tagged_recipes_dict = {}
+    tag_slugs_dict = {}
     for tag in tags:
         tagged_recipes_dict[tag.name] = recipes.filter(tags__in=[tag]).distinct().order_by('-avg_ratings')
-
+        tag_slugs_dict[tag.name] = tag.slug
     context['tagged_recipes'] = tagged_recipes_dict
-
+    context['tag_slugs'] = tag_slugs_dict
     return render(request, 'recipe/explore_recipes.html', context)
 
 

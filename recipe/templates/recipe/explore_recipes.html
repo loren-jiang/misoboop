@@ -2,6 +2,7 @@
 {% load django_bootstrap_breadcrumbs %}
 {% load static %}
 {% load recipe_extras %}
+{% load core_extras %}
 {% load thumbnail %}
 {% load ratings %}
 
@@ -29,7 +30,7 @@
                 <div>
                     <h4 class="center-align"> {{ key }} </h4>
                     <div class="center-align" style="font-size: 15px;">
-                        <a class="basic-link" href="{% url 'tagged-by-recipes' slug=key|lower %}"> see all </a>
+                        <a class="basic-link" href="{% url 'tagged-by-recipes' slug=tag_slugs|get_item:key %}"> see all </a>
                     </div>
 
 

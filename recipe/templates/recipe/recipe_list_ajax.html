@@ -3,6 +3,11 @@
 {% load static %}
 {% load recipe_extras %}
 
+{% block title %}
+    {{ block.super }}
+    | Recipes search
+{% endblock title %}
+
 {% block breadcrumbs %}
     {{ block.super }}
     {% breadcrumb "Recipes" "recipe-list" %}

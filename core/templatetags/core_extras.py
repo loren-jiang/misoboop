@@ -21,7 +21,7 @@ def min_to_hr(value):
 
 @register.filter
 def get_item(dictionary, key):
-    return dictionary.getattr(key)
+    return dictionary.get(key)
 
 @register.filter
 def get_obj_item(obj, key):

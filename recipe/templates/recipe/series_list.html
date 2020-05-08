@@ -20,55 +20,83 @@
 
 
     <div class="row">
-        <div class="col s12 m10">
-            {% if object_list %}
-                {% for series in object_list.all %}
+        {% if object_list %}
+            {% for series in object_list.all %}
+                <div class="col s12 {% cycle 'left-align' 'right-align' %}">
+
                     <h4 class="series-title">{{ series.name }}</h4>
                     <div class="series-wrapper row">
-                        <div class="col s6 m2">
-                            <img class="responsive-img" src="{{ series.image.thumbnail.url }}">
-                            <a class="basic-link" href="{{ series.get_absolute_url }}"> View more </a>
+                        {% if forloop.counter|divisibleby:2 %}
+                            <div class="col s12 m10">
 
-                        </div>
+                                <div> {{ series.description|safe }}</div>
 
-                        <div class="col s12 m10">
+                                <p>
+                                    Blog posts:
+                                    {% for post in series.posts.all %}
+                                        {% if forloop.last %}
+                                            <a class="basic-link" href="{{ post.get_absolute_url }}"> {{ post }}</a>
+                                        {% else %}
+                                            <a class="basic-link" href="{{ post.get_absolute_url }}"> {{ post }}</a> |
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
 
-                            <div> {{ series.description|safe }}</div>
-
-                            <p>
-                                Blog posts:
-                                {% for post in series.posts.all %}
-                                    {% if forloop.last %}
-                                        <a class="basic-link" href="{{ post.get_absolute_url }}"> {{ post }}</a>
-                                    {% else %}
-                                        <a class="basic-link" href="{{ post.get_absolute_url }}"> {{ post }}</a> |
-                                    {% endif %}
-                                {% endfor %}
-                            </p>
-
-                            <p>
-                                Recipes:
-                                {% for post in series.recipes.all %}
-                                    <a href="{{ recipes.get_absolute_url }}"> {{ post }}</a>
-                                {% endfor %}
-                            </p>
-                        </div>
-
-
-                        {% if forloop.last %}
+                                <p>
+                                    Recipes:
+                                    {% for post in series.recipes.all %}
+                                        <a href="{{ recipes.get_absolute_url }}"> {{ post }}</a>
+                                    {% endfor %}
+                                </p>
+                            </div>
+                            <div class="col s6 m2">
+                                <img class="responsive-img" src="{{ series.image.thumbnail.url }}">
+                                <a class="basic-link" href="{{ series.get_absolute_url }}"> View more </a>
+                            </div>
                         {% else %}
-                            <hr>
-                            <br>
+                            <div class="col s6 m2">
+                                <img class="responsive-img" src="{{ series.image.thumbnail.url }}">
+                                <a class="basic-link" href="{{ series.get_absolute_url }}"> View more </a>
+                            </div>
+                            <div class="col s12 m10">
+
+                                <div> {{ series.description|safe }}</div>
+
+                                <p>
+                                    Blog posts:
+                                    {% for post in series.posts.all %}
+                                        {% if forloop.last %}
+                                            <a class="basic-link" href="{{ post.get_absolute_url }}"> {{ post }}</a>
+                                        {% else %}
+                                            <a class="basic-link" href="{{ post.get_absolute_url }}"> {{ post }}</a> |
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+
+                                <p>
+                                    Recipes:
+                                    {% for post in series.recipes.all %}
+                                        <a href="{{ recipes.get_absolute_url }}"> {{ post }}</a>
+                                    {% endfor %}
+                                </p>
+                            </div>
                         {% endif %}
+
+
                     </div>
+                    {% if forloop.last %}
+                    {% else %}
+                        <hr>
+                        <br>
+                    {% endif %}
+                </div>
 
-                {% endfor %}
-            {% else %}
-                No series found...
-                Check back in a bit!
-            {% endif %}
+            {% endfor %}
+        {% else %}
+            No series found...
+            Check back in a bit!
+        {% endif %}
 
-        </div>
     </div>
 {% endblock content %}
 

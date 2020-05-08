@@ -8,8 +8,8 @@
 {% block content %}
     <div class="row">
         <div class="col s12">
+            <h3> {{ title }}</h3>
             {% include "recipe/recipes_masonry.html" with recipes=recipes %}
-
         </div>
     </div>
 {% endblock content %}
