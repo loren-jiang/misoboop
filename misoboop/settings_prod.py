@@ -35,3 +35,7 @@ DEBUG_TOOLBAR_CONFIG = {
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+SESSION_COOKIE_SECURE = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+CSRF_COOKIE_SECURE = True
