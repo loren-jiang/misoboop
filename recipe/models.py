@@ -15,7 +15,11 @@ from taggit.managers import TaggableManager
 from django.contrib.contenttypes.fields import GenericRelation
 from star_ratings.models import Rating
 from core.models import BasicTag, TaggedWhatever
+from .utils import format_duration
+
 import math
+
+
 # Create your models here.
 
 class RecipeManager(models.Manager):
@@ -25,12 +29,14 @@ class RecipeManager(models.Manager):
     def get_all(self):
         return super().get_queryset()
 
+
 class Recipe(CreatedModified):
     """
     Model representing a recipe, which roughly follows https://jsonld.com/recipe/
     """
     author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=500, unique=True)
+    nutrition = models.OneToOneField('recipe.Nutrition', on_delete=models.SET_NULL, blank=True, null=True)
     short_description = models.TextField(default='')
     description = HTMLField(default='', verbose_name=_('Text'))
     prep_time = models.PositiveSmallIntegerField(default=0)
@@ -46,10 +52,10 @@ class Recipe(CreatedModified):
     likes = models.PositiveSmallIntegerField(default=1)
     ratings = GenericRelation(Rating, related_query_name='recipes')
     series = models.ForeignKey('core.Series', on_delete=models.SET_NULL, blank=True, null=True, related_name='recipes')
-    objects = RecipeManager() # all() is automatically filtered (is_published=True)
+    objects = RecipeManager()  # all() is automatically filtered (is_published=True)
 
     class Meta:
-        ordering = ['name',]
+        ordering = ['name', ]
         verbose_name = _('Recipe')
         verbose_name_plural = _('Recipes')
 
@@ -68,7 +74,6 @@ class Recipe(CreatedModified):
 
     def tag_names_as_list(self):
         return [tag.name for tag in self.tags.order_by('name')]
-
 
     def ing_amts_as_list(self):
         """
@@ -102,15 +107,24 @@ class Recipe(CreatedModified):
             return self.image.upload.url
         return ''
 
+    def nutrition_sd(self):
+        if self.nutrition:
+            return self.nutrition.sd()
+        else:
+            return {
+                "@type": "NutritionInformation"
+            }
+
     @property
     def sd(self):
         return {
             "@context": "https://schema.org",
             "@type": "Recipe",
             "author": str(self.author),
-            "cookTime": self.cook_time,
+            "prepTime": format_duration(self.prep_time),
+            "cookTime": format_duration(self.cook_time),
             "datePublished": self.created_at.date().isoformat(),
-            "description": self.description,
+            "description": self.short_description,
             "image": self.image_url(),
             "recipeIngredient": self.ing_amts_as_list(),
             "interactionStatistic": {
@@ -118,18 +132,13 @@ class Recipe(CreatedModified):
                 "interactionType": "http://schema.org/Comment",
                 "userInteractionCount": self.likes
             },
-            "name": self.name,
-            "nutrition": {
-                # todo: need to implement Nutrition model
-                "@type": "NutritionInformation",
-                "calories": "1200 calories",
-                "carbohydrateContent": "12 carbs",
-                "proteinContent": "9 grams of protein",
-                "fatContent": "9 grams fat"
-            },
-            "prepTime": self.prep_time,
+            "name": str(self),
+            "nutrition": self.nutrition_sd(),
             "recipeInstructions": self.get_directions_as_list(),
-            "recipeYield": self.servings
+            "recipeYield": self.servings,
+            "recipeCuisine": [tag.name for tag in self.tags.filter(is_cuisine=True)],
+            "recipeCategory": [],
+            "keywords": [name for name in self.tags.names()],
         }
 
 
@@ -159,6 +168,9 @@ class Ingredient(models.Model):
     name_abbrev = models.CharField(max_length=60, blank=True, verbose_name=_('Abbreviation'))
     plural_name = models.CharField(max_length=60, blank=True, verbose_name=_('Plural name'))
     use_count = models.PositiveIntegerField(default=0)
+    is_specialty = models.BooleanField(default=False)
+    image = models.OneToOneField('core.PublicImage', on_delete=models.SET_NULL, blank=True, null=True)
+
     # tags = TaggableManager()
 
     class Meta:
@@ -193,11 +205,9 @@ class IngredientAmount(models.Model):
 
         # if imperial, we want to represent as fraction
 
-
         # first, round to nearest 0.25 since that's really the precision achievable from cooking measurements
         rounded_amt = round(self.amount * 100 // 25 + self.amount * 100 % 25) / 100
         pass
-
 
     def suffix(self):
         """
@@ -210,8 +220,8 @@ class IngredientAmount(models.Model):
         if not has_real_unit:
             ret = f"{self.ingredient.plural_name if (is_plural and self.ingredient.plural_name) else self.ingredient.name}"
         else:
-            ret = f"{self.unit.plural_abbrev  + ' of'} " \
-               f"{self.ingredient.plural_name if (is_plural and self.ingredient.plural_name) else self.ingredient}"
+            ret = f"{(self.unit.plural_abbrev if (is_plural and self.unit.plural_abbrev) else str(self.unit)) + ' of'} " \
+                  f"{self.ingredient.plural_name if (is_plural and self.ingredient.plural_name) else str(self.ingredient)}"
         return ret.lower()
 
     class Meta:
@@ -219,6 +229,7 @@ class IngredientAmount(models.Model):
             models.CheckConstraint(check=models.Q(amount__gte=Decimal('0')), name='amount_gte_0'),
             models.UniqueConstraint(fields=('recipe', 'ingredient'), name='no_duplicate_ingredients_in_recipe')
         ]
+
 
 class Unit(models.Model):
     name = models.CharField(max_length=60, unique=True, verbose_name=_('Name'))
@@ -230,7 +241,7 @@ class Unit(models.Model):
     system = models.IntegerField(choices=SYSTEM, null=True)
 
     def __str__(self):
-        return self.name
+        return self.name_abbrev if self.name_abbrev else self.name
 
     class Meta:
         verbose_name = _('Unit')
@@ -238,3 +249,29 @@ class Unit(models.Model):
         ordering = ["name"]
 
 
+class Nutrition(models.Model):
+    calories = models.PositiveSmallIntegerField(default=0)
+    carbs = models.PositiveSmallIntegerField(default=0)
+    cholestrol = models.PositiveSmallIntegerField(default=0)
+    fat = models.PositiveSmallIntegerField(default=0)
+    fiber = models.PositiveSmallIntegerField(default=0)
+    protein = models.PositiveSmallIntegerField(default=0)
+    sat_fat = models.PositiveSmallIntegerField(default=0)
+    servings = models.PositiveSmallIntegerField(default=0)
+    sodium = models.PositiveSmallIntegerField(default=0)
+    sugar = models.PositiveSmallIntegerField(default=0)
+    trans_fat = models.PositiveSmallIntegerField(default=0)
+    unsat_fat = models.PositiveSmallIntegerField(default=0)
+
+    @property
+    def sd(self):
+        return {
+            "@type": "NutritionInformation",
+            "calories": f"{self.calories} calories",
+            "carbohydrateContent": f"{self.carbs} carbs",
+            "proteinContent": f"{self.protein} grams of protein",
+            "fatContent": f"{self.fat} grams fat",
+            "sodiumContent": f"{self.sodium} milligrams of sodium",
+            "sugarContent": f"{self.sugar} grams of sugar",
+            "fiberContent": f"{self.fiber} grams of fiber",
+        }

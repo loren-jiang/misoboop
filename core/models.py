@@ -20,6 +20,7 @@ class BasicTag(TagBase):
     # ... fields here
     filterable = models.BooleanField(default=False)  # if tag is show on Recipe list filtering options
     shown = models.BooleanField(default=True)  # if tag is shown on Recipe detail page
+    is_cuisine = models.BooleanField(default=False) #if tag is cuisine, e.g. Chinese, Korean, etc.
     # objects = BasicTagManager()
 
     class Meta:
