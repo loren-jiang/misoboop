@@ -33,8 +33,9 @@ function copyTextToClipboard(text) {
 
     // Ensure it has a small width and height. Setting to 1px / 1em
     // doesn't work as this gives a negative w/h on some browsers.
-    textArea.style.width = '2em';
-    textArea.style.height = '2em';
+    const dim = '2rem';
+    textArea.style.width = dim;
+    textArea.style.height = dim;
 
     // We don't need padding, reducing the size if it does flash render.
     textArea.style.padding = 0;
@@ -93,7 +94,6 @@ function lazifyAndResponsifyImages() {
 
     if (region.length) {
         for (k = 0; k < region.length; k++) {
-            // var img = region[k].querySelectorAll("img:not(.lozad)");
             var img = region[k].querySelectorAll("img");
 
             for (i = 0; i < img.length; i++) {

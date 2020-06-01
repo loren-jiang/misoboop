@@ -50,7 +50,7 @@ General workflow:
 - `git add .` or whatever you need to 
 - `git commit -m "[message]"`
 - `git push origin master && git push live master` -- the 2nd push is to automatically serve new files on push for remote repo on Digital Ocean (more elegant solutions exist) 
-- `ssh@[ip_address]`
+- `ssh [user]@[ip_address]`
 - `sudo supervisorctl restart live`
 ## Notes: Database
 Generally, shouldn't need to make schema changes, but if necessary, that should be handled in version control

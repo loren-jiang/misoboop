@@ -10,13 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
         scrollOffset: 0
     });
 
-
     var fullWidthCarouselElems = document.querySelectorAll('.carousel');
     var fullWidthCarouselInstances = M.Carousel.init(fullWidthCarouselElems, {
         fullWidth: true,
         indicators: true
     });
-
 
     lazifyAndResponsifyImages();
 
