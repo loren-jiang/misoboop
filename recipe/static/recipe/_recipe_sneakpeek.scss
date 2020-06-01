@@ -4,6 +4,11 @@ img.recipe-sneakpeek-image {
   max-width: 100%;
   height: auto;
   max-height: 250px;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  :hover {
+    opacity: 0.5;
+  }
 }
 
 .recipe-sneakpeek-info {

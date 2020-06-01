@@ -18,7 +18,7 @@
                     <h4> Welcome </h4>
                 </div>
                 {% thumbnail welcome_image.upload "300" crop="center" as im %}
-                <img class="responsive-img" width="{{ im.width }}" height="{{ im.height }}" src={{ im.url }}>
+                <img alt="welcome image" class="responsive-img lozad" width="{{ im.width }}" height="{{ im.height }}" data-src={{ im.url }}>
                 {% endthumbnail %}
                 <p>
                     You found us!!!

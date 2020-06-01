@@ -4,25 +4,28 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link rel="shortcut icon" type="image/png" href="{% static 'assets/favicon_io/favicon-32x32.png' %}"/>
+    <link rel="shortcut icon" type="image/png" href="{% static 'assets/favicon_io/favicon-32x32.png' %}" />
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
-          rel="stylesheet">
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
     {% compress css %}
-        {#        <link type="text/x-scss" href={% static 'materialize/sass/materialize.scss' %} rel="stylesheet"#}
-        {#              media="screen, projection">#}
-        <link type="text/css" rel="stylesheet"
-              href={% static 'materialize/materialize.min.css' %} media="screen,projection"/>
-        <link rel="stylesheet" href={% static 'star-ratings/css/star-ratings.css' %} media="screen,projection">
+    {#        <link type="text/x-scss" href={% static 'materialize/sass/materialize.scss' %} rel="stylesheet"#}
+    {#              media="screen, projection">#}
+    <link type="text/css" rel="stylesheet" href={% static 'materialize/materialize.min.css' %}
+        media="screen,projection" />
+    <link rel="stylesheet" href={% static 'star-ratings/css/star-ratings.css' %} media="screen,projection">
 
-        <link type="text/x-scss" href={% static 'css/main.scss' %} rel="stylesheet" media="screen, projection">
+    <link type="text/x-scss" href={% static 'css/main.scss' %} rel="stylesheet" media="screen, projection">
 
 
     {% endcompress %}
@@ -32,232 +35,236 @@
 
 
     <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}MisoBoop{% endblock %}</title>
+    {% block meta %}
+    <meta name="description" content="MisoBoop -- recipes focused on American cooking with Chinese roots">
+    {% endblock %}
 </head>
-{% block jsonld %}  {% endblock %}
+{% block jsonld %} {% endblock %}
+
 <body>
-{#<div id="fb-root"></div>#}
-{#<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0"></script>#}
-{#<script#}
-{#    type="text/javascript"#}
-{#    async defer#}
-{#    src="//assets.pinterest.com/js/pinit.js"#}
-{#></script>#}
+    {#<div id="fb-root"></div>#}
+    {#<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0"></script>#}
+    {#<script#}
+    {#    type="text/javascript"#}
+    {#    async defer#}
+    {#    src="//assets.pinterest.com/js/pinit.js"#}
+    {#></script>#}
 
-<div class="container">
-    <!-- Page Content goes here -->
-    <div class="row">
-        <div class="col s12">
-            <div class="site-banner">
-                <a href={% url 'home' %}>
-                    <img class="logo" data-pin-nopin="true" id="misoboop-cat"
-                         src="{% static 'assets/lucky_dumpling_cat_min.svg' %}">
-                </a>
-
-
-                <div class="slogan">
-                    <h2 class="slogan-name">
-                        MisoBoop
-                    </h2>
-                    <h5 class="slogan-desc">
-                        American cooking with Chinese roots
-                    </h5>
-                </div>
-            </div>
-            <nav class="nav-center" role="navigation">
-                <div class="nav-wrapper">
-                    <div class="nav-search">
-                        <form method="GET" action="{% url 'search-recipes' %}" id="nav_recipe_search">
-                            <div class="input-field">
-                                <i class="material-icons nav-search-prefix">search</i>
-                                <input disabled id="ns1" type="search" placeholder="search recipe"
-                                       autocomplete="off" class="recipe-autocomplete" name="name__icontains" required>
-                                <i id="recipe_nav_search_close" class="material-icons">close</i>
-                            </div>
-                        </form>
-
-
-                    </div>
-
-                    <ul class="topnav hide-on-med-and-down">
-                        <li><a href={% url 'home' %}>Home</a></li>
-                        <li>
-                            <a class='dropdown-trigger no-autoinit' href='#' data-target='recipes_nav_dropdown'>
-                                Recipes<i class="material-icons right">arrow_drop_down</i>
-                            </a>
-                        </li>
-
-                        <li><a href={% url 'post-list' %}>Blog</a></li>
-                        <li><a href={% url 'about' %}>About</a></li>
-                        {#                        <li><a data-target="subscribe_modal" class="modal-trigger">Subscribe</a></li>#}
-                    </ul>
-
-                    <a href="#" data-target="mobile_sidenav" class="nav-sidenav-trigger sidenav-trigger"><i
-                            class="material-icons">menu</i></a>
-
-                </div>
-            </nav>
-
-
-        </div>
-    </div>
-
-    <!-- Recipes nav dropdown -->
-    <ul id='recipes_nav_dropdown' class='dropdown-content'>
-        <li><a href="{% url 'explore-recipes' %}">Explore</a></li>
-        <li><a href={% url 'series-list' %}>By Series</a></li>
-        <li class="divider" tabindex="-1"></li>
-        <li><a href="{% url 'search-recipes' %}">Search</a></li>
-    </ul>
-
-    <ul class="sidenav no-autoinit" id="mobile_sidenav">
-        <li><a href={% url 'home' %}>Home</a></li>
-        {#        <li><a href={% url 'recipe-list' %}>Recipes</a></li>#}
-        <li>
-            <ul class="collapsible collapsible-accordion no-autoinit">
-                <li>
-                    <a class="collapsible-header">
-                        Recipes<i class="material-icons right">arrow_drop_down</i>
+    <div class="container">
+        <!-- Page Content goes here -->
+        <div class="row">
+            <div class="col s12">
+                <div class="site-banner">
+                    <a href={% url 'home' %}>
+                        <img class="logo" data-pin-nopin="true" id="misoboop-cat" alt="lucky dumpling cat"
+                            src="{% static 'assets/lucky_dumpling_cat_min.svg' %}">
                     </a>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li><a href="{% url 'explore-recipes' %}">Explore</a></li>
-                            <li><a href={% url 'series-list' %}>By Series</a></li>
-                            <li class="divider" tabindex="-1"></li>
-                            <li><a href="{% url 'search-recipes' %}">Search</a></li>
-                        </ul>
+
+
+                    <div class="slogan">
+                        <h2 class="slogan-name">
+                            MisoBoop
+                        </h2>
+                        <h5 class="slogan-desc">
+                            American cooking with Chinese roots
+                        </h5>
                     </div>
-                </li>
+                </div>
+                <nav class="nav-center" role="navigation">
+                    <div class="nav-wrapper">
+                        <div class="nav-search">
+                            <form method="GET" action="{% url 'search-recipes' %}" id="nav_recipe_search">
+                                <div class="input-field">
+                                    <i class="material-icons nav-search-prefix">search</i>
+                                    <input disabled id="ns1" type="search" placeholder="search recipe"
+                                        autocomplete="off" class="recipe-autocomplete" name="name__icontains" required>
+                                    <i id="recipe_nav_search_close" class="material-icons">close</i>
+                                </div>
+                            </form>
 
-            </ul>
-        </li>
 
-        <li><a href={% url 'post-list' %}>Blog</a></li>
-        <li><a href={% url 'about' %}>About</a></li>
-        {#        <li><a data-target="subscribe_modal" class="modal-trigger">Subscribe</a></li>#}
-    </ul>
+                        </div>
 
-    {% block breadcrumbs %}
+                        <ul class="topnav hide-on-med-and-down">
+                            <li><a href={% url 'home' %}>Home</a></li>
+                            <li>
+                                <a class='dropdown-trigger no-autoinit' href='#' data-target='recipes_nav_dropdown'>
+                                    Recipes<i class="material-icons right">arrow_drop_down</i>
+                                </a>
+                            </li>
+
+                            <li><a href={% url 'post-list' %}>Blog</a></li>
+                            <li><a href={% url 'about' %}>About</a></li>
+                            {#                        <li><a data-target="subscribe_modal" class="modal-trigger">Subscribe</a></li>#}
+                        </ul>
+
+                        <a href="#" data-target="mobile_sidenav" class="nav-sidenav-trigger sidenav-trigger"><i
+                                class="material-icons">menu</i></a>
+
+                    </div>
+                </nav>
+
+
+            </div>
+        </div>
+
+        <!-- Recipes nav dropdown -->
+        <ul id='recipes_nav_dropdown' class='dropdown-content'>
+            <li><a href="{% url 'explore-recipes' %}">Explore</a></li>
+            <li><a href={% url 'series-list' %}>By Series</a></li>
+            <li class="divider" tabindex="-1"></li>
+            <li><a href="{% url 'search-recipes' %}">Search</a></li>
+        </ul>
+
+        <ul class="sidenav no-autoinit" id="mobile_sidenav">
+            <li><a href={% url 'home' %}>Home</a></li>
+            {#        <li><a href={% url 'recipe-list' %}>Recipes</a></li>#}
+            <li>
+                <ul class="collapsible collapsible-accordion no-autoinit">
+                    <li>
+                        <a class="collapsible-header">
+                            Recipes<i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="{% url 'explore-recipes' %}">Explore</a></li>
+                                <li><a href={% url 'series-list' %}>By Series</a></li>
+                                <li class="divider" tabindex="-1"></li>
+                                <li><a href="{% url 'search-recipes' %}">Search</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li><a href={% url 'post-list' %}>Blog</a></li>
+            <li><a href={% url 'about' %}>About</a></li>
+            {#        <li><a data-target="subscribe_modal" class="modal-trigger">Subscribe</a></li>#}
+        </ul>
+
+        {% block breadcrumbs %}
         {% clear_breadcrumbs %}
         {% breadcrumb "Home" "home" %}
-    {% endblock %}
-
-    <div class="main-content">
-        {% block content %}
         {% endblock %}
-    </div>
 
-    <footer class="page-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col l2 s4">
-                    <img class="logo" style="max-width: 100%; height: auto;" data-pin-nopin="true" id="misoboop-cat"
-                         src="{% static 'assets/lucky_dumpling_cat_min.svg' %}">
-                </div>
-                <div class="col l5 s8">
-                    <h3 class="white-text banner-font" style="margin-top:0; ">MisoBoop</h3>
-                    <p class="grey-text text-lighten-4">
-                        Questions or comments?
-                        <br>
-                        <span>
-                            Feel free to reach out via
-                            <a class="whiten underline" href="mailto:miso.booper@gmail.com">
-                                email.
-                            </a>
-                        </span>
-
-                    </p>
-                </div>
-                <div class="col l5 s12">
-                    <h5 class="">Social media</h5>
-                    <div class="">
-                        <a class="social-media-link whiten" href="https://www.instagram.com/miso_boop/"><i
-                                class="fa fa-instagram" aria-hidden="true"></i></a>
-                        <a class="social-media-link whiten" href="https://www.pinterest.com/miso_boop/"><i
-                                class="fa fa-pinterest" aria-hidden="true"></i></a>
-                    </div>
-
-                    {#                    <ul>#}
-                    {#                        <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>#}
-                    {#                        <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>#}
-                    {#                        <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>#}
-                    {#                        <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>#}
-                    {#                    </ul>#}
-                </div>
-            </div>
+        <div class="main-content">
+            {% block content %}
+            {% endblock %}
         </div>
-        <div class="footer-copyright">
+
+        <footer class="page-footer">
             <div class="container">
-                © {% now "Y" %} MisoBoop
+                <div class="row">
+                    <div class="col l2 s4">
+                        <img class="logo" style="max-width: 100%; height: auto;" data-pin-nopin="true" id="misoboop-cat"
+                            alt="lucky dumpling cat" src="{% static 'assets/lucky_dumpling_cat_min.svg' %}">
+                    </div>
+                    <div class="col l5 s8">
+                        <h3 class="white-text banner-font" style="margin-top:0; ">MisoBoop</h3>
+                        <p class="grey-text text-lighten-4">
+                            Questions or comments?
+                            <br>
+                            <span>
+                                Feel free to reach out via
+                                <a class="whiten underline" href="mailto:miso.booper@gmail.com">
+                                    email.
+                                </a>
+                            </span>
+
+                        </p>
+                    </div>
+                    <div class="col l5 s12">
+                        <h5 class="">Social media</h5>
+                        <div class="">
+                            <a class="social-media-link whiten" href="https://www.instagram.com/miso_boop/"><i
+                                    class="fa fa-instagram" aria-hidden="true"></i></a>
+                            <a class="social-media-link whiten" href="https://www.pinterest.com/miso_boop/"><i
+                                    class="fa fa-pinterest" aria-hidden="true"></i></a>
+                        </div>
+
+                        {#                    <ul>#}
+                        {#                        <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>#}
+                        {#                        <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>#}
+                        {#                        <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>#}
+                        {#                        <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>#}
+                        {#                    </ul>#}
+                    </div>
+                </div>
             </div>
+            <div class="footer-copyright">
+                <div class="container">
+                    © {% now "Y" %} MisoBoop
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+
+    <!-- Subscribe modal form -->
+    <div id="subscribe_modal" class="modal no-autoinit">
+        <div class="modal-content">
+            <h4>Subscribe</h4>
+            <form enctype="multipart/form-data" method="post" action="/newsletter/recipe-of-the-week/subscribe/">
+                {% csrf_token %}
+
+                <div class="input-field inline">
+                    <label for="id_email_field">E-mail:</label>
+                    <input type="email" name="email_field" required="" id="id_email_field">
+                    <span class="helptext">required</span>
+                </div>
+
+                <div class="input-field inline">
+                    <label for="id_name_field">Name:</label>
+                    <input type="text" name="name_field" maxlength="30" id="id_name_field">
+                    <span class="helptext">optional</span>
+                </div>
+
+
+                <br>
+                <button value="Subscribe" id="id_submit" class="btn waves-effect waves-light" type="submit"
+                    name="action">
+                    Submit
+                    {#                <i class="material-icons right">send</i>#}
+                </button>
+
+            </form>
         </div>
-    </footer>
-
-</div>
-
-
-<!-- Subscribe modal form -->
-<div id="subscribe_modal" class="modal no-autoinit">
-    <div class="modal-content">
-        <h4>Subscribe</h4>
-        <form enctype="multipart/form-data" method="post" action="/newsletter/recipe-of-the-week/subscribe/">
-            {% csrf_token %}
-
-            <div class="input-field inline">
-                <label for="id_email_field">E-mail:</label>
-                <input type="email" name="email_field" required="" id="id_email_field">
-                <span class="helptext">required</span>
-            </div>
-
-            <div class="input-field inline">
-                <label for="id_name_field">Name:</label>
-                <input type="text" name="name_field" maxlength="30" id="id_name_field">
-                <span class="helptext">optional</span>
-            </div>
-
-
-            <br>
-            <button value="Subscribe" id="id_submit" class="btn waves-effect waves-light" type="submit" name="action">
-                Submit
-                {#                <i class="material-icons right">send</i>#}
-            </button>
-
-        </form>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-red btn-flat"><i
+                    class="material-icons right">close</i></a>
+        </div>
     </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-red btn-flat"><i class="material-icons right">close</i></a>
-    </div>
-</div>
 
 
-<!--JavaScript at end of body for optimized loading-->
+    <!--JavaScript at end of body for optimized loading-->
 
-<!-- PolyFills -->
-<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.0.0/fetch.min.js"></script>
-<script type="module" src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
-<script type="module" src="https://unpkg.com/@ungap/url-search-params@0.1.4/min.js"></script>
+    <!-- PolyFills -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.0.0/fetch.min.js"></script>
+    <script type="module" src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
+    <script type="module" src="https://unpkg.com/@ungap/url-search-params@0.1.4/min.js"></script>
 
-<!-- Font Awesome -->
-<script src="https://use.fontawesome.com/81596daef6.js"></script>
+    <!-- Font Awesome -->
+    <script src="https://use.fontawesome.com/81596daef6.js"></script>
 
-<!-- jQuery -->
-<script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous"></script>
-<script type="text/javascript"
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
 
-<!-- colcade masonry -->
-<script src="https://unpkg.com/colcade@0/colcade.js"></script>
+    <!-- colcade masonry -->
+    <script src="https://unpkg.com/colcade@0/colcade.js"></script>
 
-<!-- lozad lazy loading images -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
+    <!-- lozad lazy loading images -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
 
 
-<!-- 'text/browserify' allows for 'require' on modules (node.js)  -->
-{% compress js file base %}
+    <!-- 'text/browserify' allows for 'require' on modules (node.js)  -->
+    {% compress js file base %}
     <!-- vendor js -->
     <script type="text/javascript" src={% static 'materialize/materialize.min.js' %}></script>
     <script type="text/javascript" src={% static 'yall/yall.min.js' %}></script>
@@ -274,12 +281,13 @@
     <script type="text/javascript" src={% static 'js/navs.js' %}></script>
     <script type="text/javascript" src={% static 'js/social_media.js' %}></script>
 
-{% endcompress %}
+    {% endcompress %}
 
-{# todo: reason out if using compressor is this a good idea? #}
-{% block scripts %}
-{% endblock scripts %}
+    {# todo: reason out if using compressor is this a good idea? #}
+    {% block scripts %}
+    {% endblock scripts %}
 
 
 </body>
+
 </html>

@@ -10,6 +10,10 @@
 {% render_json_ld sd %}
 {% endblock jsonld %}
 
+{% block meta %}
+<meta name="description" content="{{recipe.short_description}}">
+{% endblock %}
+
 {% block title %}
 {{ block.super }}
 | {{ recipe }}
@@ -19,7 +23,9 @@
 {{ block.super }}
 {% breadcrumb "Recipes" "recipe-list" %}
 {% breadcrumb recipe "recipe-detail" recipe.slug %}
-{% endblock %}
+{% endblock breadcrumbs %}
+
+
 
 {% block content %}
 {% render_breadcrumbs %}
@@ -67,7 +73,7 @@
 <div class="row">
     <div class="col s12 recipe-detail">
         <h1>
-            {{ recipe }}    
+            {{ recipe }}
         </h1>
         <div class="row">
             <div class="col s12 m12 l6">
@@ -253,7 +259,7 @@
 Recipe is in the works! Please check back later!
 {% endif %}
 
-{% endblock %}
+{% endblock content %}
 
 {% block scripts %}
 
