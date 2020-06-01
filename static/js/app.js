@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // adding lazy loading for images is tricky for HTML field content
     // const el = document.querySelectorAll('img');
-    const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+    const observer = lozad(document.querySelectorAll('.main-content img')); // lazy loads elements with default selector as '.lozad'
     observer.observe();
 
     // masonry layout

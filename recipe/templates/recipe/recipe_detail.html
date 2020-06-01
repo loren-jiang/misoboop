@@ -7,288 +7,279 @@
 {% load recipe_extras %}
 
 {% block jsonld %}
-    {% render_json_ld sd %}
+{% render_json_ld sd %}
 {% endblock jsonld %}
 
 {% block title %}
-    {{ block.super }}
-    | {{ recipe }}
+{{ block.super }}
+| {{ recipe }}
 {% endblock title %}
 
 {% block breadcrumbs %}
-    {{ block.super }}
-    {% breadcrumb "Recipes" "recipe-list" %}
-    {% breadcrumb recipe "recipe-detail" recipe.slug %}
+{{ block.super }}
+{% breadcrumb "Recipes" "recipe-list" %}
+{% breadcrumb recipe "recipe-detail" recipe.slug %}
 {% endblock %}
 
 {% block content %}
-    {% render_breadcrumbs %}
+{% render_breadcrumbs %}
 
-    {% if recipe.is_published %}
-        <div class="fixed-action-btn" tabindex="0">
-            <a class="btn-floating btn-large red desktop-fab-tip tooltipped" data-tooltip="Share"
-               data-position="left">
-                <i class="large material-icons">share</i>
+{% if recipe.is_published %}
+<div class="fixed-action-btn" tabindex="0">
+    <a class="btn-floating btn-large red desktop-fab-tip tooltipped" data-tooltip="Share" data-position="left">
+        <i class="large material-icons">share</i>
+    </a>
+    <ul>
+        <li>
+            <a id="fb_share" rel="noreferrer noopener" data-href="" data-position="left"
+                data-tooltip="Share on Facebook"
+                class="desktop-fab-tip btn-floating red  fb-xfbml-parse-ignore fb-share-link tooltipped a-default">
+                <i class="fa fa-facebook-f" aria-hidden="true"></i>
             </a>
-            <ul>
-                <li>
-                    <a
-                            id="fb_share"
-                            rel="noreferrer noopener"
-                            data-href=""
-                            data-position="left"
-                            data-tooltip="Share on Facebook"
-                            class="desktop-fab-tip btn-floating red  fb-xfbml-parse-ignore fb-share-link tooltipped a-default">
-                        <i class="fa fa-facebook-f" aria-hidden="true"></i>
-                    </a>
 
-                    <a data-href="fb_share" class="btn-floating mobile-fab-tip a-default">Post</a>
-                </li>
-                <li>
-                    <a
-                            id="pin_share"
-                            rel="noreferrer noopener"
-                            class="desktop-fab-tip btn-floating yellow darken-1 tooltipped a-default"
-                            data-position="left"
-                            data-tooltip="Share on Pinterest"
-                            data-pin-custom="true"
-                            href="https://www.pinterest.com/pin/create/button/"
-                            {#                                        data-pin-do="buttonPin"#}
-                            {#                                        data-pin-media={{ recipe.image_url }}#}
-                    >
-                        <i class="fa fa-pinterest" aria-hidden="true"></i>
-                    </a>
-                    <a data-href="pin_share" class="btn-floating mobile-fab-tip a-default">Pin</a>
-                </li>
-                <li>
-                    <a
-                            href="mailto:?subject={{ recipe }}&body=Here's a great recipe for
-                                                {{ recipe }}{{ recipe.get_absolute_url }}"
-                            id="email_share"
-                            class="desktop-fab-tip btn-floating green tooltipped a-default" data-position="left"
-                            data-tooltip="Email">
-                        <i class="material-icons">email</i>
-                    </a>
-                    <a data-href="email_share" class="btn-floating mobile-fab-tip a-default">Email</a>
+            <a data-href="fb_share" class="btn-floating mobile-fab-tip a-default">Post</a>
+        </li>
+        <li>
+            <a id="pin_share" rel="noreferrer noopener"
+                class="desktop-fab-tip btn-floating yellow darken-1 tooltipped a-default" data-position="left"
+                data-tooltip="Share on Pinterest" data-pin-custom="true"
+                href="https://www.pinterest.com/pin/create/button/"
+                {#                                        data-pin-do="buttonPin"#}
+                {#                                        data-pin-media={{ recipe.image_url }}#}>
+                <i class="fa fa-pinterest" aria-hidden="true"></i>
+            </a>
+            <a data-href="pin_share" class="btn-floating mobile-fab-tip a-default">Pin</a>
+        </li>
+        <li>
+            <a href="mailto:?subject={{ recipe }}&body=Here's a great recipe for
+                                                {{ recipe }}{{ recipe.get_absolute_url }}" id="email_share"
+                class="desktop-fab-tip btn-floating green tooltipped a-default" data-position="left"
+                data-tooltip="Email">
+                <i class="material-icons">email</i>
+            </a>
+            <a data-href="email_share" class="btn-floating mobile-fab-tip a-default">Email</a>
 
-                </li>
+        </li>
 
-            </ul>
-        </div>
+    </ul>
+</div>
 
+<div class="row">
+    <div class="col s12 recipe-detail">
+        <h1>
+            {{ recipe }}    
+        </h1>
         <div class="row">
+            <div class="col s12 m12 l6">
+                {#            <img class="responsive-img" src={{ recipe.med_image_url }}/>#}
+                {% if recipe.image.upload.url %}
+                <img class="responsive-img lozad" data-src={{ recipe.image.upload.url }}>
+                {% else %}
+                <img class="responsive-img lozad" data-src={{ recipe.placeholder_url }}>
+                {% endif %}
+                <table class="recipe-social-media-links">
+                    <tr>
+                        <td>
+                            <a class="social-media-link" href="{% url 'recipe-print' recipe.slug %}"> <i
+                                    class="fa fa-print"></i></a>
+                        </td>
+                        <td>
+                            <a class="social-media-link" href="#"> <i class="fa fa-pinterest"></i></a>
+                        </td>
+                        <td>
+                            <a class="social-media-link" href="#"> <i class="fa fa-instagram"></i></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col s12 m12 l6">
+
+                <b>
+                    {% ratings object template_name="recipe/dumpling_ratings.html" icon_height=25 icon_width=25 %}
+                </b>
+                <div>
+                    <p>
+                        {{ recipe.short_description }}
+                    </p>
+                </div>
+                <hr>
+                <span class="hide">
+                    <a href="#"><i class="material-icons" aria-hidden="true">print</i></a>
+                    <a href="#"><i class="fa fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                    <a id="like_plus_one" href="#">
+                        <i class="material-icons"> thumb_up </i>
+                        <span id="like_count">{{ recipe.likes }}</span>
+                    </a>
+
+                </span>
+                <ul>
+                    <li>
+                        Prep time: {{ recipe.prep_time|min_to_hr }}
+                    </li>
+                    <li>
+                        Cook time: {{ recipe.cook_time|min_to_hr }}
+                    </li>
+                    <li>
+                        <b>Total time:</b> {{ recipe.total_time|min_to_hr }}
+                    </li>
+                    <hr>
+                    <li>
+                        <b>Servings:</b>
+                        <!-- Dropdown Trigger -->
+                        <button class='dropdown-trigger btn dropdown-range' href='#' data-target='dropdown1'>
+                            <span class="range-slider-target" id="num_servings_target"> </span>
+                        </button>
+                    </li>
+                    <hr>
+
+                </ul>
+
+                {#                <input class="validate" id="num_servings" type="number" min="1" max="100"#}
+                {#                       value="{{ recipe.servings }}" size="10"/>#}
+                {#                <label for="num_servings"># of servings </label>#}
+                {#                <span class="helper-text" data-error="Enter number between 1 and 100" data-success=""></span>#}
+
+
+                <!-- Dropdown Structure -->
+                <div id='dropdown1' class='dropdown-content'>
+                    <div class="range-slider input-field">
+                        <input class="valign-wrapper" data-target="num_servings_target" type="range" id="num_servings"
+                            value="{{ recipe.servings }}" min="1" max="{{ recipe.max_servings }}" />
+                        <button id="reset_servings" class="btn-small" data-value={{ recipe.servings }}> Reset
+                        </button>
+                    </div>
+                </div>
+                <div class="recipe-tags-wrapper">
+                    <b>Tags:</b>
+                    {% for tag in recipe.tags.all %}
+                    <a href="{% url 'tagged-by-recipes' slug=tag.slug %}"> <span
+                            class="recipe-tag chip">{{ tag }}</span> </a>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+
             <div class="col s12">
-                <h1>
-                    {{ recipe }}
-                </h1>
-                <div class="row">
-                    <div class="col s12 m12 l6">
-                        {#            <img class="responsive-img" src={{ recipe.med_image_url }}/>#}
-                        {% if recipe.image.upload.url %}
-                            <img class="responsive-img" src={{ recipe.image.upload.url }}>
-                        {% else %}
-                            <img class="responsive-img" src={{ recipe.placeholder_url }}>
+                <hr>
+                <div class="recipe-ingredients">
+                    <b>Ingredients: </b>
+                    <div class="ingredient-list">
+                        {% for ingredient_amount in recipe.ingredient_amounts.all|dictsortreversed:'amount' %}
+                        {% if ingredient_amount.unit %}
+                        <span class="ingredient-tag chip truncate">
+                            <span class="ingredient-amount" data-name="{{ ingredient_amount.ingredient }}">
+                                {{ ingredient_amount.amount }}</span>
+                            {{ ingredient_amount|render_ing_amt }}
+
+                        </span>
+
                         {% endif %}
-                        <table class="recipe-social-media-links">
-                            <tr>
-                                <td>
-                                    <a class="social-media-link" href="{% url 'recipe-print' recipe.slug %}"> <i class="fa fa-print"></i></a>
-                                </td>
-                                <td>
-                                    <a class="social-media-link" href="#"> <i class="fa fa-pinterest"></i></a>
-                                </td>
-                                <td>
-                                    <a class="social-media-link" href="#"> <i class="fa fa-instagram"></i></a>
-                                </td>
-                            </tr>
-                        </table>
+
+                        {% endfor %}
+
                     </div>
-                    <div class="col s12 m12 l6">
+                </div>
 
-                        <b>
-                            {% ratings object template_name="recipe/dumpling_ratings.html" icon_height=25 icon_width=25 %}
-                        </b>
-                        <div>
-                            <p>
-                                {{ recipe.short_description }}
-                            </p>
-                        </div>
-                        <hr>
-                        <span class="hide">
-                        <a href="#"><i class="material-icons" aria-hidden="true">print</i></a>
-                        <a href="#"><i class="fa fa-facebook-f" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                        <a id="like_plus_one" href="#">
-                            <i class="material-icons"> thumb_up </i>
-                            <span id="like_count">{{ recipe.likes }}</span>
-                        </a>
+            </div>
 
-                    </span>
-                        <ul>
+            <div class="col s12 recipe-description flowy-font">
+                {{ recipe.lazy_description|safe }}
+            </div>
+            <div class="col s12">
+                <hr class="px3">
+
+            </div>
+
+
+            <div class="row">
+                <div class="col m10 sm12 recipe-directions">
+                    {% for direction in recipe.directions.all %}
+
+                    <div class="flowy-font">
+                        <h3 id="direction-{{ direction.id }}" class="scrollspy">
+                            {{ direction }}
+                        </h3>
+
+                        {% if direction.ingredient_amounts.count %}
+                        <ul class="direction-ingredients discrete collapsible">
                             <li>
-                                Prep time: {{ recipe.prep_time|min_to_hr }}
-                            </li>
-                            <li>
-                                Cook time: {{ recipe.cook_time|min_to_hr }}
-                            </li>
-                            <li>
-                                <b>Total time:</b> {{ recipe.total_time|min_to_hr }}
-                            </li>
-                            <hr>
-                            <li>
-                                <b>Servings:</b>
-                                <!-- Dropdown Trigger -->
-                                <button class='dropdown-trigger btn dropdown-range' href='#' data-target='dropdown1'>
-                                    <span class="range-slider-target" id="num_servings_target"> </span>
-                                </button>
-                            </li>
-                            <hr>
-
-                        </ul>
-
-                        {#                <input class="validate" id="num_servings" type="number" min="1" max="100"#}
-                        {#                       value="{{ recipe.servings }}" size="10"/>#}
-                        {#                <label for="num_servings"># of servings </label>#}
-                        {#                <span class="helper-text" data-error="Enter number between 1 and 100" data-success=""></span>#}
-
-
-                        <!-- Dropdown Structure -->
-                        <div id='dropdown1' class='dropdown-content'>
-                            <div class="range-slider input-field">
-                                <input class="valign-wrapper" data-target="num_servings_target" type="range"
-                                       id="num_servings"
-                                       value="{{ recipe.servings }}" min="1" max="{{ recipe.max_servings }}"/>
-                                <button id="reset_servings" class="btn-small" data-value={{ recipe.servings }}> Reset
-                                </button>
-                            </div>
-                        </div>
-                        <div class="recipe-tags-wrapper">
-                            <b>Tags:</b>
-                            {% for tag in recipe.tags.all %}
-                                <a href="{% url 'tagged-by-recipes' slug=tag.slug %}"> <span
-                                        class="recipe-tag chip">{{ tag }}</span> </a>
-                            {% endfor %}
-                        </div>
-
-                    </div>
-
-
-                    <div class="col s12">
-                        <hr>
-                        <div class="recipe-ingredients">
-                            <b>Ingredients: </b>
-                            <div class="ingredient-list">
-                                {% for ingredient_amount in recipe.ingredient_amounts.all|dictsortreversed:'amount' %}
-                                    {% if ingredient_amount.unit %}
-                                        <span class="ingredient-tag chip truncate">
-                                            <span class="ingredient-amount"
-                                                  data-name="{{ ingredient_amount.ingredient }}"> {{ ingredient_amount.amount }}</span>
-                                            {{ ingredient_amount|render_ing_amt }}
-
-                                    </span>
-
-                                    {% endif %}
-
-                                {% endfor %}
-
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="col s12 recipe-description flowy-font">
-                        {{ recipe.description|safe }}
-                    </div>
-                    <div class="col s12">
-                        <hr class="px3">
-
-                    </div>
-
-
-                    <div class="row">
-                        <div class="col m10 sm12 recipe-directions">
-                            {% for direction in recipe.directions.all %}
-
-                                <div class="flowy-font">
-                                    <h3 id="direction-{{ direction.id }}" class="scrollspy">
-                                        {{ direction }}
-                                    </h3>
-
-                                    {% if direction.ingredient_amounts.count %}
-                                        <ul class="direction-ingredients discrete collapsible">
-                                            <li>
-                                                <div class="collapsible-header"><i
-                                                        class="material-icons">arrow_drop_down</i>
-                                                    Show ingredients
-                                                    {#                                        <h3>#}
-                                                    {#                                            {{ direction.name }}#}
-                                                    {#                                        </h3>#}
-                                                </div>
-                                                <div class="collapsible-body">
-                                                    {% for ingredient_amount in direction.ingredient_amounts.all|dictsortreversed:'amount' %}
-                                                        {% if ingredient_amount.unit %}
-                                                            <span class="chip">
-                                                        <span class="ingredient-amount"
-                                                              data-name="{{ ingredient_amount.ingredient }}"> {{ ingredient_amount.amount }}</span>
-                                                            {{ ingredient_amount|render_ing_amt }}
-                                                    </span>
-                                                        {% else %}
-                                                            <span class="chip">{{ ingredient_amount.ingredient }}</span>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    {% endif %}
-
-                                    <div class="direction-markdown">
-                                        {{ direction.text|safe }}
-                                    </div>
+                                <div class="collapsible-header"><i class="material-icons">arrow_drop_down</i>
+                                    Show ingredients
+                                    {#                                        <h3>#}
+                                    {#                                            {{ direction.name }}#}
+                                    {#                                        </h3>#}
                                 </div>
-                            {% endfor %}
-                        </div>
-                        <div class="col m2 sticky-toc hide-on-small-only">
-                            <ul class="section table-of-contents flowy-font">
-                                {% for direction in recipe.directions.all %}
-                                    <li><a class="a-default" href="#direction-{{ direction.id }}">{{ direction }}</a>
-                                    </li>
-                                {% endfor %}
+                                <div class="collapsible-body">
+                                    {% for ingredient_amount in direction.ingredient_amounts.all|dictsortreversed:'amount' %}
+                                    {% if ingredient_amount.unit %}
+                                    <span class="chip">
+                                        <span class="ingredient-amount" data-name="{{ ingredient_amount.ingredient }}">
+                                            {{ ingredient_amount.amount }}</span>
+                                        {{ ingredient_amount|render_ing_amt }}
+                                    </span>
+                                    {% else %}
+                                    <span class="chip">{{ ingredient_amount.ingredient }}</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </li>
+                        </ul>
+                        {% endif %}
 
-                            </ul>
+                        <div class="direction-markdown">
+                            {{ direction.lazy_text|safe }}
                         </div>
                     </div>
+                    {% endfor %}
+                </div>
+                <div class="col m2 sticky-toc hide-on-small-only">
+                    <ul class="section table-of-contents flowy-font">
+                        {% for direction in recipe.directions.all %}
+                        <li><a class="a-default" href="#direction-{{ direction.id }}">{{ direction }}</a>
+                        </li>
+                        {% endfor %}
 
-
+                    </ul>
                 </div>
             </div>
+
+
         </div>
-    {% else %}
-        Recipe is in the works! Please check back later!
-    {% endif %}
+    </div>
+</div>
+{% else %}
+Recipe is in the works! Please check back later!
+{% endif %}
 
 {% endblock %}
 
 {% block scripts %}
 
-    <script type="text/javascript">
-        // async pinit.js to initialize pinterest sharing
-        (function (d) {
-            var f = d.getElementsByTagName('SCRIPT')[0], p = d.createElement('SCRIPT');
-            p.type = 'text/javascript';
-            p.async = true;
-            p.src = '//assets.pinterest.com/js/pinit.js';
-            f.parentNode.insertBefore(p, f);
-            p.setAttribute("data-pin-hover", true);
-        }(document));
-        var recipe_id = "{{recipe.id}}";
-        var recipe_servings = "{{recipe.servings}}";
+<script type="text/javascript">
+    // async pinit.js to initialize pinterest sharing
+    (function (d) {
+        var f = d.getElementsByTagName('SCRIPT')[0], p = d.createElement('SCRIPT');
+        p.type = 'text/javascript';
+        p.async = true;
+        p.src = '//assets.pinterest.com/js/pinit.js';
+        f.parentNode.insertBefore(p, f);
+        p.setAttribute("data-pin-hover", true);
+    }(document));
+    var recipe_id = "{{recipe.id}}";
+    var recipe_servings = "{{recipe.servings}}";
 
-        var imperial_ingredients = {{ imperial_ingredients|safe }};
-        var imperial_ingredients_set = new Set(imperial_ingredients)
+    var imperial_ingredients = {{ imperial_ingredients| safe }};
+    var imperial_ingredients_set = new Set(imperial_ingredients)
 
-    </script>
+</script>
 
-    <script type="text/javascript" src={% static 'recipe/recipe_detail.js' %}></script>
+<script type="text/javascript">
+    // lazy load images with lozad
+    const observer = lozad(document.querySelectorAll('.recipe-detail img')); // lazy loads elements with default selector as '.lozad'
+    observer.observe();
+</script>
+
+<script type="text/javascript" src={% static 'recipe/recipe_detail.js' %}></script>
 {% endblock scripts %}
-
-

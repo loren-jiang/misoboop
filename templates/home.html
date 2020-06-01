@@ -1,65 +1,66 @@
 {% extends 'base.html' %}
 {% load core_extras %}
 {% load thumbnail %}
+{% load ratings %}
+{% load recipe_extras %}
 
 {% block content %}
-    <div class="row">
-        <div class="col s12 l9 latest-recipes ">
-            <h3> Latest recipes </h3>
-            {% include 'recipe/recipes_masonry.html' with recipes=latest_recipes %}
+<div class="row">
+    <div class="col s12 l9 latest-recipes ">
+        <h3> Latest recipes </h3>
+        {% include 'recipe/recipes_masonry.html' with recipes=latest_recipes %}
+    </div>
+
+    <div class="welcome col s12 m3  ">
+        <div class="card color-2">
+            <div class="card-content">
+                <div class="card-title">
+                    <h4> Welcome </h4>
+                </div>
+                {% thumbnail welcome_image.upload "300" crop="center" as im %}
+                <img class="responsive-img" width="{{ im.width }}" height="{{ im.height }}" src={{ im.url }}>
+                {% endthumbnail %}
+                <p>
+                    You found us!!!
+                    <br>
+                    This blog is all about cooking with an open mind and empty stomach.
+                    It's my take on the Chinese dishes I grew up eating (and really never knowing how
+                    to make).
+                    <br>
+                    Hope y'all enjoy!
+                </p>
+            </div>
+            <div class="card-action">
+                <a class="social-media-link" href="https://www.instagram.com/miso_boop/"><i class="fa fa-instagram"
+                        aria-hidden="true"></i></a>
+                <a class="social-media-link" href="https://www.pinterest.com/miso_boop/"><i class="fa fa-pinterest"
+                        aria-hidden="true"></i></a>
+            </div>
         </div>
+        <div class="card color-2">
+            <div class="card-content">
+                <div class="card-title">
+                    <h4> Latest posts </h4>
+                </div>
 
-        <div class="welcome col s12 m3  ">
-            <div class="card color-2">
-                <div class="card-content">
-                    <div class="card-title">
-                        <h4> Welcome </h4>
-                    </div>
-                    {% thumbnail welcome_image.upload "300" crop="center" as im %}
-                        <img class="responsive-img" width="{{ im.width }}" height="{{ im.height }}" src={{ im.url }}>
-                    {% endthumbnail %}
-                    <p>
-                        You found us!!!
-                        <br>
-                        This blog is all about cooking with an open mind and empty stomach.
-                        It's my take on the Chinese dishes I grew up eating (and really never knowing how
-                        to make).
-                        <br>
-                        Hope y'all enjoy!
-                    </p>
-                </div>
-                <div class="card-action">
-                    <a class="social-media-link" href="https://www.instagram.com/miso_boop/"><i class="fa fa-instagram"
-                                                                                                aria-hidden="true"></i></a>
-                    <a class="social-media-link" href="https://www.pinterest.com/miso_boop/"><i class="fa fa-pinterest"
-                                                                                                aria-hidden="true"></i></a>
-                </div>
+                <table>
+                    {% for post in latest_posts %}
+                    <tr>
+                        <td>
+                            <a class="basic-link" href={{ post.get_absolute_url }}>{{ post.headline }}</a>
+                        </td>
+                        <td>
+                            {{ post.created_at|date }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
             </div>
-            <div class="card color-2">
-                <div class="card-content">
-                    <div class="card-title">
-                        <h4> Latest posts </h4>
-                    </div>
 
-                    <table>
-                        {% for post in latest_posts %}
-                            <tr>
-                                <td>
-                                    <a class="basic-link" href={{ post.get_absolute_url }}>{{ post.headline }}</a>
-                                </td>
-                                <td>
-                                    {{ post.created_at|date }}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-
-            </div>
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
-
 {% endblock scripts %}
