@@ -89,7 +89,19 @@
                         {% else %}
                             <img class="responsive-img" src={{ recipe.placeholder_url }}>
                         {% endif %}
-
+                        <table class="recipe-social-media-links">
+                            <tr>
+                                <td>
+                                    <a class="social-media-link" href="{% url 'recipe-print' recipe.slug %}"> <i class="fa fa-print"></i></a>
+                                </td>
+                                <td>
+                                    <a class="social-media-link" href="#"> <i class="fa fa-pinterest"></i></a>
+                                </td>
+                                <td>
+                                    <a class="social-media-link" href="#"> <i class="fa fa-instagram"></i></a>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="col s12 m12 l6">
 

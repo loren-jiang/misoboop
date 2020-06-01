@@ -1,0 +1,12 @@
+div.recipe-printout {
+    padding: 5rem;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.recipe-printout-title {
+
+}

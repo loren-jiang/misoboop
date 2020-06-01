@@ -3,7 +3,7 @@
 cd ~/Documents/code_projects/django/misoboop;
 source ~/environments/misoboop_env/bin/activate;
 
-# use production settings neede for static file collection
+# use production settings needed for static file collection
 export USE_PRODUCTION=true;
 
 # collectstatic will push to s3

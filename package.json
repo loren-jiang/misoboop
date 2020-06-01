@@ -10,10 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.15",
+    "postcss-cli-simple": "^3.0.1",
     "query-string": "^6.12.1"
   },
   "devDependencies": {
-    "autoprefixer": "^9.7.6",
+    "autoprefixer": "^9.8.0",
     "browser-sync": "^2.26.7",
     "browserify": "^16.5.1",
     "browsersync": "0.0.1-security",

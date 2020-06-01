@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Recipe, Ingredient, Direction, IngredientAmount, Unit
+from .models import Recipe, Ingredient, Direction, IngredientAmount, Unit, Nutrition
 from core.forms import CachingModelChoicesFormSet, CachingModelChoicesForm
 from django import forms
 from django.urls import resolve
@@ -137,9 +137,11 @@ class DirectionAdmin(admin.ModelAdmin):
     model = Direction
     form = DirectionForm
 
-
+class NutritionAdmin(admin.ModelAdmin):
+    model = Nutrition
 
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Direction, DirectionAdmin)
 admin.site.register(Unit)
+admin.site.register(Nutrition, NutritionAdmin)

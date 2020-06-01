@@ -70,8 +70,7 @@ ROOT_URLCONF = 'misoboop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -151,11 +150,12 @@ STATICFILES_FINDERS = [
 ]
 
 # AWS settings
+AWS_IS_GZIPPED = True
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_DEFAULT_ACL = 'public-read'
-AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=864000'}
 # AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_CLOUDFRONT_DOMAIN')  # use cloudfront
 
@@ -164,7 +164,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # s3 static settings
 STATIC_LOCATION = 'static'
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
-#The file storage engine to use when collecting static files with the collectstatic management command.
+# The file storage engine to use when collecting static files with the collectstatic management command.
 STATICFILES_STORAGE = 'misoboop.storage_backends.CachedS3Boto3Storage'
 
 # s3 public media settings
@@ -177,6 +177,7 @@ PRIVATE_FILE_STORAGE = 'misoboop.storage_backends.PrivateMediaStorage'
 # django-compressor settings
 COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_URL = STATIC_URL
+# COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
 COMPRESS_STORAGE = STATICFILES_STORAGE
 
 
@@ -200,7 +201,7 @@ SITE_ID = 1
 # STAR_RATINGS_STAR_SPRITE = STATIC_URL + "assets/dumpling_sprite_sm.png"
 STAR_RATINGS_ANONYMOUS = True
 
-LIBSASS_OUTPUT_STYLE = 'nested'
+LIBSASS_OUTPUT_STYLE = 'compressed'
 
 LIBSASS_CUSTOM_FUNCTIONS = {
     'static': django_static,
@@ -209,13 +210,14 @@ LIBSASS_CUSTOM_FUNCTIONS = {
 
 COMPRESS_CSS_FILTERS = [
     'django_compressor_autoprefixer.AutoprefixerFilter',
-    'compressor.filters.cssmin.CSSMinFilter',
+    'compressor.filters.cssmin.rCSSMinFilter',
 ]
 
 COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
     ('text/browserify', 'browserify -e {infile} -o {outfile}'),
 )
+
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -229,4 +231,5 @@ CACHES = {
     }
 }
 
-THUMBNAIL_FORCE_OVERWRITE = True  # https://github.com/jazzband/sorl-thumbnail/issues/351
+# https://github.com/jazzband/sorl-thumbnail/issues/351
+THUMBNAIL_FORCE_OVERWRITE = True

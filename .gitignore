@@ -12,5 +12,7 @@ staticfiles/
 misoboop/.env
 *.env
 
-# ignore pycharm
+# ignore IDE
 .idea/
+.vscode/
+

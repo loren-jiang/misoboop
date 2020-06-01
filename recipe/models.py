@@ -162,7 +162,6 @@ class Direction(SortableMixin):
             models.UniqueConstraint(fields=['recipe', 'text'], name='no duplicate direction per recipe')
         ]
 
-
 class Ingredient(models.Model):
     name = models.CharField(max_length=300, blank=True, null=True, unique=True)
     name_abbrev = models.CharField(max_length=60, blank=True, verbose_name=_('Abbreviation'))
@@ -235,6 +234,7 @@ class Unit(models.Model):
     name = models.CharField(max_length=60, unique=True, verbose_name=_('Name'))
     name_abbrev = models.CharField(max_length=60, blank=True, verbose_name=_('Abbreviation'))
     plural_abbrev = models.CharField(max_length=60, blank=True, verbose_name=_('Plural Abbreviation'))
+    prep = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Preparation'))
     TYPE = Choices((0, 'other', 'Other'), (1, 'mass', 'Mass'), (2, 'volume', 'Volume'))
     type = models.IntegerField(choices=TYPE)
     SYSTEM = Choices((0, 'other', 'Other'), (1, 'metric', 'Metric'), (2, 'imperial', 'Imperial'))
@@ -248,20 +248,20 @@ class Unit(models.Model):
         verbose_name_plural = _('Units')
         ordering = ["name"]
 
-
+# todo: add units!
 class Nutrition(models.Model):
-    calories = models.PositiveSmallIntegerField(default=0)
-    carbs = models.PositiveSmallIntegerField(default=0)
-    cholestrol = models.PositiveSmallIntegerField(default=0)
-    fat = models.PositiveSmallIntegerField(default=0)
-    fiber = models.PositiveSmallIntegerField(default=0)
-    protein = models.PositiveSmallIntegerField(default=0)
-    sat_fat = models.PositiveSmallIntegerField(default=0)
-    servings = models.PositiveSmallIntegerField(default=0)
-    sodium = models.PositiveSmallIntegerField(default=0)
-    sugar = models.PositiveSmallIntegerField(default=0)
-    trans_fat = models.PositiveSmallIntegerField(default=0)
-    unsat_fat = models.PositiveSmallIntegerField(default=0)
+    calories = models.PositiveSmallIntegerField(default=0, verbose_name=_('Calories (kcal)'))
+    carbs = models.PositiveSmallIntegerField(default=0, verbose_name=_('Carbohydrates ()'))
+    cholestrol = models.PositiveSmallIntegerField(default=0, verbose_name=_('Cholestrol ()'))
+    fat = models.PositiveSmallIntegerField(default=0, verbose_name=_('Fat ()'))
+    fiber = models.PositiveSmallIntegerField(default=0, verbose_name=_('Fiber ()'))
+    protein = models.PositiveSmallIntegerField(default=0, verbose_name=_('Protein (g)'))
+    sat_fat = models.PositiveSmallIntegerField(default=0, verbose_name=_('Saturated Fat ()'))
+    servings = models.PositiveSmallIntegerField(default=0, verbose_name=_('Servings recommended ()'))
+    sodium = models.PositiveSmallIntegerField(default=0, verbose_name=_('Sodium (mg)'))
+    sugar = models.PositiveSmallIntegerField(default=0, verbose_name=_('Sugar (g)'))
+    trans_fat = models.PositiveSmallIntegerField(default=0, verbose_name=_('Trans fat ()'))
+    unsat_fat = models.PositiveSmallIntegerField(default=0, verbose_name=_('Unsaturated fat ()'))
 
     @property
     def sd(self):

@@ -32,7 +32,7 @@ Feel free to fork (in most scenarios), but please attribute it back to me -- e.g
 
 ### pip
 pip install the dependencies found in `requirements.txt`
-- `pip install requirements.txt`
+- `pip install -r requirements.txt`
 
 ### npm
 npm install the dependencies found in `package.json`
@@ -50,7 +50,7 @@ General workflow:
 - `git add .` or whatever you need to 
 - `git commit -m "[message]"`
 - `git push origin master && git push live master` -- the 2nd push is to automatically serve new files on push for remote repo on Digital Ocean (more elegant solutions exist) 
-- `ssh@[ip_address`
+- `ssh@[ip_address]`
 - `sudo supervisorctl restart live`
 ## Notes: Database
 Generally, shouldn't need to make schema changes, but if necessary, that should be handled in version control

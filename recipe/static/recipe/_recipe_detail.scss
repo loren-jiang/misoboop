@@ -13,7 +13,6 @@ input.ingredient-amount {
 }
 
 
-
 #like_plus_one.liked {
   color: green;
 }
@@ -68,7 +67,7 @@ input.ingredient-amount {
 }
 
 .recipe-description ul > li, .direction-markdown ul > li {
-    list-style-type: disc;
+  list-style-type: disc;
 }
 
 //.direction-markdown ul {
@@ -88,3 +87,18 @@ input.ingredient-amount {
 //  //list-style-type: simp-chinese-informal !important;
 //  list-style-type: square !important;
 //}
+
+table.recipe-social-media-links {
+  border: 0;
+  width: unset;
+
+  & tr {
+    border: 0;
+  }
+
+  & td {
+    padding: 5px;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+}

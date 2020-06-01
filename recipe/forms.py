@@ -7,5 +7,3 @@ class DirectionForm(forms.ModelForm):
     class Meta:
         model = Direction
         exclude = ()
-
-

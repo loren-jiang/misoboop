@@ -225,3 +225,9 @@ def tagged_by_recipes(request, *args, **kwargs):
     context['recipes'] = Recipe.objects.filter(tags__slug__in=[tag_slug]).distinct()
     context['title'] = f'{tag_slug.capitalize()} recipes'
     return render(request, 'recipe/tagged_by_recipes.html', context)
+
+def print_recipe(request, *args, **kwargs):
+    context = {}
+    slug = kwargs.get('slug', None)
+    context['recipe'] = Recipe.objects.get(slug=slug)
+    return render(request, 'recipe/print_recipe.html', context)
