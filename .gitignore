@@ -16,3 +16,5 @@ misoboop/.env
 .idea/
 .vscode/
 
+# geckodriver
+geckodriver.log
