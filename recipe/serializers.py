@@ -1,6 +1,6 @@
 from rest_framework import routers, serializers, viewsets
 from django.urls import reverse
-from .models import Recipe, Ingredient, IngredientAmount, Unit
+from .models import Recipe, Ingredient, IngredientAmount, Unit, BasicTag
 from taggit_serializer.serializers import (TagListSerializerField,
                                            TaggitSerializer)
 from core.serializers import PublicImageSerializer
@@ -36,4 +36,7 @@ class IngredientAmountSerializer(serializers.ModelSerializer):
         model = IngredientAmount
         exclude= ()
 
-
+class BasicTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BasicTag
+        exclude = ()

@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, filters
 from rest_framework import permissions
-from .serializers import RecipeSerializer, IngredientSerializer
-from .models import Recipe, Ingredient
+from .serializers import RecipeSerializer, IngredientSerializer, BasicTagSerializer
+from .models import Recipe, Ingredient, BasicTag
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from taggit.models import Tag
@@ -121,5 +121,5 @@ class RecipeList(APIView):
 
 
 class TagViewset(viewsets.ReadOnlyModelViewSet):
-    queryset = Tag.objects.all()
-    serializer_class = TaggitSerializer
+    queryset = BasicTag.objects.all()
+    serializer_class = BasicTagSerializer

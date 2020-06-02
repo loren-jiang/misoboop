@@ -6,7 +6,7 @@ img.recipe-sneakpeek-image {
   max-height: 250px;
   opacity: 1;
   transition: opacity 0.3s ease;
-  :hover {
+  &:hover {
     opacity: 0.5;
   }
 }
