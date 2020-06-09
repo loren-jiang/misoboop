@@ -5,6 +5,10 @@ import shutil
 from core.models import PublicImage
 import json
 import jsonschema
+from recipe.models import Recipete
+import pytest
+
+pytestmark = pytest.mark.django_db
 
 MEDIA_ROOT = tempfile.mkdtemp('_temp')
 print(f'MEDIA_ROOT is now {MEDIA_ROOT}')
@@ -111,7 +115,8 @@ class RecipeModelTest(TestCase):
     def test_validate_sd_schema(self):
 
         json_ld = self.test_recipe.sd
-        print(json_ld)
+        print(Recipe.objects.all())
+        assert 1==2
         assert validate_json(json_ld, recipe_schema) == True
 
     def test_image_url(self):
