@@ -1,7 +1,10 @@
-import os 
+"""
+Django test settings for misoboop project.
+"""
+from .settings_base import *
+import dj_database_url
 
-DATABASES = {
-    "default": os.getenv("DATABASE_URL", default="postgres://postgres:@localhost/circle_test")
-}
+db_from_env = dj_database_url.config(conn_max_age=500)
 
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
+DATABASES['default'].update(db_from_env)
+
