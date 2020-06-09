@@ -21,3 +21,8 @@ geckodriver.log
 
 # bash scripts
 deploy.bash
+
+# testing
+.coverage
+/htmlcov
+
