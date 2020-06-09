@@ -40,6 +40,7 @@ class Recipe(CreatedModified):
     name = models.CharField(max_length=500, unique=True)
     nutrition = models.OneToOneField(
         'recipe.Nutrition', on_delete=models.SET_NULL, blank=True, null=True)
+    cuisine = models.CharField(max_length=500, default='')
     short_description = models.TextField(default='')
     description = HTMLField(default='', verbose_name=_('Text'))
     lazy_description = HTMLField(default='', verbose_name=_('Lazy Text'), editable=False)
@@ -146,7 +147,7 @@ class Recipe(CreatedModified):
             "nutrition": self.nutrition_sd(),
             "recipeInstructions": self.get_directions_as_list(),
             "recipeYield": self.servings,
-            "recipeCuisine": [tag.name for tag in self.tags.filter(is_cuisine=True)],
+            "recipeCuisine": self.cuisine,
             "recipeCategory": [],
             "keywords": [name for name in self.tags.names()],
         }
