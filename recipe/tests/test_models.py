@@ -5,7 +5,7 @@ import shutil
 from core.models import PublicImage
 import json
 import jsonschema
-from recipe.models import Recipete
+from recipe.models import Recipe
 import pytest
 
 pytestmark = pytest.mark.django_db
