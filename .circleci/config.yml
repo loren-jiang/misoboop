@@ -27,7 +27,7 @@ jobs:
         - /home/circleci/.local/lib/
     - run:
         command: |
-          pytest
+          pip freeze
         name: Test
     - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
         path: test-results
