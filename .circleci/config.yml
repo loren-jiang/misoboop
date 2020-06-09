@@ -3,11 +3,12 @@ jobs:
   build-and-test:
     docker:
       - image: circleci/python:3.6.9
+        environment: 
+          DATABASE_URL: postgres://postgres:@localhost/circle_test?sslmode=disable
       - image: circleci/postgres:10.5
-    environment:
-      DATABASE_URL: postgres://postgres:@localhost/circle_test
-      POSTGRES_USER: root
-      POSTGRES_DB: circle_test
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle_test
     steps:
     - checkout
     - restore_cache:
