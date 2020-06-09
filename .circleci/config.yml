@@ -1,21 +1,43 @@
-version: 2.1
-
-orbs:
-  python: circleci/python@0.2.1
-
+version: 2
 jobs:
   build-and-test:
-    executor: python/default
+    docker:
+      - image: circleci/python:3.7.3
+      - image: circleci/postgres:10.5
+    environment:
+      DATABASE_URL: postgres://postgres:@localhost/circle_test
+      DJANGO_SECRET_KEY: test
+      DJANGO_READ_DOT_ENV_FILE: True
+      DJANGO_SETTINGS_MODULE: config.settings.test
     steps:
-      - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          command: pytest
-          name: Test
-
+    - checkout
+    - restore_cache:
+        keys:
+        - pip-{{ checksum "requirements.txt"  }}
+    - run:
+        command: |
+          if true; then
+            pip install --user -r requirements.txt
+          else
+            pip install -r requirements.txt
+          fi
+        name: Install Dependencies
+    - save_cache:
+        key: pip-{{ checksum "requirements.txt"  }}
+        paths:
+        - /home/circleci/.local/lib/
+    - run:
+        command: |
+          # pytest in requirements.txt
+          pytest
+        name: Test
+    - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+        path: test-results
+    - store_artifacts: # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+        path: test-results
+        destination: tr1
 workflows:
   main:
     jobs:
-      - build-and-test
+    - build-and-test
+  version: 2
