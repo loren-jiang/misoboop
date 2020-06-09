@@ -2,13 +2,10 @@ version: 2
 jobs:
   build-and-test:
     docker:
-      - image: circleci/python:3.7.3
+      - image: circleci/python:3.6.9
       - image: circleci/postgres:10.5
     environment:
       DATABASE_URL: postgres://postgres:@localhost/circle_test
-      DJANGO_SECRET_KEY: test
-      DJANGO_READ_DOT_ENV_FILE: True
-      DJANGO_SETTINGS_MODULE: config.settings.test
     steps:
     - checkout
     - restore_cache:
