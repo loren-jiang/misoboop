@@ -6,6 +6,11 @@ from .settings_base import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
+}
+
+
 ALLOWED_HOSTS += [
     '165.227.9.4',
     'misoboop.com',
@@ -27,11 +32,6 @@ DATABASES = {
 
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
-
-
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
-}
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
