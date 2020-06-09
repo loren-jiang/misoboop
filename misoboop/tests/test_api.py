@@ -40,7 +40,7 @@ def test_api_tags(client):
     assert response.status_code == 200
     tags = json.loads(response.content)
     tags_qs = BasicTag.objects.all()
-    assert len(tags) == tags_qs.count() and len(tags) > 0, "all ingredients shown on api"
+    assert len(tags) == tags_qs.count(), "all ingredients shown on api"
     assert sorted([i['id'] for i in tags]) == sorted([i.id for i in tags_qs])
 
     

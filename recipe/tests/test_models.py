@@ -116,7 +116,6 @@ class RecipeModelTest(TestCase):
 
         json_ld = self.test_recipe.sd
         print(Recipe.objects.all())
-        assert 1==2
         assert validate_json(json_ld, recipe_schema) == True
 
     def test_image_url(self):
