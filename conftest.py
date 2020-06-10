@@ -1,6 +1,15 @@
-# import pytest
-# import os 
-# from django.conf import settings
+import pytest
+import os 
+from django.conf import settings
+from pytest_factoryboy import register
+
+from core.tests.factories import SeriesFactory
+from blog.tests.factories import PostFactory
+from recipe.tests.factories import RecipeFactory
+
+register(SeriesFactory)
+register(PostFactory)
+register(RecipeFactory)
 
 # @pytest.fixture(scope='session')
 # def django_db_setup():
