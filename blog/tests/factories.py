@@ -13,4 +13,12 @@ class PostFactory(factory.django.DjangoModelFactory):
     headline = factory.Sequence(lambda n: 'post%d' % n)
     short_description = factory.LazyAttribute(lambda x: FAKER.paragraph())
     content = factory.LazyAttribute(lambda x: FAKER.paragraph(10))
+
+class PostWithSeriesFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = 'blog.Post'
+
+    headline = factory.Sequence(lambda n: 'post%d' % n)
+    short_description = factory.LazyAttribute(lambda x: FAKER.paragraph())
+    content = factory.LazyAttribute(lambda x: FAKER.paragraph(10))
     series = factory.SubFactory(SeriesFactory)

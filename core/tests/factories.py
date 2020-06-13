@@ -10,3 +10,12 @@ class SeriesFactory(factory.django.DjangoModelFactory):
 
     name = factory.Sequence(lambda n: 'series%d' % n)
     description = factory.LazyAttribute(lambda x: FAKER.paragraph())
+
+class TagFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = "core.BasicTag"
+
+    name = factory.Sequence(lambda n: 'tag%d' % n)
+    filterable = True
+    shown = True
+

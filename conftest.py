@@ -3,10 +3,11 @@ import os
 from django.conf import settings
 from pytest_factoryboy import register
 
-from core.tests.factories import SeriesFactory
+from core.tests.factories import SeriesFactory, TagFactory
 from blog.tests.factories import PostFactory
 from recipe.tests.factories import RecipeFactory
 
+register(TagFactory)
 register(SeriesFactory)
 register(PostFactory)
 register(RecipeFactory)
