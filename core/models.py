@@ -12,7 +12,7 @@ from django.conf import settings
 from sorl.thumbnail import ImageField, get_thumbnail
 from django.utils.text import slugify
 from django.urls import reverse
-
+from django.core.files.storage import get_storage_class
 # Create your models here.
 
 
@@ -110,7 +110,7 @@ class PrivateImage(models.Model):
     name = models.CharField(max_length=500, null=True, blank=True)
     description = HTMLField(default='', verbose_name=_('Text'), null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    upload = ImageField(storage=PrivateMediaStorage)
+    upload = ImageField(storage=get_storage_class(settings.PRIVATE_FILE_STORAGE))
     user = models.ForeignKey(User, related_name='images', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):

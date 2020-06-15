@@ -109,20 +109,20 @@ class RecipeDetailView(JsonLdDetailView):
         return context
 
 
-class RecipeListView(FilterView):
-    model = Recipe
-    filterset_class = RecipeFilterSet
-    paginate_by = 20
+# class RecipeListView(FilterView):
+#     model = Recipe
+#     filterset_class = RecipeFilterSet
+#     paginate_by = 20
 
-    def get_queryset(self):
-        qs = super().get_queryset().prefetch_related(
-            'ratings', 'tags',
-            'directions__ingredient_amounts__ingredient',
-            'directions__ingredient_amounts__unit').annotate(
-            total_time=F('cook_time') + F('prep_time')).filter(
-            is_published=True
-        )
-        return qs
+#     def get_queryset(self):
+#         qs = super().get_queryset().prefetch_related(
+#             'ratings', 'tags',
+#             'directions__ingredient_amounts__ingredient',
+#             'directions__ingredient_amounts__unit').annotate(
+#             total_time=F('cook_time') + F('prep_time')).filter(
+#             is_published=True
+#         )
+#         return qs
 
 
 class RecipeSeriesDetailView(DetailView):

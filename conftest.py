@@ -12,6 +12,20 @@ register(SeriesFactory)
 register(PostFactory)
 register(RecipeFactory)
 
+
+@pytest.fixture
+def ten_posts(post_factory):
+    return [post_factory() for _ in range(10)]
+
+@pytest.fixture
+def ten_seriess(series_factory):
+    return [series_factory() for _ in range(10)]
+
+@pytest.fixture
+def ten_recipes(recipe_factory):
+    return [recipe_factory() for _ in range(10)]
+
+
 # @pytest.fixture(scope='session')
 # def django_db_setup():
 #     settings.DATABASES['default'] = {

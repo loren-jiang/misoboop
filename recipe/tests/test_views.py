@@ -10,18 +10,6 @@ import json
 
 pytestmark = pytest.mark.django_db
 
-@pytest.fixture
-def ten_posts(post_factory):
-    return [post_factory() for _ in range(10)]
-
-@pytest.fixture
-def ten_seriess(series_factory):
-    return [series_factory() for _ in range(10)]
-
-@pytest.fixture
-def ten_recipes(recipe_factory):
-    return [recipe_factory() for _ in range(10)]
-
 class TestHomeView:
     def test_home_url_resolves_to_home_page(self, client):
         response = client.get('/')
@@ -225,4 +213,16 @@ class TestRecipesView:
             like_recipe(request, slug=recipe.slug)
         assert Recipe.objects.get(id=recipe.id).likes == 52
 
+    def test_recipe_search(self, client):
+        response = client.get(reverse('search-recipes'))
+        assert response.status_code == 200
+
+        # TODO: complete this test
+
+    def test_recipe_print(self, client, recipe_factory):
+        recipe = recipe_factory()
+        response = client.get(reverse('recipe-print', kwargs={'slug': recipe.slug}))
+        assert response.status_code == 200
+
+        # TODO: complete this test
         

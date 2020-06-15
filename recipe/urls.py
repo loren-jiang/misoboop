@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .views import RecipeSeriesListView, RecipeDetailView, RecipeListView, like_recipe, \
+from .views import RecipeSeriesListView, RecipeDetailView, like_recipe, \
     search_recipes, print_recipe, \
     explore_recipes, tagged_by_recipes, RecipeSeriesDetailView
 
