@@ -123,3 +123,8 @@ class RecipeModelTest(TestCase):
 
     def test_ing_amts_as_list(self):
         pass
+
+class TestRecipeModel:
+    def test_recipe_image(self, recipe_factory):
+        recipe = recipe_factory()
+        assert True

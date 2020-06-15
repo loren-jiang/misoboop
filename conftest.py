@@ -1,5 +1,6 @@
 import pytest
 import os 
+import shutil
 from django.conf import settings
 from pytest_factoryboy import register
 
@@ -25,6 +26,17 @@ def ten_seriess(series_factory):
 def ten_recipes(recipe_factory):
     return [recipe_factory() for _ in range(10)]
 
+def pytest_sessionstart(session):
+    print("\ntesting started")
+
+    if (settings.MEDIA_ROOT == "_temp"):
+        os.mkdir('_temp')
+
+def pytest_sessionfinish(session, exitstatus):
+    print("\ntesting concluded")
+    # delete _temp directory after testing
+    # if (settings.MEDIA_ROOT == "_temp"):
+    #     shutil.rmtree("_temp")
 
 # @pytest.fixture(scope='session')
 # def django_db_setup():
