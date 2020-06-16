@@ -43,7 +43,8 @@ class Recipe(CreatedModified):
     cuisine = models.CharField(max_length=500, default='')
     short_description = models.TextField(default='')
     description = HTMLField(default='', verbose_name=_('Text'))
-    lazy_description = HTMLField(default='', verbose_name=_('Lazy Text'), editable=False)
+    lazy_description = HTMLField(
+        default='', verbose_name=_('Lazy Text'), editable=False)
     prep_time = models.PositiveSmallIntegerField(default=0)
     cook_time = models.PositiveSmallIntegerField(default=0)
     image = models.OneToOneField(
@@ -156,7 +157,8 @@ class Recipe(CreatedModified):
 class Direction(SortableMixin):
     name = models.CharField(max_length=100, default='')
     text = HTMLField(default='', verbose_name=_('Text'))
-    lazy_text = HTMLField(default='', verbose_name=_('Lazy Text'), editable=False)
+    lazy_text = HTMLField(default='', verbose_name=_(
+        'Lazy Text'), editable=False)
     recipe = SortableForeignKey(
         'Recipe', related_name='directions', on_delete=models.CASCADE)
     order_with_respect_to = 'recipe'
@@ -214,22 +216,7 @@ class IngredientAmount(models.Model):
                                    null=True, blank=True)
 
     def __str__(self):
-        return ' | '.join(list(map(lambda s: str(s), [self.ingredient, self.amount, self.unit])))
-
-    def prefix(self):
-        """
-        Outputs nicely formatted number ('prefix') depending on system of measurement; limits to one decimal place
-        :return: str
-        """
-        # todo: not sure if this should just be handled server side since the whole point is scaling and convert
-        # from metric to imperial
-
-        # if imperial, we want to represent as fraction
-
-        # first, round to nearest 0.25 since that's really the precision achievable from cooking measurements
-        rounded_amt = round(self.amount * 100 // 25 +
-                            self.amount * 100 % 25) / 100
-        pass
+        return f'{str(self.amount)} {self.suffix()}'
 
     def suffix(self):
         """
@@ -277,8 +264,6 @@ class Unit(models.Model):
         verbose_name = _('Unit')
         verbose_name_plural = _('Units')
         ordering = ["name"]
-
-# todo: add units!
 
 
 class Nutrition(models.Model):

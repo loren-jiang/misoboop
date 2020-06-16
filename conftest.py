@@ -6,12 +6,16 @@ from pytest_factoryboy import register
 
 from core.tests.factories import SeriesFactory, TagFactory, PublicImageFactory
 from blog.tests.factories import PostFactory
-from recipe.tests.factories import RecipeFactory
+from recipe.tests.factories import RecipeFactory, IngredientAmountFactory, IngredientFactory, UnitFactory
 
 register(TagFactory)
 register(SeriesFactory)
 register(PostFactory)
 register(RecipeFactory)
+register(IngredientAmountFactory)
+register(IngredientFactory)
+register(UnitFactory)
+
 register(PublicImageFactory)
 
 
@@ -27,6 +31,11 @@ def ten_seriess(series_factory):
 def ten_recipes(recipe_factory):
     return [recipe_factory() for _ in range(10)]
 
+@pytest.fixture
+def complete_recipe(recipe_factory):
+    recipe = recipe_factory()
+    return recipe
+
 def pytest_sessionstart(session):
     print("\ntesting started")
 
@@ -37,8 +46,8 @@ def pytest_sessionstart(session):
 def pytest_sessionfinish(session, exitstatus):
     print("\ntesting concluded")
     # delete _temp directory after testing
-    # if (settings.MEDIA_ROOT == "_temp"):
-    #     shutil.rmtree("_temp")
+    if (settings.MEDIA_ROOT == "_temp" and os.path.exists('_temp')):
+        shutil.rmtree("_temp")
 
 # @pytest.fixture(scope='session')
 # def django_db_setup():
