@@ -31,6 +31,7 @@ def pytest_sessionstart(session):
     print("\ntesting started")
 
     if (settings.MEDIA_ROOT == "_temp" and not os.path.exists('_temp')):
+        print("\ncreating '_temp' folder")
         os.mkdir('_temp')
 
 def pytest_sessionfinish(session, exitstatus):
