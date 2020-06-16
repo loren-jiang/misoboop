@@ -125,6 +125,10 @@ class RecipeModelTest(TestCase):
         pass
 
 class TestRecipeModel:
-    def test_recipe_image(self, recipe_factory):
+    def test_recipe_image(self, recipe_factory, public_image_factory):
         recipe = recipe_factory()
-        assert True
+        image = public_image_factory()
+        recipe.image = image
+        recipe.save()
+        assert bool(recipe.image.upload)
+        assert bool(recipe.image.thumbnail)

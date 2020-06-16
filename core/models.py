@@ -103,7 +103,7 @@ class PublicImage(NameDescription):
         super().save(*args, **kwargs)  # first save needed for get_thumbnail to also upload to s3
         if self.upload:
             self.thumbnail = get_thumbnail(self.upload, '300x300', quality=95, format='JPEG').name
-        super().save(*args, **kwargs)
+            super().save()
 
 
 class PrivateImage(models.Model):

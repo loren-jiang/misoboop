@@ -4,7 +4,7 @@ import shutil
 from django.conf import settings
 from pytest_factoryboy import register
 
-from core.tests.factories import SeriesFactory, TagFactory
+from core.tests.factories import SeriesFactory, TagFactory, PublicImageFactory
 from blog.tests.factories import PostFactory
 from recipe.tests.factories import RecipeFactory
 
@@ -12,6 +12,7 @@ register(TagFactory)
 register(SeriesFactory)
 register(PostFactory)
 register(RecipeFactory)
+register(PublicImageFactory)
 
 
 @pytest.fixture
@@ -29,7 +30,7 @@ def ten_recipes(recipe_factory):
 def pytest_sessionstart(session):
     print("\ntesting started")
 
-    if (settings.MEDIA_ROOT == "_temp"):
+    if (settings.MEDIA_ROOT == "_temp" and not os.path.exists('_temp')):
         os.mkdir('_temp')
 
 def pytest_sessionfinish(session, exitstatus):

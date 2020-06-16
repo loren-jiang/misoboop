@@ -19,3 +19,8 @@ class TagFactory(factory.django.DjangoModelFactory):
     filterable = True
     shown = True
 
+class PublicImageFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = "core.PublicImage"
+    name = factory.Sequence(lambda n: 'public_image%d' %n)
+    upload = factory.django.ImageField(filename="black_square.jpg", from_path="fixtures/black_square.jpg")
