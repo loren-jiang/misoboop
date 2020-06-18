@@ -17,9 +17,9 @@ from star_ratings.models import Rating
 from core.models import BasicTag, TaggedWhatever
 from .utils import format_duration
 from bs4 import BeautifulSoup
-from core.utils import lozad_lazify_imgs
+from core.utils import lazify_images
 import math
-
+from django.conf import settings
 
 # Create your models here.
 
@@ -74,7 +74,8 @@ class Recipe(CreatedModified):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        self.lazy_description = lozad_lazify_imgs(self.description)
+        if settings.LAZIFY_IMAGES:
+            self.lazy_description = lazify_images(self.description)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -167,7 +168,8 @@ class Direction(SortableMixin):
         default=0, editable=False, db_index=True)
 
     def save(self, *args, **kwargs):
-        self.lazy_text = lozad_lazify_imgs(self.text)
+        if settings.LAZIFY_IMAGES:
+            self.lazy_text = lazify_images(self.text)
         super().save(*args, **kwargs)
 
     def __str__(self):

@@ -32,7 +32,12 @@ def ten_recipes(recipe_factory):
     return [recipe_factory() for _ in range(10)]
 
 @pytest.fixture
+def ten_ingredients(ingredient_factory):
+    return [ingredient_factory() for _ in range(10)]
+
+@pytest.fixture
 def complete_recipe(recipe_factory):
+    # TODO: implement a complete recipe fixture
     recipe = recipe_factory()
     return recipe
 

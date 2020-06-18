@@ -233,3 +233,6 @@ CACHES = {
 
 # https://github.com/jazzband/sorl-thumbnail/issues/351
 THUMBNAIL_FORCE_OVERWRITE = True
+
+# lazy load images in HTMLField
+LAZIFY_IMAGES = True

@@ -1,13 +1,14 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, filters
 from rest_framework import permissions
-from .serializers import RecipeSerializer, IngredientSerializer, BasicTagSerializer
-from .models import Recipe, Ingredient, BasicTag
+from recipe.serializers import RecipeSerializer, IngredientSerializer, BasicTagSerializer
+from recipe.models import Recipe, Ingredient, BasicTag
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from taggit.models import Tag
 from taggit_serializer.serializers import TaggitSerializer
-from .filters import LiveSearchRecipeFilterSet, NullsAlwaysLastOrderingFilter
+from recipe.filters import LiveSearchRecipeFilterSet
+from core.filters import NullsAlwaysLastOrderingFilter
 from django.db.models import F
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
@@ -38,7 +39,6 @@ class CustomLimitOffsetPagination(LimitOffsetPagination):
     default_limit = 20
 
     def get_paginated_response(self, data):
-        print(self.__dict__)
         num_pages = math.ceil(self.count / self.limit)
         current_page = math.floor(self.offset / self.limit) + 1
         return Response({
@@ -67,7 +67,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    API endpoint that allows recipes to be viewed or edited if Admin User
+    API endpoint that allows recipes to be viewed (and edited if Admin User)
     """
     queryset = Recipe.objects.prefetch_related('ingredients', 'tags') \
         .annotate(total_time=F('cook_time') + F('prep_time')) \
@@ -110,12 +110,11 @@ class IngredientList(APIView):
 
 class RecipeList(APIView):
     """
-    List all ingredients.
+    List all recipes.
     """
 
     def get(self, request, format=None):
         qs = Recipe.objects.prefetch_related('ingredients', 'tags').order_by('likes').filter(is_published=True)
-        # qs = Recipe.objects.all()
         serializer = RecipeSerializer(qs, many=True)
         return Response(serializer.data)
 

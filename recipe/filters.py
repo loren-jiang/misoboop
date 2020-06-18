@@ -2,10 +2,12 @@ import django_filters
 from .models import Recipe, Ingredient
 from core.models import BasicTag
 from django.db.models import Q, F
-from core.filters import IcontainsInFilter, NullsAlwaysLastOrderingFilter, SearchFilter
+from core.filters import IcontainsInFilter, SearchFilter
+
 
 class RecipeFilterSet(django_filters.FilterSet):
-    search = SearchFilter(lookups=['name', 'description', 'tags__name'], label='Search recipes')
+    search = SearchFilter(
+        lookups=['name', 'description', 'tags__name'], label='Search recipes')
 
     class Meta:
         model = Recipe
@@ -14,12 +16,12 @@ class RecipeFilterSet(django_filters.FilterSet):
         }
 
 
-
-
 class LiveSearchRecipeFilterSet(django_filters.FilterSet):
-    ingredients = IcontainsInFilter(query_param='ingredients', lookup_expr='ingredients__name__icontains')
+    ingredients = IcontainsInFilter(
+        query_param='ingredients', lookup_expr='ingredients__name__icontains')
     tags = django_filters.ModelMultipleChoiceFilter(
-        queryset=BasicTag.objects.filter(filterable=True, recipe__isnull=False).distinct(),
+        queryset=BasicTag.objects.filter(
+            filterable=True, recipe__isnull=False).distinct(),
         to_field_name='name',
         field_name='tags__name'
     )

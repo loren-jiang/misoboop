@@ -13,11 +13,11 @@ def remove_html_tags(text):
     return re.sub(clean, '', text)
 
 
-def lozad_lazify_imgs(html):
+def lazify_images(html, lazy_class='lozad'):
     soup = BeautifulSoup(html, 'html.parser')
     soup_imgs = soup.find_all('img')
     for img in soup_imgs:
-        img['class'] = 'lozad'
+        img['class'] = lazy_class
         img['data-src'] = img['src']
         del img['src']
     return str(soup.prettify())
