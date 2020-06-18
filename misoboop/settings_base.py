@@ -36,11 +36,11 @@ INSTALLED_APPS = [
     'storages',
     'tinymce',
     'sorl.thumbnail',
-    'newsletter',  # todo: for sure add later
-    'threadedcomments',  # todo: probs add later
+    'newsletter',  # TODO: for sure add later
     'django_comments',  # needed for threaded comments
     'django_filters',
     'star_ratings',
+    'disqus',
     'debug_toolbar',  # don't use for production
     'rest_framework',
     'django_json_ld',
@@ -219,7 +219,6 @@ COMPRESS_PRECOMPILERS = (
 )
 
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 X_FRAME_OPTIONS = 'sameorigin'
@@ -237,3 +236,7 @@ THUMBNAIL_FORCE_OVERWRITE = True
 # lazy load images in HTMLField
 LAZIFY_IMAGES = True
 LAZIFY_IMAGE_CLASS = "lozad"
+
+# disqus
+DISQUS_API_KEY = os.getenv('DISQUS_API_KEY')
+DISQUS_WEBSITE_SHORTNAME = os.getenv('DISQUS_WEBSITE_SHORTNAME')

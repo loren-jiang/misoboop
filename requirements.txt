@@ -17,6 +17,7 @@ django-compressor-autoprefixer==0.1.0
 django-contrib-comments==1.9.2
 django-cors-headers==3.2.1
 django-debug-toolbar==2.2
+django-disqus==0.5
 django-extensions==2.2.9
 django-filebrowser-no-grappelli==3.8.0
 django-filter==2.2.0
@@ -47,6 +48,7 @@ jsonschema==3.2.0
 ldif3==3.1.1
 libsass==0.19.4
 Markdown==3.2.1
+mock==4.0.2
 more-itertools==8.3.0
 packaging==20.4
 Pillow==7.1.1

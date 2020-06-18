@@ -1,8 +1,7 @@
-[![<loren-jiang>](https://circleci.com/gh/loren-jiang/misoboop.svg?style=svg)]()
 
-
+<br>
 <div align="center">
-  <img alt="Logo" src="https://di0n0okh38ak5.cloudfront.net/static/assets/lucky_dumpling_cat_min.svg" width="300" />
+  <img alt="Logo" src="https://di0n0okh38ak5.cloudfront.net/static/assets/lucky_dumpling_cat_min.svg" width="100" />
 </div>
 <h1 align="center">
 	MisoBoop
@@ -13,6 +12,9 @@
 <p align="center">
 	Website featuring personal recipes, blog posts, and my cat, Miso -- built using Django + PostgresSQL backend and simple jQuery/Javascript + Materialize CSS, hosted on Digital Ocean.
 </p>
+
+[![CircleCI](https://circleci.com/gh/loren-jiang/misoboop.svg?style=svg)](https://circleci.com/gh/loren-jiang/misoboop)
+[![codecov](https://codecov.io/gh/loren-jiang/misoboop/branch/master/graph/badge.svg)](https://codecov.io/gh/loren-jiang/misoboop)
 
 ![screenshot](https://di0n0okh38ak5.cloudfront.net/brand/misoboop_ss.png)
 

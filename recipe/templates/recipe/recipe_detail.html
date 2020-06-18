@@ -5,6 +5,8 @@
 {% load ratings %}
 {% load core_extras %}
 {% load recipe_extras %}
+{% load disqus_tags %}
+{% disqus_dev %}
 
 {% block jsonld %}
 {% render_json_ld sd %}
@@ -253,6 +255,13 @@
 
 
         </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s12 m6">
+        {% disqus_show_comments %}
+
     </div>
 </div>
 {% else %}
