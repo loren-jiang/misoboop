@@ -35,7 +35,6 @@ recipe_schema = {
 }
 
 
-
 def validate_json(data, schema):
     try:
         jsonschema.validate(instance=data, schema=schema)
@@ -78,7 +77,6 @@ def validate_json(data, schema):
 #     def tearDown(self):
 #         # shutil.rmtree(MEDIA_ROOT, ignore_errors=True)
 #         pass
-
 
 
 #     def test_image_url(self):
@@ -145,6 +143,7 @@ class TestRecipeModel:
     def test_validate_sd_schema(self, basic_recipe):
         json_ld = basic_recipe.sd
         assert validate_json(json_ld, recipe_schema) == True
+
 
 class TestIngredientAmountModel:
     def test_str(self, ingredient_amount_factory, unit_factory, ingredient_factory):
