@@ -7,6 +7,8 @@ import json
 import jsonschema
 from recipe.models import Recipe
 import pytest
+from django.conf import settings
+from bs4 import BeautifulSoup
 
 pytestmark = pytest.mark.django_db
 
@@ -116,8 +118,6 @@ class TestRecipeModel:
     def test_total_time(self, basic_recipe):
         assert basic_recipe.total_time() == 75
 
-    # TODO: integrate these tests
-
     def test_slug_is_created_automatically(self, basic_recipe, recipe_factory):
         assert basic_recipe.slug == "char-siu-pork"
         yogurt = recipe_factory(name="Yogurt")
@@ -143,6 +143,34 @@ class TestRecipeModel:
     def test_validate_sd_schema(self, basic_recipe):
         json_ld = basic_recipe.sd
         assert validate_json(json_ld, recipe_schema) == True
+
+    def test_lazify_desc(self, complete_recipe):
+        if settings.LAZIFY_IMAGES:
+            assert bool(complete_recipe.lazy_description)
+
+            soup = BeautifulSoup(complete_recipe.lazy_description, "html.parser")
+            images = soup.findAll('img')
+            for img in images:
+                assert img.has_attr('data-src')
+                assert img.has_attr('class')
+                assert settings.LAZIFY_IMAGE_CLASS in img['class']
+    
+    def test_lazify_direction(self, complete_recipe):
+        if settings.LAZIFY_IMAGES:
+
+            for direction in complete_recipe.directions.all():
+                assert bool(direction.lazy_text)
+                soup = BeautifulSoup(direction.lazy_text, "html.parser")
+                images = soup.findAll('img')
+                for img in images:
+                    assert img.has_attr('data-src')
+                    assert img.has_attr('class')
+                    assert settings.LAZIFY_IMAGE_CLASS in img['class']
+        
+    def test_thumbnail(self, complete_recipe):
+        assert bool(complete_recipe.image)
+        assert bool(complete_recipe.image.thumbnail)
+
 
 
 class TestIngredientAmountModel:

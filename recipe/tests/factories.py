@@ -73,3 +73,8 @@ class UnitFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: f'unit{n}')
     type = random.randint(0, 2)
     system = random.randint(0, 2)
+
+class NutritionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = 'recipe.Nutrition'
+    

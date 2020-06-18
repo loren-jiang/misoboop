@@ -236,3 +236,4 @@ THUMBNAIL_FORCE_OVERWRITE = True
 
 # lazy load images in HTMLField
 LAZIFY_IMAGES = True
+LAZIFY_IMAGE_CLASS = "lozad"
