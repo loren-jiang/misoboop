@@ -1,3 +1,6 @@
+[![<loren-jiang>](https://circleci.com/gh/loren-jiang/misoboop.svg?style=svg)]()
+
+
 <div align="center">
   <img alt="Logo" src="https://di0n0okh38ak5.cloudfront.net/static/assets/lucky_dumpling_cat_min.svg" width="300" />
 </div>

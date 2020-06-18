@@ -36,6 +36,10 @@ jobs:
     - store_artifacts: # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
         path: test-results
         destination: tr1
+    - run:
+        command: |
+          bash <(curl -s https://codecov.io/bash)
+          
 workflows:
   main:
     jobs:
