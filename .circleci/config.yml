@@ -29,7 +29,7 @@ jobs:
         - /home/circleci/.local/lib/
     - run:
         command: |
-          python -m pytest -v --ds=misoboop.settings_test --junitxml=test-results/pytest/pytest-report.xml
+          python -m pytest -v --ds=misoboop.settings_test --junitxml=test-results/pytest/pytest-report.xml --cov-report=xml
         name: Test
     - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
         path: test-results
@@ -39,7 +39,7 @@ jobs:
     - run:
         command: |
           bash <(curl -s https://codecov.io/bash)
-          
+
 workflows:
   main:
     jobs:

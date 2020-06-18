@@ -25,4 +25,5 @@ deploy.bash
 # testing
 .coverage
 /htmlcov
+coverage.xml
 
