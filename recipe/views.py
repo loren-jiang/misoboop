@@ -16,6 +16,7 @@ from django_filters.views import FilterView
 from .serializers import IngredientAmountSerializer
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
+from django.conf import settings
 import json
 
 
@@ -89,23 +90,14 @@ class RecipeDetailView(JsonLdDetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['ingredient_amounts'] =  serializers.serialize('json', (self.object.ingredient_amounts.values_list('unit__name', 'id')))
-        #
-        # a = {}
-        # for ing_amt in self.object.ingredient_amounts.all():
-        #     serializer = IngredientAmountSerializer(ing_amt)
-        #     a[ing_amt.id] = serializer.data
-        #
-        # context['ingredient_amounts'] = a
-        # context['ingredient_amounts'] = json.dumps(list(self.object.ingredient_amounts.values_list('unit__type  ', 'id')), cls=DjangoJSONEncoder)
-
         imperial_choice = Unit.SYSTEM.imperial
-
         context['imperial_ingredients'] = json.dumps([ing_amt.ingredient.name
                                                       for ing_amt in self.object.ingredient_amounts.filter(
                                                           unit__system=imperial_choice).select_related('ingredient')])
-
         context['now'] = timezone.now()
+        # context['debug'] = settings.DEBUG
+        context['disqus_shortname'] = settings.DISQUS_WEBSITE_SHORTNAME
+        
         return context
 
 

@@ -4,135 +4,132 @@
 {% load core_extras %}
 
 {% block breadcrumbs %}
-    {{ block.super }}
-    {% breadcrumb "Posts" "post-list" %}
+{{ block.super }}
+{% breadcrumb "Posts" "post-list" %}
 {% endblock %}
 
 {% block content %}
-    {% render_breadcrumbs %}
-    <div class="row flex-m">
+{% render_breadcrumbs %}
+<div class="row flex-m">
 
-        <div class="col m9">
-            {% if object_list %}
-                {% for post in object_list.all %}
-                    <div class="row valign-wrapper">
-                        <div class="col s12 m3">
-                            {% if post.thumbnail %}
-                                <img src="{{ post.thumbnail.upload.url }}">
-                            {% else %}
-                                <img src={{ post.placeholder_url }}>
-                            {% endif %}
-                        </div>
-                        <div class="col s12 m9">
-                            <h5>{{ post.headline }}</h5>
-                            <div>
-                                {% for tag in post.tags.all %}
-                                    <span data-tag={{ tag.name }} class="chip"> {{ tag.name }}</span>
-                                {% endfor %}
-                            </div>
-                            <div>
-                                {{ post.short_description|truncatewords:100 }}
-                                <a class="basic-link" href={{ post.get_absolute_url }}> Read more </a>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-                    <hr>
-
-                {% endfor %}
-                <div class="pagination">
-                <span class="step-links">
-                    {% if page_obj.has_previous %}
-                        <a href="?{% url_replace request 'page' 1 %}"> &laquo; first</a>
-                        <a href="?{% url_replace request 'page' page_obj.previous_page_number %}"> previous </a>
-                    {% endif %}
-
-                    <span class="current">
-                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                    </span>
-
-                    {% if page_obj.has_next %}
-                        <a href="?{% url_replace request 'page' page_obj.next_page_number %}"> next </a>
-                        <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">last &raquo;</a>
-                    {% endif %}
-                </span>
-                </div>
-
-            {% else %}
-                No blog posts found...
-            {% endif %}
-
-        </div>
-
-        <div class="col m3">
-
-            <div class="card-panel color-2">
-                <h5> Search </h5>
-                <form class="post-filter-form" method="get">
-                    {{ filter.form.as_p }}
-                    <input class="btn-small" type="submit" value="Search"/>
-                    <button class="reset btn-small" type="reset"> Clear</button>
-                </form>
+    <div class="col m9">
+        {% if object_list %}
+        {% for post in object_list.all %}
+        <div class="row valign-wrapper">
+            <div class="col s12 m3">
+                {% if post.thumbnail %}
+                <img src="{{ post.thumbnail.upload.url }}">
+                {% else %}
+                <img src={{ post.placeholder_url }}>
+                {% endif %}
             </div>
-
-            <div class="card-panel color-2">
-                <h5> Popular tags </h5>
-                {% for tag in post_tags %}
-                    <a class="toggle-tag" href="?tags={{ tag.name }}">
-                        <span id="tag_{{ tag.name }}" data-tag="{{ tag.name }}"
-                              class="chip waves-effect"> {{ tag.name }} | {{ tag.count }} </span>
-                    </a>
-                {% endfor %}
-            </div>
-            <div class="card-panel color-2 hide-on-med-and-down">
-                <h5> Latest posts </h5>
-                <table>
-                    {#                        <tr>#}
-                    {#                            <th>Name</th>#}
-                    {#                            <th>Date</th>#}
-                    {#                        </tr>#}
-                    {% for post in latest_posts %}
-                        <tr>
-                            <td>
-                                <a class="basic-link" href={{ post.get_absolute_url }}>{{ post.headline }}</a>
-                            </td>
-                            <td>
-                                {{ post.created_at|date }}
-                            </td>
-                        </tr>
+            <div class="col s12 m9">
+                <h5>{{ post.headline }}</h5>
+                <div>
+                    {% for tag in post.tags.all %}
+                    <span data-tag={{ tag.name }} class="chip"> {{ tag.name }}</span>
                     {% endfor %}
-                </table>
-
+                </div>
+                <div>
+                    {{ post.short_description|truncatewords:100 }}
+                    <br>
+                    <a class="basic-link" href={{ post.get_absolute_url }}> Read more </a>
+                </div>
             </div>
+
+
         </div>
+        <hr>
+
+        {% endfor %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                <a href="?{% url_replace request 'page' 1 %}"> &laquo; first</a>
+                <a href="?{% url_replace request 'page' page_obj.previous_page_number %}"> previous </a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                <a href="?{% url_replace request 'page' page_obj.next_page_number %}"> next </a>
+                <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+
+        {% else %}
+        No blog posts found...
+        {% endif %}
 
     </div>
+
+    <div class="col m3">
+
+        <div class="card-panel color-2">
+            <h5> Search </h5>
+            <form class="post-filter-form" method="get">
+                {{ filter.form.as_p }}
+                <input class="btn-small" type="submit" value="Search" />
+                <button class="reset btn-small" type="reset"> Clear</button>
+            </form>
+        </div>
+
+        <div class="card-panel color-2">
+            <h5> Popular tags </h5>
+            {% for tag in post_tags %}
+            <a class="toggle-tag" href="?tags={{ tag.name }}">
+                <span id="tag_{{ tag.name }}" data-tag="{{ tag.name }}" class="chip waves-effect"> {{ tag.name }} |
+                    {{ tag.count }} </span>
+            </a>
+            {% endfor %}
+        </div>
+        <div class="card-panel color-2 hide-on-med-and-down">
+            <h5> Latest posts </h5>
+            <table>
+                {#                        <tr>#}
+                {#                            <th>Name</th>#}
+                {#                            <th>Date</th>#}
+                {#                        </tr>#}
+                {% for post in latest_posts %}
+                <tr>
+                    <td>
+                        <a class="basic-link" href={{ post.get_absolute_url }}>{{ post.headline }}</a>
+                    </td>
+                    <td>
+                        {{ post.created_at|date }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+    </div>
+
+</div>
 
 
 {% endblock %}
 
 {% block scripts %}
-    <script>
-        $(document).ready(function () {
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            const tags = urlParams.getAll('tags');
-            tags.forEach(function (tag) {
-                $tags = $("span[data-tag='" + tag + "']");
-                $tags.addClass('red lighten-4')
-            });
-
-            $('.reset').click(function (e) {
-                const $form = $('.post-filter-form')
-                $form.find('input:text, input:password, input:file, select, textarea').val('');
-                $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
-                $form.submit()
-            })
+<script>
+    $(document).ready(function () {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const tags = urlParams.getAll('tags');
+        tags.forEach(function (tag) {
+            $tags = $("span[data-tag='" + tag + "']");
+            $tags.addClass('red lighten-4')
         });
-    </script>
+
+        $('.reset').click(function (e) {
+            const $form = $('.post-filter-form')
+            $form.find('input:text, input:password, input:file, select, textarea').val('');
+            $form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
+            $form.submit()
+        })
+    });
+</script>
 {% endblock scripts %}
-
-
-

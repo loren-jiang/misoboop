@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django_comments',  # needed for threaded comments
     'django_filters',
     'star_ratings',
-    'disqus',
+    # 'disqus',
     'debug_toolbar',  # don't use for production
     'rest_framework',
     'django_json_ld',

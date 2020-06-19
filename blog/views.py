@@ -6,7 +6,7 @@ from .filters import PostFilterSet, SearchPostFilterSet
 from django_filters.views import FilterView
 from core.models import BasicTag
 from django.db.models import Count, F, Q
-
+from django.conf import settings
 
 # Create your views here.
 class PostListView(ListView):
@@ -44,4 +44,5 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['now'] = timezone.now()
+        context['disqus_shortname'] = settings.DISQUS_WEBSITE_SHORTNAME
         return context
