@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize ingredient amounts to input value
     displayIngAmt($ingredientAmt, ingredientDefaultValues, origServings, $servingsRangeInput.val());
 
-    // On inout change, change ingredient amount displays
+    // On input change, change ingredient amount displays
     $servingsRangeInput.on('change', () => displayIngAmt($ingredientAmt, ingredientDefaultValues, origServings, $servingsRangeInput.val()));
 
     // On button reset, return values accordingly to original servings
@@ -71,31 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         $('.material-tooltip').addClass('hide');
     }
-
-
-    // anchorElement.on('click', function () {
-    //     const msg = copyTextToClipboard(location.href);
-    //     if (msg === 'successful') {
-    //         anchorElement.attr('data-tooltip', 'Url copied');
-    //         M.Tooltip.getInstance(anchorElement).destroy();
-    //         anchorElement.tooltip();
-    //         M.Tooltip.getInstance(anchorElement).open();
-    //
-    //         //resets tooltip to original after set delay
-    //         //setTimeout(function () {
-    //         //  M.Tooltip.getInstance(anchorElement).destroy();
-    //         //anchorElement.attr('data-tooltip', copyCopyTooltipOriginalMsg);
-    //         //anchorElement.tooltip();
-    //         //}, 1500)
-    //     }
-    // })
-    //
-    // anchorElement.on('mouseout touchmove blur', function () {
-    //     M.Tooltip.getInstance(anchorElement).destroy();
-    //     anchorElement.attr('data-tooltip', copyCopyTooltipOriginalMsg);
-    //     anchorElement.tooltip();
-    // })
-
 
     /* Click respective share link on mobile-fab-tip click */
     $('.mobile-fab-tip').click(function (e) {

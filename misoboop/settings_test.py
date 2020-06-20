@@ -10,3 +10,6 @@ DATABASES['default'].update(db_from_env)
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 PRIVATE_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 MEDIA_ROOT = '_temp'
+
+COMPRESS_ENABLED = False
+COMPRESS_OFFLINE = False

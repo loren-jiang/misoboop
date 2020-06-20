@@ -17,7 +17,13 @@ def min_to_hr(value):
     value = int(value)
     hrs = str(value // 60) + 'hr' if value // 60 else ''
     mins = str(value % 60) + 'min' if value % 60 else ''
-    return f'{hrs} {mins}'
+    if hrs and mins:
+        return f'{hrs} {mins}'
+    elif hrs:
+        return f'{hrs}'
+    else: 
+        return f'{mins}'
+
 
 @register.filter
 def get_item(dictionary, key):

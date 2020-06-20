@@ -171,6 +171,7 @@ class TestRecipeModel:
         assert bool(complete_recipe.image)
         assert bool(complete_recipe.image.thumbnail)
 
+    
 
 
 class TestIngredientAmountModel:

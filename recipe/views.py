@@ -7,7 +7,7 @@ from django.utils import timezone
 from django_json_ld.views import JsonLdDetailView
 from django.db.models import F, Q, Sum, Count, Case, When
 from django.http import JsonResponse
-from .filters import filter_recipe_qs, RecipeFilterSet
+# from .filters import RecipeFilterSet
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core import serializers
@@ -97,7 +97,7 @@ class RecipeDetailView(JsonLdDetailView):
         context['now'] = timezone.now()
         # context['debug'] = settings.DEBUG
         context['disqus_shortname'] = settings.DISQUS_WEBSITE_SHORTNAME
-        
+
         return context
 
 
@@ -236,5 +236,9 @@ def tagged_by_recipes(request, *args, **kwargs):
 def print_recipe(request, *args, **kwargs):
     context = {}
     slug = kwargs.get('slug', None)
-    context['recipe'] = Recipe.objects.get(slug=slug)
-    return render(request, 'recipe/print_recipe.html', context)
+    recipe = Recipe.objects.get(slug=slug)
+    context['recipe'] = recipe
+    context['imperial_ingredients'] = json.dumps([ing_amt.ingredient.name
+                                                      for ing_amt in recipe.ingredient_amounts.filter(
+                                                          unit__system=Unit.SYSTEM.imperial).select_related('ingredient')])
+    return render(request, 'recipe/recipe_print.html', context)

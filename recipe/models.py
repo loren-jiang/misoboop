@@ -23,6 +23,7 @@ from django.conf import settings
 
 # Create your models here.
 
+
 class RecipeManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True)
@@ -226,14 +227,15 @@ class IngredientAmount(models.Model):
         :return: str
         """
         is_plural = self.amount > 1
-        has_real_unit = self.unit.name != "Unit"
-        ret = ''
-        if not has_real_unit:
-            ret = f"{self.ingredient.plural_name if (is_plural and self.ingredient.plural_name) else self.ingredient.name}"
-        else:
-            ret = f"{(self.unit.plural_abbrev if (is_plural and self.unit.plural_abbrev) else str(self.unit)) + ' of'} " \
-                  f"{self.ingredient.plural_name if (is_plural and self.ingredient.plural_name) else str(self.ingredient)}"
-        return ret.lower()
+        if self.unit:
+            has_real_unit = self.unit.name != "Unit"
+            ret = ''
+            if not has_real_unit:
+                ret = f"{self.ingredient.plural_name if (is_plural and self.ingredient.plural_name) else self.ingredient.name}"
+            else:
+                ret = f"{(self.unit.plural_abbrev if (is_plural and self.unit.plural_abbrev) else str(self.unit)) + ' of'} " \
+                    f"{self.ingredient.plural_name if (is_plural and self.ingredient.plural_name) else str(self.ingredient)}"
+            return ret.lower()
 
     class Meta:
         constraints = [

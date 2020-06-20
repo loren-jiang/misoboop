@@ -1,12 +1,14 @@
 div.recipe-printout {
-    padding: 5rem;
+    padding: 5rem 5rem;
 }
 
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
+    padding: .5rem;
 }
 
-.recipe-printout-title {
-
+#num_servings {
+    width: 2rem;
 }
+

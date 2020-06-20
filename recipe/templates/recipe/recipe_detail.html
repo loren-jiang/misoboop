@@ -142,10 +142,7 @@
 
                 </ul>
 
-                {#                <input class="validate" id="num_servings" type="number" min="1" max="100"#}
-                {#                       value="{{ recipe.servings }}" size="10"/>#}
-                {#                <label for="num_servings"># of servings </label>#}
-                {#                <span class="helper-text" data-error="Enter number between 1 and 100" data-success=""></span>#}
+                
 
 
                 <!-- Dropdown Structure -->
@@ -199,7 +196,7 @@
 
             </div>
 
-
+  
             <div class="row">
                 <div class="col m10 sm12 recipe-directions">
                     {% for direction in recipe.directions.all %}
@@ -284,7 +281,7 @@ Recipe is in the works! Please check back later!
     var recipe_id = "{{recipe.id}}";
     var recipe_servings = "{{recipe.servings}}";
 
-    var imperial_ingredients = {{ imperial_ingredients| safe }};
+    var imperial_ingredients = JSON.parse(`{{ imperial_ingredients| safe }}`);
     var imperial_ingredients_set = new Set(imperial_ingredients)
 
 </script>

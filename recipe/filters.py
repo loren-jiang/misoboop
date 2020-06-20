@@ -33,19 +33,19 @@ class LiveSearchRecipeFilterSet(django_filters.FilterSet):
         }
 
 
-def filter_recipe_qs(request, qs):
-    ingredients = request.GET.getlist('ingredients', [])
-    name__icontains = request.GET.get('name__icontains')
-    tags = request.GET.getlist('tags', [])
-    ordering = request.GET.getlist('ordering', [])
+# def filter_recipe_qs(request, qs):
+#     ingredients = request.GET.getlist('ingredients', [])
+#     name__icontains = request.GET.get('name__icontains')
+#     tags = request.GET.getlist('tags', [])
+#     ordering = request.GET.getlist('ordering', [])
 
-    if name__icontains != '' and name__icontains is not None:
-        qs = qs.filter(Q(name__icontains=name__icontains))
-    if ingredients:
-        qs = qs.filter(Q(ingredients__name__in=ingredients))
-    if tags:
-        qs = qs.filter(Q(tags__name__in=tags))
-    if ordering:
-        qs = qs.order_by(*ordering)
+#     if name__icontains != '' and name__icontains is not None:
+#         qs = qs.filter(Q(name__icontains=name__icontains))
+#     if ingredients:
+#         qs = qs.filter(Q(ingredients__name__in=ingredients))
+#     if tags:
+#         qs = qs.filter(Q(tags__name__in=tags))
+#     if ordering:
+#         qs = qs.order_by(*ordering)
 
-    return qs.distinct()
+#     return qs.distinct()
