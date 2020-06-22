@@ -126,7 +126,7 @@ class RecipeAdmin(NonSortableParentAdmin):
 
 
     def get_queryset(self, request):
-        return Recipe.objects.get_all()
+        return Recipe.objects.all()
 
     def recipe_tags(self, obj):
         return ", ".join([tag.name for tag in obj.tags.order_by()])

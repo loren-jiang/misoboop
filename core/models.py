@@ -94,9 +94,11 @@ class PublicImage(NameDescription):
     thumbnail = ImageField(null=True, blank=True)
 
     def __str__(self):
-        splits = self.upload.url.split(settings.AWS_PUBLIC_MEDIA_LOCATION)
-        if len(splits) > 1:
-            return self.upload.url.split(settings.AWS_PUBLIC_MEDIA_LOCATION)[1]
+        location = self.upload.storage.location
+        # splits = self.upload.url.split(settings.AWS_PUBLIC_MEDIA_LOCATION)
+        splits = self.upload.url.split(location)
+        if len(splits) > 0:
+            return splits[-1]
         return self.upload.url
 
     def save(self, *args, **kwargs):
@@ -106,21 +108,25 @@ class PublicImage(NameDescription):
             super().save()
 
 
-class PrivateImage(models.Model):
-    name = models.CharField(max_length=500, null=True, blank=True)
-    description = HTMLField(default='', verbose_name=_('Text'), null=True, blank=True)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    upload = ImageField(storage=get_storage_class(settings.PRIVATE_FILE_STORAGE))
-    user = models.ForeignKey(User, related_name='images', on_delete=models.SET_NULL, null=True, blank=True)
+# class PrivateImage(models.Model):
+#     name = models.CharField(max_length=500, null=True, blank=True)
+#     description = HTMLField(default='', verbose_name=_('Text'), null=True, blank=True)
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
+#     upload = ImageField(storage=get_storage_class(settings.PRIVATE_FILE_STORAGE))
+#     user = models.ForeignKey(User, related_name='images', on_delete=models.SET_NULL, null=True, blank=True)
 
-    def __str__(self):
-        splits = self.upload.url.split(settings.AWS_PRIVATE_MEDIA_LOCATION)
-        if len(splits) > 1:
-            return self.upload.url.split(settings.AWS_PRIVATE_MEDIA_LOCATION)[1]
-        return self.upload.url
+#     def __str__(self):
+#         # splits = self.upload.url.split(settings.AWS_PRIVATE_MEDIA_LOCATION)
+#         # if len(splits) > 1:
+#         #     return self.upload.url.split(settings.AWS_PRIVATE_MEDIA_LOCATION)[1]
+#         location = self.upload.storage.location
+#         splits = self.upload.url.split(location)
+#         if len(splits) > 1:
+#             return splits[-1]
+#         return self.upload.url
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)  # first save needed for get_thumbnail to also upload to s3
-        if self.upload:
-            self.thumbnail = get_thumbnail(self.upload, '300x300', quality=95, format='JPEG').name
-        super().save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         super().save(*args, **kwargs)  # first save needed for get_thumbnail to also upload to s3
+#         if self.upload:
+#             self.thumbnail = get_thumbnail(self.upload, '300x300', quality=95, format='JPEG').name
+#         super().save(*args, **kwargs)

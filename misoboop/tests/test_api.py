@@ -126,3 +126,4 @@ def test_api_recipes_list(client, ten_recipes):
 def test_api_ingredients_list(client, ten_ingredients):
     response = client.get('/api/ingredients_list/')
     assert response.status_code == 200
+

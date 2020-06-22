@@ -116,7 +116,7 @@ class Recipe(CreatedModified):
         return directions_list
 
     def get_image_url(self):
-        if self.image:
+        if self.image and self.image.upload:
             return self.image.upload.url
         return ''
 

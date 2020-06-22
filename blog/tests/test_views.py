@@ -2,6 +2,7 @@ import pytest
 from bs4 import BeautifulSoup
 from core.utils import strip_leading_trailing_spaces
 from django.urls import reverse
+import json
 
 pytestmark = pytest.mark.django_db
 
@@ -25,4 +26,16 @@ class TestBlogPostViews:
         response = client.get(reverse('post-list'))
         assert response.status_code == 200
         assert len(response.context['object_list']) == 10
+
+    def test_post_search(self, client, ten_posts, post_factory, rf):
+        post = post_factory(headline="abc")
+        data={
+            'search': 'abc'
+        }
+        response = client.get(reverse('post-list'), data=data, content_type='application/json')
+        assert response.status_code == 200
+        posts = response.context['object_list']
+        assert [p.id for p in posts] == [post.id]
+
+
 

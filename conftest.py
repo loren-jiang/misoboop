@@ -57,6 +57,13 @@ def basic_units(unit_factory):
 
     return units
 
+@pytest.fixture
+def complete_post(post_factory, public_image_factory, admin_user):
+    post = post_factory()
+    post.image = public_image_factory()
+    post.author = admin_user
+    post.save()
+    return post
 
 @pytest.fixture
 def complete_recipe(recipe_factory, admin_user, nutrition_factory, public_image_factory, direction_factory, ingredient_factory, ingredient_amount_factory, basic_units):
@@ -140,6 +147,8 @@ def complete_recipe(recipe_factory, admin_user, nutrition_factory, public_image_
 
     recipe.save()
     return recipe
+
+
 
 
 def pytest_sessionstart(session):

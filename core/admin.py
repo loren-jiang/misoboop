@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Series, PublicImage, PrivateImage, BasicTag
+from .models import Series, PublicImage, BasicTag
 from sorl.thumbnail.admin import AdminImageMixin
 
 # Register your models here.
@@ -19,7 +19,6 @@ class BasicTagAdmin(admin.ModelAdmin):
 
 admin.site.register(Series)
 admin.site.register(PublicImage, PublicImageAdmin)
-admin.site.register(PrivateImage)
 
 admin.site.register(BasicTag, BasicTagAdmin)
 

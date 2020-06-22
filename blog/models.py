@@ -16,10 +16,6 @@ class PostManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True)
 
-    def get_all(self):
-        return super().get_queryset()
-
-
 class Post(CreatedModified):
     headline = models.CharField(max_length=300, unique=True, verbose_name=_('Headline'))
     alt_headline = models.CharField(max_length=300, verbose_name=_('Alternative headline'), blank=True, null=True)
@@ -49,6 +45,16 @@ class Post(CreatedModified):
 
     def content_words_as_list(self):
         return remove_backslash_escaped(remove_html_tags(self.content)).split()
+        
+    def get_image_url(self):
+        if self.image and self.image.upload:
+            return self.image.upload.url
+        return ''
+
+    def get_author_name(self):
+        if self.author:
+            return self.author.username
+        return ''
 
     @property
     def sd(self):
@@ -57,9 +63,9 @@ class Post(CreatedModified):
             "@type": "BlogPosting",
             "headline": self.headline,
             "alternativeHeadline": self.alt_headline,
-            "image": self.image.upload.url if self.image.upload else '',
+            "image": self.get_image_url(),
             "award": "",
-            "editor": self.author.name,
+            "editor": self.get_author_name(),
             "genre": "food",
             "keywords": ', '.join(self.tag_names_as_list()),
             "wordcount": len(self.content_words_as_list()),
@@ -72,7 +78,7 @@ class Post(CreatedModified):
             "articleBody": self.content, #todo: is this okay to put html tags inside
             "author": {
                 "@type": "Person",
-                "name": self.author.name
+                "name": self.get_author_name()
             }
         }
 
