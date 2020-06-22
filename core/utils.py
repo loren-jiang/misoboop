@@ -21,3 +21,6 @@ def lazify_images(html, lazy_class=settings.LAZIFY_IMAGE_CLASS):
         img['data-src'] = img['src']
         del img['src']
     return str(soup.prettify())
+
+def strip_leading_trailing_spaces(string):
+    return ' '.join(string.split())

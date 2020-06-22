@@ -108,9 +108,10 @@ class TestRecipeModel:
         assert bool(recipe.image.upload)
         assert bool(recipe.image.thumbnail)
 
-    def test_recipe_directions(self, recipe_factory):
-        recipe = recipe_factory(post__randomize=True)
-        pass
+    def test_recipe_directions(self, recipe_factory, direction_factory):
+        recipe = recipe_factory()
+        directions = [direction_factory(recipe=recipe, text=f"instructions_{i+1}") for i in range(3)]
+        assert recipe.get_directions_as_text() == "1) instructions_1 \n2) instructions_2 \n3) instructions_3"
 
     def test_str(self, basic_recipe):
         assert str(basic_recipe) == "Char siu pork"
@@ -171,7 +172,10 @@ class TestRecipeModel:
         assert bool(complete_recipe.image)
         assert bool(complete_recipe.image.thumbnail)
 
-    
+    def test_image_url(self, complete_recipe, recipe_factory):
+        assert bool(complete_recipe.get_image_url())
+        no_image_url_recipe = recipe_factory()
+        assert bool(no_image_url_recipe.get_image_url()) == False
 
 
 class TestIngredientAmountModel:

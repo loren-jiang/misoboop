@@ -103,8 +103,10 @@ class Recipe(CreatedModified):
         :return: stirng of directions concatenated
         """
         directions_text = ''
+        num_directions = self.directions.count()
         for i, direction in enumerate(self.directions.all()):
-            directions_text += f"{str(i + 1)}) {direction.text} \n"
+            directions_text += f"{str(i + 1)}) {direction.text}" + \
+                (' \n' if i+1 != num_directions else '')
         return directions_text
 
     def get_directions_as_list(self):
@@ -113,10 +115,7 @@ class Recipe(CreatedModified):
             directions_list[i] = (f"{str(i + 1)}) {direction.text}")
         return directions_list
 
-    def get_pdf_printout(self):
-        pass
-
-    def image_url(self):
+    def get_image_url(self):
         if self.image:
             return self.image.upload.url
         return ''
@@ -139,7 +138,7 @@ class Recipe(CreatedModified):
             "cookTime": format_duration(self.cook_time),
             "datePublished": self.created_at.date().isoformat(),
             "description": self.short_description,
-            "image": self.image_url(),
+            "image": self.get_image_url(),
             "recipeIngredient": self.ing_amts_as_list(),
             "interactionStatistic": {
                 "@type": "InteractionCounter",
@@ -219,12 +218,18 @@ class IngredientAmount(models.Model):
                                    null=True, blank=True)
 
     def __str__(self):
+        """Str method, which returns amount and suffix
+
+        Returns:
+            str: amount and suffix
+        """
         return f'{str(self.amount)} {self.suffix()}'
 
     def suffix(self):
-        """
-        Outputs nicely formatted descriptor of ingredient amount ('suffix') depending on plurality and units
-        :return: str
+        """Outputs nicely formatted descriptor of ingredient amount ('suffix') depending on plurality and units
+
+        Returns:
+            str: lowercase suffix
         """
         is_plural = self.amount > 1
         if self.unit:

@@ -3,7 +3,7 @@ from django.test import TestCase
 import pytest
 from bs4 import BeautifulSoup
 from recipe.views import home, about
-from misoboop.utils import strip_leading_trailing_spaces
+from core.utils import strip_leading_trailing_spaces
 from recipe.views import explore_recipes, like_recipe
 from recipe.models import Recipe
 import json

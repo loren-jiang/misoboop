@@ -35,22 +35,22 @@ class CustomPageNumberPagination(PageNumberPagination):
         })
 
 
-class CustomLimitOffsetPagination(LimitOffsetPagination):
-    default_limit = 20
+# class CustomLimitOffsetPagination(LimitOffsetPagination):
+#     default_limit = 20
 
-    def get_paginated_response(self, data):
-        num_pages = math.ceil(self.count / self.limit)
-        current_page = math.floor(self.offset / self.limit) + 1
-        return Response({
-            'links': {
-                'next': self.get_next_link(),
-                'previous': self.get_previous_link()
-            },
-            'count': self.count,
-            'num_pages': num_pages,
-            'current_page': current_page,
-            'results': data,
-        })
+#     def get_paginated_response(self, data):
+#         num_pages = math.ceil(self.count / self.limit)
+#         current_page = math.floor(self.offset / self.limit) + 1
+#         return Response({
+#             'links': {
+#                 'next': self.get_next_link(),
+#                 'previous': self.get_previous_link()
+#             },
+#             'count': self.count,
+#             'num_pages': num_pages,
+#             'current_page': current_page,
+#             'results': data,
+#         })
 
 
 class LargeResultsSetPagination(PageNumberPagination):

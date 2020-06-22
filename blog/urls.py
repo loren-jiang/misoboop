@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .views import PostDetailView, PostListView, PostFilterView
+from .views import PostDetailView, PostFilterView
 
 urlpatterns = [
     path('<slug:slug>/', PostDetailView.as_view(), name='post-detail'),

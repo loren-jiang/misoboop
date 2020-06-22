@@ -2,7 +2,7 @@ import pytest
 import math
 import json
 from recipe.models import Ingredient, Recipe, BasicTag
-from recipe.views_api import RecipeViewSet, CustomPageNumberPagination, CustomLimitOffsetPagination
+from recipe.views_api import RecipeViewSet, CustomPageNumberPagination
 from star_ratings.models import Rating
 
 pytestmark = pytest.mark.django_db
@@ -34,7 +34,7 @@ def test_api_recipes(client, ten_recipes):
         [recipe.id for recipe in recipes_qs])
 
 
-def test_api_recipes_search(client, recipe_factory):
+def test_api_recipes_search(client, recipe_factory, ingredient_factory):
     recipes = [recipe_factory() for _ in range(5)]
     response_search_pork = client.get('/api/recipes/?search=pork')
     response_search_pork_json = json.loads(response_search_pork.content)
@@ -46,7 +46,13 @@ def test_api_recipes_search(client, recipe_factory):
     response_search_pork_json = json.loads(response_search_pork.content)
     assert response_search_pork.status_code == 200
     assert response_search_pork_json['results'][0]['id'] == pork_recipe.id
-
+    
+    ing = ingredient_factory(name="soy sauce")
+    pork_recipe.ingredients.add(*[ing])
+    response_search_pork = client.get('/api/recipes/?ingredients=soy')
+    response_search_pork_json = json.loads(response_search_pork.content)
+    assert response_search_pork.status_code == 200
+    assert response_search_pork_json['results'][0]['id'] == pork_recipe.id
 
 def test_api_recipes_ordering(client, recipe_factory):
     recipes = [recipe_factory() for _ in range(10)]

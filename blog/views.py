@@ -2,20 +2,20 @@ from django.shortcuts import render
 from .models import Post
 from django.views.generic import ListView, DetailView
 from django.utils import timezone
-from .filters import PostFilterSet, SearchPostFilterSet
+from blog.filters import PostFilterSet
 from django_filters.views import FilterView
 from core.models import BasicTag
 from django.db.models import Count, F, Q
 from django.conf import settings
 
 # Create your views here.
-class PostListView(ListView):
-    model = Post
-    paginate_by = 10
+# class PostListView(ListView):
+#     model = Post
+#     paginate_by = 10
 
-    def get_queryset(self):
-        qs = super().get_queryset().prefetch_related('tags',)
-        return qs
+#     def get_queryset(self):
+#         qs = super().get_queryset().prefetch_related('tags',)
+#         return qs
 
 
 class PostFilterView(FilterView):

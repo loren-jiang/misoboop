@@ -6,14 +6,6 @@ from core.models import BasicTag
 from django import forms
 from django_filters import OrderingFilter
 
-class SearchPostFilterSet(django_filters.FilterSet):
-    search = SearchFilter(lookups=['headline', 'tags__name', 'short_description'], label='Search blog posts')
-
-    class Meta:
-        model = Post
-        fields = ()
-
-
 class PostFilterSet(django_filters.FilterSet):
     search = SearchFilter(lookups=['headline', 'tags__name', 'short_description'], label='Search blog posts')
     tags = django_filters.ModelMultipleChoiceFilter(
