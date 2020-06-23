@@ -6,9 +6,13 @@
 
     <div>
         <a class="" href="{{ recipe.get_absolute_url }}">
-            <img alt="{{ recipe.image.upload.url }}" class="recipe-sneakpeek-image lozad" data-src={{ recipe.image.upload.url }}>
+            {% if recipe.image %}
+            <img alt="{{ recipe.image.upload.url }}" class="recipe-sneakpeek-image lozad" 
+            src={% if recipe.image.thumbnail %}{{ recipe.image.thumbnail.url }}{% endif %}
+            data-src={% if recipe.image.thumbnail %}{{ recipe.image.upload.url }}{% endif %}
+            >
+            {% endif %}
             <!-- <img class="recipe-sneakpeek-image" src={{ recipe.image.upload.url }}> -->
-
         </a>
     </div>
     <span class="recipe-sneakpeek-info">
