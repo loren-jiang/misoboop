@@ -100,9 +100,9 @@ def basic_recipe(recipe_factory):
 
 
 class TestRecipeManager:
-    def test_get_all(self, ten_recipes):
-        assert [r.id for r in Recipe.objects.get_all().order_by('id')] == sorted([
-            r.id for r in ten_recipes])
+    def test_get_published(self, recipe_factory):
+        recipes = [recipe_factory(is_published=False) for _ in range(10)]
+        assert [r.id for r in Recipe.objects.get_published()] == []
 
 
 class TestRecipeModel:

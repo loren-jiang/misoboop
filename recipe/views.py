@@ -25,7 +25,7 @@ import json
 # Home page view which shows latest recipes 'latest_recipes' and latest blog posts 'latest_posts'
 def home(request):
     context = {
-        'latest_recipes': Recipe.objects.filter(is_published=True).prefetch_related('tags').select_related(
+        'latest_recipes': Recipe.objects.get_published().prefetch_related('tags').select_related(
             'image',).order_by(
             '-created_at')[0:6],
         'latest_posts': Post.objects.prefetch_related('tags').order_by('-created_at').select_related()[0:6],

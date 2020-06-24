@@ -26,10 +26,10 @@ from django.conf import settings
 
 class RecipeManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(is_published=True)
-
-    def get_all(self):
         return super().get_queryset()
+    
+    def get_published(self):
+        return super().get_queryset().filter(is_published=True)
 
 
 class Recipe(CreatedModified):
@@ -63,7 +63,7 @@ class Recipe(CreatedModified):
     ratings = GenericRelation(Rating, related_query_name='recipes')
     series = models.ForeignKey(
         'core.Series', on_delete=models.SET_NULL, blank=True, null=True, related_name='recipes')
-    objects = RecipeManager()  # all() is automatically filtered (is_published=True)
+    objects = RecipeManager() 
 
     class Meta:
         ordering = ['name', ]
