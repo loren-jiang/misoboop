@@ -10,11 +10,9 @@ class CachingModelChoicesFormSet(forms.BaseInlineFormSet):
         super().__init__(*args, **kwargs)
         form = self._construct_form(0)
         self.cached_choices = {}
-        try:
-            model_choice_fields = form.model_choice_fields
-        except AttributeError:
-            pass
-        else:
+        model_choice_fields = form.model_choice_fields
+        
+        if model_choice_fields:
             for field_name in model_choice_fields:
                 if field_name in form.fields and not isinstance(
                     form.fields[field_name].widget, forms.HiddenInput):

@@ -10,11 +10,12 @@ class NullsAlwaysLastOrderingFilter(OrderingFilter):
 
     def filter_queryset(self, request, queryset, view):
         ordering = self.get_ordering(request, queryset, view)
+        print(ordering)
         if ordering:
             f_ordering = []
             for o in ordering:
-                if not o:
-                    continue
+                # if not o:
+                #     continue
                 if o[0] == '-':
                     f_ordering.append(F(o[1:]).desc(nulls_last=True))
                 else:

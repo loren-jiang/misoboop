@@ -163,17 +163,22 @@ class TestRecipesView:
         assert len(response.context['tagged_recipes'].keys()) == 1
         assert len(response.context['tagged_recipes']['ex_tag']) == 5
 
-    def test_recipe_series_detail_view(self, client, recipe_factory, post_factory, series_factory):
+    def test_recipe_series_detail_view(self, client, recipe_factory, post_factory, series_factory, public_image_factory):
         series = series_factory(name="ex_series")
         recipes = []
-        for _ in range(6):
+        for _ in range(3):
             recipe = recipe_factory()
             recipes.append(recipe)
 
         posts = []
-        for _ in range(5):
+        for _ in range(3):
             post = post_factory()
             posts.append(post)
+
+        recipes[-1].image = public_image_factory()
+        posts[-1].image = public_image_factory()
+        recipes[-1].save()
+        posts[-1].save()
 
         series.recipes.add(*recipes)
         series.posts.add(*posts)

@@ -57,6 +57,12 @@ General workflow:
 - `git push origin master && git push live master` -- the 2nd push is to automatically serve new files on push for remote repo on Digital Ocean (more elegant solutions exist) 
 - `ssh [user]@[ip_address]`
 - `sudo supervisorctl restart live`
+  <hr>
+- OR
+- Run `bash ./deploy.bash` to:
+  - test with pytest
+  - `git push live master`
+  - ssh into Digital Ocean droplet and restart server
 ## Notes: Database
 Generally, shouldn't need to make schema changes, but if necessary, that should be handled in version control
 

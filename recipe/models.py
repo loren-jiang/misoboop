@@ -120,13 +120,11 @@ class Recipe(CreatedModified):
             return self.image.upload.url
         return ''
 
-    def nutrition_sd(self):
+    def get_nutrition_sd(self):
         if self.nutrition:
-            return self.nutrition.sd()
+            return self.nutrition.sd
         else:
-            return {
-                "@type": "NutritionInformation"
-            }
+            return {}
 
     @property
     def sd(self):
@@ -146,7 +144,7 @@ class Recipe(CreatedModified):
                 "userInteractionCount": self.likes
             },
             "name": str(self),
-            "nutrition": self.nutrition_sd(),
+            "nutrition": self.get_nutrition_sd(),
             "recipeInstructions": self.get_directions_as_list(),
             "recipeYield": self.servings,
             "recipeCuisine": self.cuisine,
@@ -233,9 +231,9 @@ class IngredientAmount(models.Model):
         """
         is_plural = self.amount > 1
         if self.unit:
-            has_real_unit = self.unit.name != "Unit"
+            has_unit_unit = self.unit.name in ["Unit", "unit"]
             ret = ''
-            if not has_real_unit:
+            if has_unit_unit:
                 ret = f"{self.ingredient.plural_name if (is_plural and self.ingredient.plural_name) else self.ingredient.name}"
             else:
                 ret = f"{(self.unit.plural_abbrev if (is_plural and self.unit.plural_abbrev) else str(self.unit)) + ' of'} " \

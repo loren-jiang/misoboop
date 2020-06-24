@@ -39,9 +39,6 @@ class NameDescription(models.Model):
     name = models.CharField(max_length=500, unique=True)
     description = HTMLField(default='', verbose_name=_('Text'))
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         abstract = True
 
@@ -73,9 +70,6 @@ class Series(CreatedModified):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return self.name
-
     def get_absolute_url(self):
         return reverse('series-detail', args=[self.slug])
 
@@ -97,9 +91,10 @@ class PublicImage(NameDescription):
         location = self.upload.storage.location
         # splits = self.upload.url.split(settings.AWS_PUBLIC_MEDIA_LOCATION)
         splits = self.upload.url.split(location)
+        ret_str = ''
         if len(splits) > 0:
-            return splits[-1]
-        return self.upload.url
+            ret_str = splits[-1]
+        return ret_str
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # first save needed for get_thumbnail to also upload to s3

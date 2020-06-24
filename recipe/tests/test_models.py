@@ -99,6 +99,12 @@ def basic_recipe(recipe_factory):
     return recipe
 
 
+class TestRecipeManager:
+    def test_get_all(self, ten_recipes):
+        assert [r.id for r in Recipe.objects.get_all().order_by('id')] == sorted([
+            r.id for r in ten_recipes])
+
+
 class TestRecipeModel:
     def test_recipe_image(self, recipe_factory, public_image_factory):
         recipe = recipe_factory()
@@ -110,8 +116,12 @@ class TestRecipeModel:
 
     def test_recipe_directions(self, recipe_factory, direction_factory):
         recipe = recipe_factory()
-        directions = [direction_factory(recipe=recipe, text=f"instructions_{i+1}") for i in range(3)]
-        assert recipe.get_directions_as_text() == "1) instructions_1 \n2) instructions_2 \n3) instructions_3"
+        directions = [direction_factory(
+            recipe=recipe, text=f"instructions_{i+1}") for i in range(3)]
+        assert recipe.get_directions_as_text(
+        ) == "1) instructions_1 \n2) instructions_2 \n3) instructions_3"
+        assert recipe.get_directions_as_list(
+        ) == ['1) instructions_1', '2) instructions_2', '3) instructions_3']
 
     def test_str(self, basic_recipe):
         assert str(basic_recipe) == "Char siu pork"
@@ -149,13 +159,14 @@ class TestRecipeModel:
         if settings.LAZIFY_IMAGES:
             assert bool(complete_recipe.lazy_description)
 
-            soup = BeautifulSoup(complete_recipe.lazy_description, "html.parser")
+            soup = BeautifulSoup(
+                complete_recipe.lazy_description, "html.parser")
             images = soup.findAll('img')
             for img in images:
                 assert img.has_attr('data-src')
                 assert img.has_attr('class')
                 assert settings.LAZIFY_IMAGE_CLASS in img['class']
-    
+
     def test_lazify_direction(self, complete_recipe):
         if settings.LAZIFY_IMAGES:
 
@@ -167,7 +178,7 @@ class TestRecipeModel:
                     assert img.has_attr('data-src')
                     assert img.has_attr('class')
                     assert settings.LAZIFY_IMAGE_CLASS in img['class']
-        
+
     def test_thumbnail(self, complete_recipe):
         assert bool(complete_recipe.image)
         assert bool(complete_recipe.image.thumbnail)
@@ -176,6 +187,12 @@ class TestRecipeModel:
         assert bool(complete_recipe.get_image_url())
         no_image_url_recipe = recipe_factory()
         assert bool(no_image_url_recipe.get_image_url()) == False
+
+    def test_get_nutrition_sd(self, complete_recipe, recipe_factory):
+        assert complete_recipe.get_nutrition_sd() == complete_recipe.nutrition.sd
+
+        recipe = recipe_factory()
+        assert recipe.get_nutrition_sd() == {}
 
 
 class TestIngredientAmountModel:
@@ -186,6 +203,15 @@ class TestIngredientAmountModel:
         ing_amt = ingredient_amount_factory(
             amount=5.0, unit=unit, ingredient=ing)
         assert str(ing_amt) == f'{str(ing_amt.amount)} g of salt'
+
+    def test_suffix(self, ingredient_amount_factory, ingredient_factory, basic_units):
+        unit_unit = basic_units['unit']
+        ing = ingredient_factory(name="Thai chili", plural_name="Thai chilies")
+        ing_amt = ingredient_amount_factory(
+            unit=unit_unit,
+            amount=3,
+            ingredient=ing)
+        assert ing_amt.suffix() == "thai chilies"
 
 
 class TestIngredientModel:
@@ -201,3 +227,9 @@ class TestUnitModel:
         unit.name_abbrev = ""
         unit.save()
         assert str(unit) == "gram"
+
+
+class TestNutritionModel:
+    def test_sd(self, nutrition_factory):
+        nutri = nutrition_factory()
+        assert nutri.sd
