@@ -29,8 +29,7 @@ router = routers.DefaultRouter()
 router.register(r'recipes', recipe_views_api.RecipeViewSet, 'recipe-api')
 router.register(r'ingredients', recipe_views_api.IngredientViewSet, 'ingredient-api')
 router.register(r'tags', recipe_views_api.TagViewset, 'tag-api')
-# router.register(r'recipes-list', recipe_views_api.RecipeList, 'recipes-list-api')
-# router.register(r'ingredients-list', recipe_views_api.IngredientList, 'ingredients-list-api')
+
 
 sitemaps = {
     'static': StaticViewSitemap,

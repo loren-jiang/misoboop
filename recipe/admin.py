@@ -97,7 +97,6 @@ class InputFilter(admin.SimpleListFilter):
         )
         yield all_choice
 
-
 class RecipeNameFilter(InputFilter):
     parameter_name = 'name'
     title = _('Name')
@@ -121,7 +120,7 @@ class RecipeAdmin(NonSortableParentAdmin):
         IngredientAmountInline,
         DirectionInline,
     )
-    list_filter = (RecipeNameFilter, RecipeTagsFilter)
+    list_filter = (RecipeNameFilter, 'tags', 'is_published', 'created_at', 'modified_at', 'author')
     list_display = ('name', 'recipe_tags',)
 
 

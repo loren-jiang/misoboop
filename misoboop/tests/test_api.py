@@ -54,6 +54,14 @@ def test_api_recipes_search(client, recipe_factory, ingredient_factory):
     assert response_search_pork.status_code == 200
     assert response_search_pork_json['results'][0]['id'] == pork_recipe.id
 
+def test_unpublished_recipe_not_shown_in_search(client, recipe_factory):
+    unpub = recipe_factory(is_published=False)
+    response = client.get('/api/recipes/')
+    response_json = json.loads(response.content)
+    assert response.status_code == 200
+    assert unpub.id not in [r['id'] for r in response_json['results']]
+
+
 def test_api_recipes_ordering(client, recipe_factory):
     recipes = [recipe_factory() for _ in range(10)]
     response_search = client.get('/api/recipes/?ordering=-name')

@@ -69,7 +69,7 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows recipes to be viewed (and edited if Admin User)
     """
-    queryset = Recipe.objects.prefetch_related('ingredients', 'tags') \
+    queryset = Recipe.objects.get_published().prefetch_related('ingredients', 'tags') \
         .annotate(total_time=F('cook_time') + F('prep_time')) \
         .annotate(avg_ratings=F('ratings__average'))
     pagination_class = CustomPageNumberPagination
