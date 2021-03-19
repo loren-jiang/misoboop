@@ -35,7 +35,7 @@ django-taggit-labels==0.7.0
 django-taggit-serializer==0.1.7
 django-threadedcomments==1.2
 django-tinymce4-lite==1.8.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 docutils==0.15.2
 factory-boy==2.12.0
 Faker==4.0.3
