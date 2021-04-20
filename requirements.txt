@@ -54,7 +54,7 @@ packaging==20.4
 Pillow==7.1.1
 pluggy==0.13.1
 psycopg2==2.8.5
-py==1.8.1
+py==1.10.0
 pycodestyle==2.6.0
 pyenchant==3.0.1
 pyparsing==2.4.7
